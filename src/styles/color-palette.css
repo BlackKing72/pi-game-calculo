@@ -1,0 +1,87 @@
+/*
+    Responsável por manter a palheta de cores do site, coloquei tudo em um lugar 
+    só para facilitar se precisar mudar depois. 
+    
+    Para usar é só importar no seu arquivo css, ou se quiser usar no site todo,  
+    importe no 'App.css' ou 'index.css'
+
+    `@import url('./exemplo/color-palette.css`);
+*/
+
+:root {
+    color-scheme: light dark;
+    
+    --color-background-0: #fafafc;
+    --color-background-1: #e9ebef;
+    --color-background-2: #d9dce2;
+    --color-background-3: #cacdd4;
+
+    --color-foreground-0: #181b1b;
+    --color-foreground-1: #212526;
+    --color-foreground-2: #484c4e;
+    --color-foreground-3: #6d7277;
+
+    --color-primary-0: #001a26;
+    --color-primary-1: #002b45;
+    --color-primary-2: #003863;
+    --color-primary-3: #004282;
+    --color-primary-4: #0048a1;
+    --color-primary-5: #3373d7;
+    --color-primary-6: #749ef3;
+    --color-primary-7: #b5c9fe;
+    --color-primary-8: #f2f6ff;
+
+    --color-accent-0: #26200a;
+    --color-accent-1: #5b4f17;
+    --color-accent-2: #908428;
+    --color-accent-3: #c5bd42;
+    --color-accent-4: #fafa70;
+    --color-accent-5: #f7fd91;
+    --color-accent-6: #f5feb2;
+    --color-accent-7: #f7ffd2;
+    --color-accent-8: #fcfff2;
+
+    --color-neutral-0: #fafafc;
+    --color-neutral-1: #e9ebef;
+    --color-neutral-2: #d9dce2;
+    --color-neutral-3: #cacdd4;
+    --color-neutral-4: #b9bfc7;
+    --color-neutral-5: #6d7277;
+    --color-neutral-6: #484c4e;
+    --color-neutral-7: #212526;
+    --color-neutral-8: #181b1b;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background-0: #181b1b;
+        --color-background-1: #212526;
+        --color-background-2: #484c4e;
+        --color-background-3: #6d7277;
+
+        --color-foreground-0: #fafafc;
+        --color-foreground-1: #e9ebef;
+        --color-foreground-2: #d9dce2;
+        --color-foreground-3: #cacdd4;
+
+        --color-primary-0: #f2f6ff;
+        --color-primary-1: #b5c9fe;
+        --color-primary-2: #749ef3;
+        --color-primary-3: #3373d7;
+        --color-primary-4: #0048a1;
+        --color-primary-5: #004282;
+        --color-primary-6: #003863;
+        --color-primary-7: #002b45;
+        --color-primary-8: #001a26;
+
+        --color-accent-0: #fcfff2;
+        --color-accent-1: #f7ffd2;
+        --color-accent-2: #f5feb2;
+        --color-accent-3: #f7fd91;
+        --color-accent-4: #fafa70;
+        --color-accent-5: #c5bd42;
+        --color-accent-6: #908428;
+        --color-accent-7: #5b4f17;
+        --color-accent-8: #26200a;
+    }
+}
