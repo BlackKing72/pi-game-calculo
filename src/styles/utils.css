@@ -1,0 +1,11 @@
+.vlist {
+    flex-direction: row;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.hlist {
+    flex-direction: column;
+    display: flex;
+    gap: 0.5rem;
+}

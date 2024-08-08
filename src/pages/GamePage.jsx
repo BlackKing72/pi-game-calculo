@@ -1,4 +1,4 @@
-import InputValue from "../components/ValueConverter";
+import ValueConverter from "../components/ValueConverter";
 import { Button } from "react-bootstrap";
 
 import './GamePage.css';
@@ -13,10 +13,9 @@ const GamePage = () => {
             </h3>
 
             <div className="game-input">
-                <InputValue draggable={true} />
-                <InputValue draggable={true} />
-                <InputValue draggable={true} />
-                <InputValue draggable={true} />
+                <ValueConverter/>
+                <ValueConverter/>
+                <ValueConverter/>
             </div>
 
             <Button>Adicionar Valor</Button>

@@ -1,35 +1,33 @@
-
 .game {
     display: flex;
     flex-direction: column;
     gap: 3rem;
 
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 
     padding: 2rem;
 
+    color: var(--color-foreground-1);
     background-color: var(--color-background-1);
 }
 
 .game-input {
     display: flex;
-    flex-direction: column;
-
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 0.5rem;
+    gap: 1.5rem;
 }
 
 input, select {
     height: 2.5rem;
 
     border-radius: 0.5rem;
+    padding: 0 1rem;
     border: none;
 
+    color: var(--color-foreground-1);
     background-color: var(--color-background-1);
 }
 
@@ -41,5 +39,12 @@ input, select {
     border-radius: 0.5rem;
     padding: 0.5rem;
 
+    width: min(500px, 90%);
     gap: 0.25rem;
+}
+
+.value-converter div {
+    flex-direction: column;
+    display: flex;
+    padding: 1rem;
 }

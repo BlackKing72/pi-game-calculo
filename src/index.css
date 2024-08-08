@@ -1,4 +1,6 @@
-@import url('./styles/color-palette.css');
+@import url('./styles/spacings.css');
+@import url('./styles/colors.css');
+@import url('./styles/utils.css');
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
