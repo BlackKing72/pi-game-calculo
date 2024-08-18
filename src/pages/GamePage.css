@@ -4,12 +4,9 @@
     gap: 3rem;
 
     width: 100%;
-    height: 100%;
+    height: max(100%, 100vh);
 
     padding: 2rem;
-
-    color: var(--color-foreground-1);
-    background-color: var(--color-background-1);
 }
 
 .game-input {
@@ -20,7 +17,8 @@
     gap: 1.5rem;
 }
 
-input, select {
+input,
+select {
     height: 2.5rem;
 
     border-radius: 0.5rem;
@@ -40,11 +38,36 @@ input, select {
     padding: 0.5rem;
 
     width: min(500px, 90%);
-    gap: 0.25rem;
+    gap: 0.5rem;
 }
 
 .value-converter div {
-    flex-direction: column;
+    flex-direction: row;
     display: flex;
-    padding: 1rem;
+    gap: 0.25rem;
+
+    /* padding: 1rem; */
+    select,
+    input {
+        display: unset;
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    select {
+        width: 60%;
+    }
+
+    input {
+        width: 40%;
+    }
+}
+
+.value-converter div.disabled {
+
+    span,
+    input {
+        display: none;
+    }
 }
