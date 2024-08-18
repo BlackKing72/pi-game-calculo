@@ -1,42 +1,65 @@
-import { createRef, useState } from "react";
+import { useRef, useState } from "react";
 import { DropdownButton, Dropdown } from "react-bootstrap";
+import Select from "./Select";
 
-const converterOptions = [
-    { 
-        name: 'Não converter', 
+import { units, getConverter } from "../models/UnitConverters";
+
+// const convertUnits = [
+//     'Mililitro',
+//     'Litro',
+//     'Miligrama',
+//     'Grama',
+//     'Gota',
+//     'Microgota',
+//     'Colher de Sopa',
+//     'Colher de Sobremesa',
+//     'Colher de Chá',
+//     'Colher de Café',
+// ];
+
+const convertOptions = [
+    {
+        name: 'Não converter',
         convert: (l, r) => l,
         validate: (l, r) => true
     },
-    { 
-        name: 'Dividir', 
+    {
+        name: 'Dividir por',
         convert: (l, r) => l / r,
         validate: (l, r) => r !== 0
     },
-    { 
-        name: 'Multiplicar', 
+    {
+        name: 'Multiplicar por',
         convert: (l, r) => l * r,
         validate: (l, r) => true
     },
-]
+];
+
+const convertOptionNames = convertOptions.map(x => x.name);
 
 const ValueConverter = () => {
-    // const [converter, setConverter] = useState(converterOptions[0]);
+    const [converter, setConverter] = useState(convertOptions[0]);
 
-    const valueRef = createRef();
-    const selectRef = createRef();
-    const resultRef = createRef();
-    const converterRef = createRef();
+    const valueRef = useRef();
+    const selectRef = useRef();
+    const resultRef = useRef();
+    const converterRef = useRef();
+
+    const inputUnitRef = useRef();
+    const resultUnitRef = useRef();
 
     const handleSelectConverter = () => {
         const selectedOption = selectRef.current.value;
-        const selectedConverter = converterOptions.find((option) => {
-            return option.name == selectedOption; }
-        );
-        
+        const selectedConverter = convertOptions.find((option) => {
+            return option.name == selectedOption;
+        });
+
         if (selectedConverter === null) {
             console.warn(`A seleção era nula, algo estranho deve ter acontecido.`);
             return;
         }
+
+        setConverter(selectedConverter);
 
         const inputValue = valueRef.current.value;
         const convertValue = converterRef.current.value;
@@ -46,28 +69,48 @@ const ValueConverter = () => {
             return;
         }
 
-        const result = selectedConverter.convert(inputValue, convertValue);
-        
+        let result = selectedConverter.convert(inputValue, convertValue);
+        if (Number.isNaN(result)) {
+            result = 0;
+        }
         resultRef.current.value = result;
+
+        const fromUnit = units.find(x => x.displayName === inputUnitRef.current.value);
+        const toUnit = units.find(x => x.displayName === resultUnitRef.current.value);
+
+        console.warn(`from: ${fromUnit.displayName} | to: ${toUnit.displayName}`);
+
+        const converter = getConverter(fromUnit, toUnit);
+        if (!converter) {
+            console.log(`Possível erro do usuário. Não foi possível achar uma conversão [${fromUnit.displayName} > ${toUnit.displayName}].`);
+            return;
+        }
+
+        const validateResult = converter.validate(inputValue);
+
+        if (result != validateResult) {
+            console.log(`Possível erro do usuário. Estava esperando o resultado ${validateResult} mas a resposta atual é ${result}`);
+        }
+        else {
+            console.log(`A resposta parece estar certa! :)`);
+        }
+
     };
 
     return (
         <div className="value-converter">
-            <input ref={valueRef} onChange={handleSelectConverter} className="spacing-m" type="number" />
             <div>
-                <select ref={selectRef} onChange={handleSelectConverter}>
-                    {
-                        converterOptions.map(option => (
-                            <option value={option.name} >
-                                {option.name}
-                            </option>
-                        ))
-                    }
-                </select>
-                <span>por</span>
-                <input ref={converterRef} onChange={handleSelectConverter} className="spacing-m" type="number" />
+                <input ref={valueRef} onChange={handleSelectConverter} type="number" />
+                <Select ref={inputUnitRef} selectOptions={units.map(x => x.displayName)} onSelectionChanged={handleSelectConverter} />
             </div>
-            <input ref={resultRef} type="number" readOnly={true} />
+            <div className={converter !== convertOptions[0] ? '' : 'disabled'}>
+                <Select ref={selectRef} selectOptions={convertOptionNames} onSelectionChanged={handleSelectConverter} />
+                <input ref={converterRef} onChange={handleSelectConverter} type="number" defaultValue={1} />
+            </div>
+            <div>
+                <input ref={resultRef} type="number" readOnly={true} />
+                <Select ref={resultUnitRef} selectOptions={units.map(x => x.displayName)} onSelectionChanged={handleSelectConverter} />
+            </div>
         </div>
     )
 };

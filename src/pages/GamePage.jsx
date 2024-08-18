@@ -7,18 +7,15 @@ const GamePage = () => {
     return (
         <div className="game">
             <h3 className="game-question">
-                Lorem ipsum dolor sit amet. Et officia perspiciatis ut assumenda obcaecati est 
-                voluptatibus omnis ut culpa voluptatem? Et voluptates dolorum qui aperiam esse 
-                rem labore tempora et temporibus aspernatur. 
+                O médico prescreveu 1,5 mg de cloranfenicol. Mas o medicamento que
+                existe na farmácia é de 1 ml, contendo 2 mg. Como proceder?
             </h3>
 
             <div className="game-input">
-                <ValueConverter/>
-                <ValueConverter/>
-                <ValueConverter/>
+                <ValueConverter />
+                <ValueConverter />
+                <ValueConverter />
             </div>
-
-            <Button>Adicionar Valor</Button>
         </div>
     )
 };
