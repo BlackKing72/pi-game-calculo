@@ -51,7 +51,7 @@
     --color-neutral-7: #212526;
     --color-neutral-8: #181b1b;
 }
-
+/*
 @media (prefers-color-scheme: dark) {
     :root {
         --color-background-0: #181b1b;
@@ -85,3 +85,4 @@
         --color-accent-8: #26200a;
     }
 }
+*/
