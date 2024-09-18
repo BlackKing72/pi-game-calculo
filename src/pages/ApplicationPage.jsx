@@ -1,4 +1,5 @@
-import { Button, Carousel } from 'react-bootstrap';
+import { Button } from '@/components/ui/button';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { useState, useEffect } from 'react';
 import './ApplicationPage.css';
 
@@ -12,17 +13,24 @@ const steps = [
 ];
 
 const ApplicationPage = () => {
+    const [carouselContext, setCarouselContext] = useState();
     const [currentStep, setCurrentStep] = useState(0);
 
+    useEffect(() => {
+        carouselContext?.on('select', () => {
+            setCurrentStep(carouselContext.selectedScrollSnap());
+        })
+    }, [carouselContext]);
+
     const handlePreviousClicked = () => {
-        if (currentStep > 0) {
-            setCurrentStep((value) => value - 1);
+        if (carouselContext.canScrollPrev()) {
+            carouselContext.scrollPrev()
         }
     };
 
     const handleNextClicked = () => {
-        if (currentStep < steps.length - 1) {
-            setCurrentStep((value) => value + 1);
+        if (carouselContext.canScrollNext()) {
+            carouselContext.scrollNext()
         }
     };
 
@@ -36,11 +44,17 @@ const ApplicationPage = () => {
                 </p>
             </div>
             <div className="app-content">
-                {
-                    steps.map((step, index) =>
-                        <Step key={index} hidden={index !== currentStep} content={step} />
-                    )
-                }
+                <Carousel className='w-full flex-col flex-grow' setApi={setCarouselContext} >
+                    <CarouselContent>
+                        {
+                            steps.map((step, index) =>
+                                <CarouselItem key={index} >
+                                    <Step content={step} className='' />
+                                </CarouselItem>
+                            )
+                        }
+                    </CarouselContent>
+                </Carousel>
             </div>
             <div className="app-footer">
                 <div className='progress'>

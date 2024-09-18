@@ -73,7 +73,7 @@
     gap: var(--spc500);
 }
 
-.app-footer .nav-buttons .btn {
+.app-footer .nav-buttons button {
     flex-grow: 1;
     border-radius: var(--border-radius) !important;
     background-color: #2563eb !important;
@@ -82,7 +82,7 @@
 }
 
 .app-content .step {
-    display: none;
+    display: flex;
     background-color: #fb923c;
     width: 100%;
     height: 100%;
@@ -90,8 +90,4 @@
 
     justify-content: center;
     align-items: center;
-}
-
-.app-content .step.active {
-    display: flex;
 }
