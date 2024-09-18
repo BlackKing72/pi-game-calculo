@@ -1,48 +1,60 @@
 import './SwapySandbox.css';
 
-import { useEffect, useState } from 'react';
-import { createSwapy } from 'swapy';
+import SwapyContainer from '../components/swapy/SwapyContainer';
+import SwapySlot from '../components/swapy/SwapySlot';
+import SwapyItem from '../components/swapy/SwapyItem';
+
+import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
+/* 
+Um exemplo de como usar o swapy para criar uma seleção de alternativas de uma pergunta.
+O código principal está no 'SwapyAnswers'.
+*/
 const SwapySandbox = () => {
+    // importante salvar a pergunta em um estado, porque senão o swapy recarrega
+    // a página em cada alteração e o valor da variável seria perdido.
     const [pergunta] = useState(sortearPergunta());
 
     return (
         <div className='swapy-sandbox'>
             <h1>Quiz Monster Hunter</h1>
             <h3>{pergunta.titulo}</h3>
-            <SwapyContainer 
-                alternativas={pergunta.alternativas} 
-                onSubmit={resposta => pergunta.resposta = resposta}/>
+            <SwapyAnswers 
+                alternativas={pergunta.alternativas}
+                onSubmit={resposta => resposta == pergunta.resposta}/>
         </div>
     )
 };
 
-function SwapyContainer({ alternativas, onSubmit }) {
+/* 
+'alternativas': lista de alternativas disponíveis para essa pergunta.
+'onSubmit': uma função que é executado quando o usuário responder. Ela precisa
+retornar true ou false. ex: const onSubmit = (resposta) => resposta == '0'; 
+*/
+function SwapyAnswers({ alternativas, onSubmit }) {
     const [resposta, setResposta] = useState(null);
-    
-    useEffect(() => {
-        const container = document.querySelector('.swapy-container');
 
-        const swapy = createSwapy(container, {
-            animation: 'spring',
-        });
-
-        swapy.onSwap(({ data }) => {
-            setResposta(data.object.slotResposta);
-        });
-
-        return () => swapy.destroy();
-    }, []);
+    const handleOnSwap = (data) => {
+        // o onSwap acontece assim que um item entra dentro de um slot, mesmo antes
+        // de soltar o click. Então é necessário salvar a resposta antes e acessa-la
+        // somente quando clicar em responder. 
+        setResposta(data.object.slotResposta);
+    }
 
     const handleOnClickResponder = () => {
+        // verifica se a pergunta está certa e recarrega a página para resetar e 
+        // buscar uma pergunta nova.
+
         if (!resposta) {
             return;
         }
 
+        // onSubmit é um evento onde é passado a resposta selecionada e esse evento
+        // retorna true ou false se a resposta for certa ou não.
         if (onSubmit(resposta)) {
             alert('Resposta Correta!');
-            window.location.reload(false);
+            window.location.reload(false); // recarrega a página. 'false' é para manter o cache.
         }
         else {
             alert('Resposta Errada!');
@@ -50,37 +62,23 @@ function SwapyContainer({ alternativas, onSubmit }) {
     };
 
     return (
-        <div className='swapy-container'>
-            <div className='swapy-alt'>
+        <SwapyContainer animation="spring" onSwap={handleOnSwap}>
+            <div className='swapy-alt-container'>
                 {
                     alternativas.map((alternativa, index) =>
                         <SwapySlot key={index} slotID={`slot${index}`}>
-                            <SwapyCard itemID={index} content={alternativa} />
+                            <SwapyItem itemID={index}>
+                                <p>{alternativa}</p>
+                            </SwapyItem>
                         </SwapySlot>
                     )
                 }
             </div>
-            <div className='swapy-resposta'>
+            <div className='swapy-resposta-container'>
                 <SwapySlot slotID={`slotResposta`}></SwapySlot>
                 <Button onClick={handleOnClickResponder}>Responder</Button>
             </div>
-        </div>
-    )
-}
-
-function SwapySlot({ slotID, children }) {
-    return (
-        <div className='swapy-slot' data-swapy-slot={slotID}>
-            {children}
-        </div>
-    )
-}
-
-function SwapyCard({ itemID, content }) {
-    return (
-        <div className='swapy-item' data-swapy-item={itemID}>
-            <p>{content}</p>
-        </div>
+        </SwapyContainer>
     );
 };
 

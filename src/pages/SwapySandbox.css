@@ -1,80 +1,59 @@
-.swapy-sandbox * {
-    padding: 0;
-    margin: 0;
-    
-}
-
 .swapy-sandbox {
-    margin: 2rem;
-    display: flex;
     flex-direction: column;
+    display: flex;
+    margin: 2rem;
     gap: 4rem;
 }
 
-.swapy-container {
-    padding: 2rem;
-    border-radius: 6px;
-    
+.swapy-sandbox * {
+    padding: 0;
+    margin: 0;
+}
 
-    display: flex;
+.swapy-sandbox .swapy-container {
     flex-direction: column;
-    align-items: center;
     gap: 2rem;
 }
 
-.swapy-resposta,
-.swapy-alt { 
+.swapy-sandbox .swapy-slot {
+    height: 220px;
+    width: 180px;
+}
+
+.swapy-sandbox .swapy-item {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+
+    background-color: #0d6efd;
+    color: #fafafa;
+}
+
+.swapy-resposta-container {
+    flex-direction: column;
+}
+
+.swapy-resposta-container,
+.swapy-alt-container {
     display: flex;
     gap: 2rem;
     align-items: center;
 }
 
-.swapy-resposta {
-    flex-direction: column;
-}
-
-.swapy-resposta .swapy-slot {
+.swapy-resposta-container .swapy-slot {
     position: relative;
     width: 380px;
     height: 220px
 }
-.swapy-resposta .swapy-slot:not(:has(*))::after {
+
+.swapy-resposta-container .swapy-slot:not(:has(*))::after {
+    transform: translateY(calc(50% - 0.5lh));
     position: absolute;
     inset: 0 0 0 0;
-    transform: translateY(calc(50% - 0.5lh));
+
     content: 'Resposta';
-    color: gainsboro;
+    color: #fafafa;
 }
 
 .swapy-resposta .btn {
     height: 3rem;
-}
-
-.swapy-slot {
-    width: 180px;
-    height: 220px;
-    border-radius: 6px;
-    background-color: #151518;
-    padding: 1rem;
-    transition: background-color 0.5s ease;
-}
-
-.swapy-slot[data-swapy-highlighted] {
-    background-color: #48484d;
-}
-
-.swapy-item {
-    width: 100%;
-    height: 100%;
-    background-color: #0d6efd;
-    border-radius: 6px;
-    color: whitesmoke;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    text-align: center;
-    font-weight: bolder;
-    font-family: Arial, Helvetica, sans-serif;
 }

@@ -1,0 +1,31 @@
+.swapy-container {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+}
+
+.swapy-slot {
+    background-color: #27272a;
+    border-radius: 6px;
+    padding: 12px;
+    height: 200px;
+    width: 200px;
+
+    transition: background-color 0.5s ease-in-out;
+}
+
+.swapy-slot[data-swapy-highlighted] {
+    background-color: #3f3f46;
+}
+
+.swapy-item {
+    background-color: #71717a;
+    border-radius: 6px;
+    color: #fafafa;
+    height: 100%;
+    width: 100%;
+
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
