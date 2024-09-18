@@ -6,8 +6,21 @@ import { Button } from 'react-bootstrap';
 
 const SwapySandbox = () => {
     const [pergunta] = useState(sortearPergunta());
-    const [resposta, setResposta] = useState(null);
 
+    return (
+        <div className='swapy-sandbox'>
+            <h1>Quiz Monster Hunter</h1>
+            <h3>{pergunta.titulo}</h3>
+            <SwapyContainer 
+                alternativas={pergunta.alternativas} 
+                onSubmit={resposta => pergunta.resposta = resposta}/>
+        </div>
+    )
+};
+
+function SwapyContainer({ alternativas, onSubmit }) {
+    const [resposta, setResposta] = useState(null);
+    
     useEffect(() => {
         const container = document.querySelector('.swapy-container');
 
@@ -19,7 +32,6 @@ const SwapySandbox = () => {
             setResposta(data.object.slotResposta);
         });
 
-
         return () => swapy.destroy();
     }, []);
 
@@ -28,7 +40,7 @@ const SwapySandbox = () => {
             return;
         }
 
-        if (resposta == pergunta.resposta) {
+        if (onSubmit(resposta)) {
             alert('Resposta Correta!');
             window.location.reload(false);
         }
@@ -38,27 +50,23 @@ const SwapySandbox = () => {
     };
 
     return (
-        <div className='swapy-sandbox'>
-            <h1>Quiz Monster Hunter</h1>
-            <h3>{pergunta.titulo}</h3>
-            <div className='swapy-container'>
-                <div className='swapy-alt'>
-                    {
-                        pergunta.alternativas.map((alternativa, index) =>
-                            <SwapySlot slotID={`slot${index}`}>
-                                <SwapyCard itemID={index} content={alternativa} />
-                            </SwapySlot>
-                        )
-                    }
-                </div>
-                <div className='swapy-resposta'>
-                    <SwapySlot slotID={`slotResposta`}></SwapySlot>
-                    <Button onClick={handleOnClickResponder}>Responder</Button>
-                </div>
+        <div className='swapy-container'>
+            <div className='swapy-alt'>
+                {
+                    alternativas.map((alternativa, index) =>
+                        <SwapySlot key={index} slotID={`slot${index}`}>
+                            <SwapyCard itemID={index} content={alternativa} />
+                        </SwapySlot>
+                    )
+                }
+            </div>
+            <div className='swapy-resposta'>
+                <SwapySlot slotID={`slotResposta`}></SwapySlot>
+                <Button onClick={handleOnClickResponder}>Responder</Button>
             </div>
         </div>
     )
-};
+}
 
 function SwapySlot({ slotID, children }) {
     return (
