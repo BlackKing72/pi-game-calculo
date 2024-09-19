@@ -6,14 +6,15 @@ import './ApplicationPage.css';
 import SwapyContainer from '@/components/swapy/SwapyContainer';
 import SwapySlot from '@/components/swapy/SwapySlot';
 import SwapyItem from '@/components/swapy/SwapyItem';
+import SelectValue from '@/components/game-steps/SelectValue';
 
 const steps = [
-    <Step><Identificar /></Step>,
-    <Step><p>Etapa 02</p></Step>,
-    <Step><p>Etapa 03</p></Step>,
-    <Step><p>Etapa 04</p></Step>,
-    <Step><p>Etapa 05</p></Step>,
-    <Step><p>Etapa 06</p></Step>,
+    ({setCurrentStep}) => <Step><Identificar setCurrentStep={setCurrentStep}/></Step>,
+    ({setCurrentStep}) => <Step><p>Etapa 02</p></Step>,
+    ({setCurrentStep}) => <Step><p>Etapa 03</p></Step>,
+    ({setCurrentStep}) => <Step><p>Etapa 04</p></Step>,
+    ({setCurrentStep}) => <Step><p>Etapa 05</p></Step>,
+    ({setCurrentStep}) => <Step><p>Etapa 06</p></Step>,
 ];
 
 const ApplicationPage = () => {
@@ -56,7 +57,7 @@ const ApplicationPage = () => {
                 {/* <Carousel className='w-full flex-col flex-grow' setApi={setCarouselContext} >
                     <CarouselContent> */}
                 {
-                    steps[currentStep]
+                    steps[currentStep](setCurrentStep)
                     // steps.map((step, index) =>
                     //     // <CarouselItem key={index} >
                     //         // <Step content={step} className='' />
@@ -93,38 +94,17 @@ function Step({ hidden, children }) {
     );
 };
 
-function Identificar() {
+function Identificar({setCurrentStep}) {
     return (
         <div className='app-identificar'>
-            <Step>
-                <h5>Identificar</h5>
-                <IdentificarValor/>
-            </Step>
-        </div>
-    );
-};
-
-function IdentificarValor() {
-    return (
-        <div className='identificar-valor'>
-            <h5>Qual valor foi pedido?</h5>
-            <SwapyContainer>
-                <div className='options'>
-                    <SwapySlot slotID={0}>
-                        <SwapyItem itemID={0}><p>100mg</p></SwapyItem>
-                    </SwapySlot>
-                    <SwapySlot slotID={1}>
-                        <SwapyItem itemID={1}><p>1000mg</p></SwapyItem>
-                    </SwapySlot>
-                    <SwapySlot slotID={2}>
-                        <SwapyItem itemID={2}><p>1,5mg</p></SwapyItem>
-                    </SwapySlot>
-                </div>
-                <div className='resposta'>
-                    <SwapySlot slotID={3}>
-                    </SwapySlot>
-                </div>
-            </SwapyContainer>
+            <h5>Identificar</h5>
+            <SelectValue
+                title='O que foi prescrito?'
+                values={['10mg', '100mg', '100g']}
+                onSelect={e => {
+                    if (e == 1) setCurrentStep(value => value + 1);
+                    else alert('Valor errado! T^T');
+                }} />
         </div>
     );
 };

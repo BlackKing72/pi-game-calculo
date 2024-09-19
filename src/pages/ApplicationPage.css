@@ -31,15 +31,15 @@
 .app-header {
     padding: var(--spc500);
     border-radius: var(--border-radius);
-    background-color: #2563eb;
-    color: #eff6ff;
+    background-color: #3B82F6;
+    color: #F8FAFC;
     font-size: large !important;
 }
 
 
 .app-content {
     flex-grow: 1;
-    background-color:  #eff6ff;
+    background-color:  #F8FAFC;
     border-radius: var(--border-radius);
 
     display: flex;
@@ -77,14 +77,13 @@
 .app-footer .nav-buttons button {
     flex-grow: 1;
     border-radius: var(--border-radius) !important;
-    background-color: #2563eb !important;
+    background-color: #3B82F6 !important;
     font-size: medium !important;
     height: 2.5rem;
 }
 
 .app-content .step {
     display: none;
-    background-color: #fb923c;
     width: 100%;
     height: 100%;
     flex-grow: 1;
@@ -92,6 +91,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .app-content .step.active {
     display: flex;
 }
@@ -100,30 +100,11 @@
     width: 100%;
     height: 100%;
 }
+
 .app-identificar .step {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     gap: 4rem;
     padding: 2rem;
-}
-.app-identificar .swapy-container {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 32px;
-}
-
-.app-identificar .swapy-container .options {
-    gap: 12px;
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.app-identificar .identificar-valor {
-    width: 100%;
-}
-
-.identificar-valor .swapy-slot {
-    width: 100px;
-    height: 100px;
 }
