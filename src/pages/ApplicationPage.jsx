@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './ApplicationPage.css';
 
 import SwapyContainer from '@/components/swapy/SwapyContainer';
@@ -9,41 +8,46 @@ import SwapyItem from '@/components/swapy/SwapyItem';
 import SelectValue from '@/components/game-steps/SelectValue';
 
 const steps = [
-    ({setCurrentStep}) => <Step><Identificar setCurrentStep={setCurrentStep}/></Step>,
-    ({setCurrentStep}) => <Step><p>Etapa 02</p></Step>,
-    ({setCurrentStep}) => <Step><p>Etapa 03</p></Step>,
-    ({setCurrentStep}) => <Step><p>Etapa 04</p></Step>,
-    ({setCurrentStep}) => <Step><p>Etapa 05</p></Step>,
-    ({setCurrentStep}) => <Step><p>Etapa 06</p></Step>,
+    (onAnswer) => 
+        <Step>
+            <SelectValue
+                title='O que foi prescrito?'
+                values={['1,5g', '1,5mg', '1,5l']}
+                onAnswer={e => onAnswer(e == 1)} />
+        </Step>,
+    (onAnswer) => 
+        <Step>
+            <SelectValue
+                title='Que medicamento tem disponível?'
+                values={['2mg', '2g', '2l']}
+                onAnswer={e => onAnswer(e == 0)} />
+        </Step>,
+    (onAnswer) => 
+        <Step>
+             <SelectValue
+                title='Que diluente tem disponível?'
+                values={['1l', '1g', '1ml']}
+                onAnswer={e => onAnswer(e == 2)} />
+        </Step>,
+    (onAnswer) => <Step><p>Etapa 04</p></Step>,
+    (onAnswer) => <Step><p>Etapa 05</p></Step>,
+    (onAnswer) => <Step><p>Etapa 06</p></Step>,
 ];
 
 const ApplicationPage = () => {
     const [currentStep, setCurrentStep] = useState(0);
 
-    // useEffect(() => {
-    //     carouselContext?.on('select', () => {
-    //         setCurrentStep(carouselContext.selectedScrollSnap());
-    //     })
-    // }, [carouselContext]);
-
     const handlePreviousClicked = () => {
         if (currentStep > 0) {
             setCurrentStep(currentStep - 1);
         }
-        // if (carouselContext.canScrollPrev()) {
-        //     carouselContext.scrollPrev()
-        // }
     };
 
     const handleNextClicked = () => {
         if (currentStep < steps.length - 1) {
             setCurrentStep(currentStep + 1)
         }
-        // if (carouselContext.canScrollNext()) {
-        //     carouselContext.scrollNext()
-        // }
     };
-
 
     return (
         <div className="app-page">
@@ -54,18 +58,16 @@ const ApplicationPage = () => {
                 </p>
             </div>
             <div className="app-content">
-                {/* <Carousel className='w-full flex-col flex-grow' setApi={setCarouselContext} >
-                    <CarouselContent> */}
                 {
-                    steps[currentStep](setCurrentStep)
-                    // steps.map((step, index) =>
-                    //     // <CarouselItem key={index} >
-                    //         // <Step content={step} className='' />
-                    //     // </CarouselItem>
-                    // )
+                    steps[currentStep]((isCorrect) => {
+                        if (isCorrect) {
+                            handleNextClicked();
+                        }
+                        else {
+                            alert("Resposta Errada! T^T")
+                        }
+                    })
                 }
-                {/* </CarouselContent>
-                </Carousel> */}
             </div>
             <div className="app-footer">
                 <div className='progress'>
@@ -90,21 +92,6 @@ function Step({ hidden, children }) {
     return (
         <div className={`step ${!hidden ? 'active' : ''}`}>
             {children}
-        </div>
-    );
-};
-
-function Identificar({setCurrentStep}) {
-    return (
-        <div className='app-identificar'>
-            <h5>Identificar</h5>
-            <SelectValue
-                title='O que foi prescrito?'
-                values={['10mg', '100mg', '100g']}
-                onSelect={e => {
-                    if (e == 1) setCurrentStep(value => value + 1);
-                    else alert('Valor errado! T^T');
-                }} />
         </div>
     );
 };

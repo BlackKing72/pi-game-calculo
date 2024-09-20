@@ -3,27 +3,31 @@ import SwapySlot from '../swapy/SwapySlot';
 import SwapyItem from '../swapy/SwapyItem';
 
 import './SelectValue.css';
+import { Button } from '../ui/button';
+import { useState } from 'react';
 
-const debounce = (func, timeout = 300) => {
-    let timer;
-    return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => { func.apply(this, args); }, timeout)
-    }
-}
+// const debounce = (func, timeout = 300) => {
+//     let timer;
+//     return (...args) => {
+//         clearTimeout(timer);
+//         timer = setTimeout(() => { func.apply(this, args); }, timeout)
+//     }
+// }
 
-const SelectValue = ({ title, values, onSelect }) => {
-    let lastAnswer = null;
+const SelectValue = ({ title, values, onAnswer }) => {
+    const [answer, setAnswer] = useState(null);
 
-    const handleOnSwap = debounce((data) => {
-        const answer = data.object.answer;
-        if (!answer || answer == lastAnswer) {
+    const handleOnSwap = (data) => {
+        setAnswer(data.object.answer)
+    };
+
+    const handleOnClick = () => {
+        if (!answer) {
             return;
         }
-        
-        lastAnswer = answer;
-        onSelect(answer);
-    });
+
+        onAnswer(answer);
+    }
 
     return (
         <div className='select-value'>
@@ -45,6 +49,7 @@ const SelectValue = ({ title, values, onSelect }) => {
                         { /* Espaço para a resposta */}
                     </SwapySlot>
                 </div>
+                <Button onClick={handleOnClick}>Responder</Button>
             </SwapyContainer>
         </div>
     );
