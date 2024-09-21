@@ -3,7 +3,7 @@ import HomePage from './pages/HomePage';
 
 import './App.css';
 
-import ApplicationPage from './pages/ApplicationPage';
+import MinigamePage from './pages/MinigamePage';
 import SwapySandbox from './pages/SwapySandbox';
 
 const router = createBrowserRouter([
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/app',
-    element: <ApplicationPage />
+    element: <MinigamePage />
   },
 ])
 

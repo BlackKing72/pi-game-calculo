@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import url('./styles/spacings.css');
 @import url('./styles/colors.css');
 @import url('./styles/utils.css');
@@ -32,6 +34,7 @@ body {
   font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif !important;
   line-height: 1.5 !important;
   font-weight: 400 !important;
+  text-wrap: pretty !important;
 
   /* color-scheme: light dark; */
   color: var(--color-foreground-0) !important;
