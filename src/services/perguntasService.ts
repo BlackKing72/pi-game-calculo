@@ -1,15 +1,13 @@
-import { Miligramas, Mililitros, Horas, Minutos, Gramas, } from '../models/unidades';
-import { Grandeza } from '@/models/grandeza';
+import { Miligramas, Mililitros, Horas, Minutos, Gramas, } from '../models/unidades.ts';
+import { Grandeza } from '@/models/grandeza.ts';
 
 export class QuestaoRegraDeTres {
-    /**
-     * Cria uma nova Questão para Regra de Tres.
-     * @param {String} enunciado O enunciado da questão.
-     * @param {Grandeza} prescricao A quantidade de medicamento prescrita.
-     * @param {Grandeza} medicamento A quantidade de medicamento disponível.
-     * @param {Grandeza} diluente A quantidade de diluente disponível.
-     */
-    constructor(enunciado, prescricao, medicamento, diluente) {
+    enunciado: string;
+    prescricao: Grandeza;
+    medicamento: Grandeza;
+    diluente: Grandeza;
+
+    constructor(enunciado: string, prescricao: Grandeza, medicamento: Grandeza, diluente: Grandeza) {
         this.enunciado = enunciado;
         this.prescricao = prescricao;
         this.medicamento = medicamento;
@@ -18,20 +16,20 @@ export class QuestaoRegraDeTres {
 }
 
 export class QuestaoGotejamento {
-    /**
-     * Cria um nova Questão de Gotejamento.
-     * @param {String} enunciado O enunciado da questão.
-     * @param {Grandeza} volume O volume de medicamento para o gotejamento.
-     * @param {Grandeza} tempo O tempo de duração do gotejamento.
-     */
-    constructor(enunciado, volume, tempo) {
-        /** @type {String} */       this.enunciado = enunciado;
-        /** @type {Grandeza} */     this.volume = volume;
-        /** @type {Grandeza} */     this.tempo = tempo;
+    enunciado: string;
+    volume: Grandeza;
+    tempo: Grandeza;
+
+    constructor(enunciado: string, volume: Grandeza, tempo: Grandeza) {
+        this.enunciado = enunciado;
+        this.volume = volume;
+        this.tempo = tempo;
     }
 }
 
-const questoesRegraDeTres = [
+type Questao = QuestaoRegraDeTres | QuestaoGotejamento;
+
+const questoesRegraDeTres: QuestaoRegraDeTres[] = [
     new QuestaoRegraDeTres(
         'O médico prescreveu 1,5mg de cloranfenicol. Mas o medicamento que existe na farmácia é de 1ml, contendo 2mg. Como proceder?',
         new Grandeza(1.5, Miligramas),
@@ -47,7 +45,7 @@ const questoesRegraDeTres = [
     ),
 ];
 
-const questoesGotejamento = [
+const questoesGotejamento: QuestaoGotejamento[] = [
     new QuestaoGotejamento(
         'Para uma solução de 200 ml em 30 minutos, utilizando equipo de microgotas, devem ser infundidas quantas microgotas por minuto?',
         new Grandeza(200, Mililitros),
@@ -61,22 +59,17 @@ const questoesGotejamento = [
     ),
 ];
 
-/*
-Retorna todas as questões disponíveis, tanto as de regra de 3 como as de gotejamento 
+/** Retorna todas as questões disponíveis, tanto as de regra de 3 como as de gotejamento 
 (pq? sei lá... para min faz muito sentido, pq assim pelo menos o usuário não vai 
-precisar ficar escolhendo um modo de jogo para cada tipo de questão).
-*/
-export const questoes = [...questoesRegraDeTres, ...questoesGotejamento];
+precisar ficar escolhendo um modo de jogo para cada tipo de questão). */
+export const questoes: Questao[] = [...questoesRegraDeTres, ...questoesGotejamento];
 
 /** Retorna uma questão aleatória */
-export const sortearQuestão = () => {
+export const sortearQuestão = () : Questao => {
     return questoes[Math.floor(Math.random() * questoes.length)];
 };
 
-/** 
- * Retorna se uma questão é ou não uma Questão de Regra de Três 
- * @param {QuestaoRegraDeTres | QuestaoGotejamento} questao
-*/
-export const isQuestaoRegraDeTres = (questao) => {
+/** Retorna se uma questão é ou não uma Questão de Regra de Três */
+export const isQuestaoRegraDeTres = (questao: Questao) => {
     return questao instanceof QuestaoRegraDeTres;
 }

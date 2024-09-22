@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import './MinigamePage.css';
 
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
-import * as perguntasService from '@/services/perguntasService';
-import { Grandeza, gerarGrandeza } from '@/models/grandeza';
+import * as perguntasService from '@/services/perguntasService.ts';
+import { gerarGrandeza } from '@/models/grandeza.ts';
 
 const MinigamePage = () => {
     const [indexEtapaAtual, setStepIndex] = useState(0);

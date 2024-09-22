@@ -3,17 +3,16 @@ Representa uma unidade em geral (gramas, litros, horas, etc) de um valor.
 Como alguns valores não tem abreviação ela pode ser nula, então cheque antes de usar. 
 */
 export class Unidade {
-    /**
-     * Cria uma nova Unidade.
-     * @param {String} nome O nome completo da unidade.
-     * @param {String|null} abreviacao A Abreviação usada para a unidade.
-     */
-    constructor(nome, abreviacao) {
-        /** @type {String} */
-        this.nome = nome;
+    nome: string;
+    abreviacao: string | null;
 
-        /** @type {String|null} */
+    constructor(nome: string, abreviacao: string | null) {
+        this.nome = nome;
         this.abreviacao = abreviacao;
+    }
+
+    toString() : string {
+        return this.abreviacao ?? this.nome;
     }
 }
 
@@ -54,8 +53,8 @@ export const unidades = [
  * @param {Unidade} unidade 
  * @returns {Unidade|null} Uma unidades ou null se não encontrar.
  */
-export const buscarUnidadesAleatoria = (unidade) => {
-    let resultado = [];
+export const buscarUnidadesAleatoria = (unidade: Unidade) => {
+    let resultado: Unidade[] = [];
 
     if (unidade instanceof UnidadePeso) {
         resultado = unidades.filter(unidade => unidade instanceof UnidadePeso);
@@ -67,8 +66,6 @@ export const buscarUnidadesAleatoria = (unidade) => {
         resultado = unidades.filter(unidade => unidade instanceof UnidadeTempo);
     }
 
-    console.log(`buscarUnidadesAleatoria() => ${resultado.map(x => x.nome)}`);
-        
     return resultado[Math.floor(Math.random() * unidades.length)];
 }
 
