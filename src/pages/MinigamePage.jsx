@@ -6,6 +6,7 @@ import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarVa
 import * as perguntasService from '@/services/perguntasService.ts';
 import { gerarGrandeza } from '@/models/grandeza.ts';
 import MinigameEscolherOpcao from '@/components/minigames/MinigameEscolherOpcao';
+import MinigameConverterValor from '@/components/minigames/MinigameConverterValor';
 
 const MinigamePage = () => {
 
@@ -153,12 +154,9 @@ function buscarConteudoParaRegraDeTres(questao) {
                     onAnswer(e == valoresDiluentes.resposta);
                 }} />,
         (onAnswer) =>
-            <MinigameEscolherOpcao 
-                titulo='O valor prescrito possui a mesma unidade do medicamento?'
-                opcoes={['Sim', 'Não']}
-                quandoResponder={(resposta) => {
-                    onAnswer(resposta == 0 && valoresTemMesmaUnidade);
-                }}/>,
+            <MinigameConverterValor 
+                origem={questao.prescricao}
+                destino={questao.medicamento}/>,
         (onAnswer) => {
             return (<p>Etapa 05</p>)
         },

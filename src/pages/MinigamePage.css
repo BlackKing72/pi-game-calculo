@@ -38,6 +38,7 @@
     flex-direction: column;
     flex-grow: 1;
     gap: 16px;
+    overflow-y: scroll;
 }
 
 .app-header {
@@ -91,6 +92,8 @@
     border-radius: 8px;
     padding: 16px;
     flex-grow: 1;
+    height: 100%;
+ 
 }
 
 .app-content-container {
@@ -109,7 +112,6 @@
         width: 100%;
         flex-direction: row;
         flex: 1 1 0;
-        overflow: scroll;
     }
 
     .app-content,
