@@ -68,13 +68,15 @@ function MinigameFooter({ quantidadeEtapas, etapaSelecionada, quandoMudarEtapa }
                     [...Array(quantidadeEtapas)].map((_, index) =>
                         index === etapaSelecionada
                             ? <span key={index} className='progress-bar active' />
-                            : <span key={index} className='progress-bar' />
+                            : index < etapaSelecionada
+                                ? <span key={index} className='progress-bar completed' />
+                                : <span key={index} className='progress-bar' />
                     )
                 }
             </div>
-            <div className='nav-buttons'>
-                <Button onClick={() => quandoMudarEtapa(etapaSelecionada - 1)}>Anterior</Button>
-                <Button onClick={() => quandoMudarEtapa(etapaSelecionada + 1)}>Próximo</Button>
+            <div className='flex gap-2'>
+                <Button className='flex-grow' onClick={() => quandoMudarEtapa(etapaSelecionada - 1)}>Anterior</Button>
+                <Button className='flex-grow' onClick={() => quandoMudarEtapa(etapaSelecionada + 1)}>Próximo</Button>
             </div>
         </div>
     );
