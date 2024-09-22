@@ -4,7 +4,7 @@ import './MinigamePage.css';
 
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
 import * as perguntasService from '@/services/perguntasService';
-import { gerarGrandeza, grandezaParaTexto } from '@/models/unidades';
+import { Grandeza, gerarGrandeza } from '@/models/grandeza';
 
 const MinigamePage = () => {
     const [indexEtapaAtual, setStepIndex] = useState(0);
@@ -122,7 +122,7 @@ function buscarConteudoParaRegraDeTres(questao) {
             <MinigameSelecionarValor
                 key={0}
                 titulo='O que foi prescrito?'
-                valores={valoresPrescritos.valores.map(valor => grandezaParaTexto(valor))}
+                valores={valoresPrescritos.valores.map(valor => valor.toString())}
                 quandoResponder={e => {
                     console.log(`onAnswer prescrição => ${e} ${valoresPrescritos.resposta}`);
                     onAnswer(e == valoresPrescritos.resposta);
@@ -131,7 +131,7 @@ function buscarConteudoParaRegraDeTres(questao) {
             <MinigameSelecionarValor
                 key={1}
                 titulo='Que medicamento tem disponível?'
-                valores={valoresMedicamentos.valores.map(valor => grandezaParaTexto(valor))}
+                valores={valoresMedicamentos.valores.map(valor => valor.toString())}
                 quandoResponder={e => {
                     console.log(`onAnswer prescrição => ${e} ${valoresMedicamentos.resposta}`);
                     onAnswer(e == valoresMedicamentos.resposta);
@@ -140,7 +140,7 @@ function buscarConteudoParaRegraDeTres(questao) {
             <MinigameSelecionarValor
                 key={2}
                 titulo='Que diluente tem disponível?'
-                valores={valoresDiluentes.valores.map(valor => grandezaParaTexto(valor))}
+                valores={valoresDiluentes.valores.map(valor => valor.toString())}
                 quandoResponder={e => {
                     console.log(`onAnswer prescrição => ${e} ${valoresDiluentes.resposta}`);
                     onAnswer(e == valoresDiluentes.resposta);
@@ -169,7 +169,7 @@ function buscarConteudoParaGotejamento(questao) {
             <MinigameSelecionarValor
                 key={0}
                 titulo='Que diluente tem disponível?'
-                valores={valoresVolume.valores.map(valor => grandezaParaTexto(valor))}
+                valores={valoresVolume.valores.map(valor => valor.toString())}
                 quandoResponder={e => {
                     console.log(`onAnswer prescrição => ${e} ${valoresVolume.resposta}`);
                     onAnswer(e == valoresVolume.resposta);
@@ -178,7 +178,7 @@ function buscarConteudoParaGotejamento(questao) {
             <MinigameSelecionarValor
                 key={1}
                 titulo='Que diluente tem disponível?'
-                valores={valoresTempo.valores.map(valor => grandezaParaTexto(valor))}
+                valores={valoresTempo.valores.map(valor => valor.toString())}
                 quandoResponder={e => {
                     console.log(`onAnswer prescrição => ${e} ${valoresTempo.resposta}`);
                     onAnswer(e == valoresTempo.resposta);

@@ -35,21 +35,7 @@ A mesma coisa com essas duas. Só precisava diferenciar as unidades.
 export class UnidadeVolume extends Unidade { }
 export class UnidadePeso extends Unidade { }
 
-/* Representa uma grandeza (um valor com uma unidade definida). */
-export class Grandeza {
-    /**
-     * Controi uma nova grandeza.
-     * @param {Number} valor O valor da grandeza.
-     * @param {Unidade} unidade A unidade da grandeza.
-     */
-    constructor(valor, unidade) {
-        /** @type {Number} */
-        this.valor = valor;
 
-        /** @type {Unidade} */
-        this.unidade = unidade;
-    }
-}
 
 /* As unidades mais usadas nos calculos. */
 export const Litros = new UnidadeVolume('Litros', 'L');
@@ -64,46 +50,25 @@ export const unidades = [
 ];
 
 /**
- * Busca todas as unidades disponíveis do mesmo tipo da unidade desejada.
+ * Busca todas as unidades disponíveis do mesmo tipo e retorna uma unidade aleatória.
  * @param {Unidade} unidade 
- * @returns Uma lista de unidades parecidas ou uma lista vazia se não encontrar.
+ * @returns {Unidade|null} Uma unidades ou null se não encontrar.
  */
-const buscarUnidadesDoMesmoTipo = (unidade) => {
-    return unidades[Math.floor(Math.random() * unidades.length)];
-}
+export const buscarUnidadesAleatoria = (unidade) => {
+    let resultado = [];
 
-/**
- * Gera uma nova grandeza aleatória com base em outra grandeza.
- * @param {Grandeza} grandeza A grandeza que o valor vai ser baseado.
- * @param {Number} variacaoMaxima O máximo que o valor da grandeza pode variar.
- * @param {Boolean} variacaoAleatoria Se a variação do valor da grandeza vai ser aleatória.
- * @param {Boolean} unidadeAleatoria Se a variação da unidade da grandeza vai ser aleatória.
- * @returns Uma nova grandeza aleatória.
- */
-export const gerarGrandeza = (grandeza, variacaoMaxima, variacaoAleatoria, unidadeAleatoria) => {
-    let valor = grandeza.valor; 
-
-    if (variacaoAleatoria) {
-        const temCasaDecimal = !Number.isInteger(valor);
-        const valorGerado = Math.random() * (grandeza.valor + variacaoMaxima);
-
-        valor = temCasaDecimal                      
-            ? Math.round(valorGerado * 10) / 10     // Truque para arredondar para uma casa decimal
-            : Math.round(valorGerado);              // Arredonda normalmente
+    if (unidade instanceof UnidadePeso) {
+        resultado = unidades.filter(unidade => unidade instanceof UnidadePeso);
+    }
+    else if (unidade instanceof UnidadeVolume) {
+        resultado = unidades.filter(unidade => unidade instanceof UnidadeVolume);
+    }
+    else if (unidade instanceof UnidadeTempo) {
+        resultado = unidades.filter(unidade => unidade instanceof UnidadeTempo);
     }
 
-    const unidade = unidadeAleatoria
-        ? buscarUnidadesDoMesmoTipo(grandeza.unidade)
-        : grandeza.unidade;
+    console.log(`buscarUnidadesAleatoria() => ${resultado.map(x => x.nome)}`);
+        
+    return resultado[Math.floor(Math.random() * unidades.length)];
+}
 
-    return new Grandeza(valor, unidade);
-};
-
-/** @param {Grandeza} grandeza */
-export const grandezaParaTexto = (grandeza) => {
-    const unidade = grandeza.unidade.abreviacao !== null
-        ? grandeza.unidade.abreviacao 
-        : grandeza.unidade.nome;
-
-    return `${grandeza.valor}${unidade}`;
-};

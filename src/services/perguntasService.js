@@ -1,8 +1,5 @@
-import { Unidade, Grandeza, 
-    Miligramas, Mililitros ,
-    Horas, Minutos,
-    Gramas,
-} from '../models/unidades';
+import { Miligramas, Mililitros, Horas, Minutos, Gramas, } from '../models/unidades';
+import { Grandeza } from '@/models/grandeza';
 
 export class QuestaoRegraDeTres {
     /**
