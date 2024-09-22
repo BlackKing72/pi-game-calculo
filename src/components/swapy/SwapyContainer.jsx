@@ -16,7 +16,7 @@ do SwapyContainer, ele funciona automáticamente não precisa passar um valor pa
 /**
  * @param {{ animation: "dynamic"|"spring"|"none"}} props.animation
  */
-const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) => {
+const SwapyContainer = ({ className = '', animation, onSwap, setSwapy, children }) => {
     const swapy = useRef();
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) =>
     );
 };
 
-export const SwapyGroup = ({className, children}) => {
+export const SwapyGroup = ({className = '', children}) => {
     return (
         <div className={`swapy-group ${className}`}>
             {children}

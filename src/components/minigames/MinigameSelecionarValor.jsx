@@ -5,9 +5,8 @@ import SwapyItem from '../swapy/SwapyItem';
 import './MinigameSelecionarValor.css';
 import { Button } from '../ui/button';
 import {  useState } from 'react';
-import { AspectRatio } from '../ui/aspect-ratio';
 
-const MinigameSelecionarValor = ({ aspectRatio, titulo, valores, quandoResponder }) => {
+const MinigameSelecionarValor = ({ titulo, valores, quandoResponder }) => {
     const [resposta, setResposta] = useState(null);
 
     const handleOnSwap = (data) => {
@@ -32,21 +31,23 @@ const MinigameSelecionarValor = ({ aspectRatio, titulo, valores, quandoResponder
         <div className='select-value'>
             <p>{titulo}</p>
             <SwapyContainer animation='spring' onSwap={handleOnSwap} >
-                <SwapyGroup className='select-options' >
-                    {
-                        valores.map((value, index) =>
-                            <SwapySlot key={index} slotID={index}>
-                                <SwapyItem key={index} itemID={index}>
-                                    <p>{value}</p>
-                                </SwapyItem>
-                            </SwapySlot>
-                        )
-                    }
-                </SwapyGroup>
-                <SwapyGroup className='select-answer'>
-                    <SwapySlot slotID='resposta'>
-                        { /* Espaço para a resposta */}
-                    </SwapySlot>
+                <SwapyGroup className='select-content' >
+                    <SwapyGroup className='select-options' >
+                        {
+                            valores.map((value, index) =>
+                                <SwapySlot key={index} slotID={index}>
+                                    <SwapyItem key={index} itemID={index}>
+                                        <p>{value}</p>
+                                    </SwapyItem>
+                                </SwapySlot>
+                            )
+                        }
+                    </SwapyGroup>
+                    <SwapyGroup className='select-answer'>
+                        <SwapySlot slotID='resposta'>
+                            { /* Espaço para a resposta */}
+                        </SwapySlot>
+                    </SwapyGroup>
                 </SwapyGroup>
                 <Button onClick={handleOnClick}>Responder</Button>
             </SwapyContainer>

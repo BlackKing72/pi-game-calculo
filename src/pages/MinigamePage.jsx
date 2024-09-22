@@ -5,8 +5,10 @@ import './MinigamePage.css';
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
 import * as perguntasService from '@/services/perguntasService.ts';
 import { gerarGrandeza } from '@/models/grandeza.ts';
+import MinigameEscolherOpcao from '@/components/minigames/MinigameEscolherOpcao';
 
 const MinigamePage = () => {
+
     const [indexEtapaAtual, setStepIndex] = useState(0);
     const [questao] = useState(perguntasService.sortearQuestão());
     const [etapas] = useState(buscarConteudoMinigame(questao));
@@ -19,6 +21,7 @@ const MinigamePage = () => {
     return (
         <div className='app-page'>
             <div className='app-container'>
+                <div className='app-main'>
                 <MinigameHeader
                     enunciado={questao.enunciado} />
 
@@ -32,7 +35,7 @@ const MinigamePage = () => {
                             alert("Resposta Errada!!! T^T");
                         }
                     }} />
-
+                </div>
                 <MinigameFooter
                     quantidadeEtapas={etapas.length}
                     etapaSelecionada={indexEtapaAtual}
@@ -119,6 +122,8 @@ function buscarConteudoParaRegraDeTres(questao) {
     const valoresMedicamentos = gerarRespostas(questao.medicamento, questao.medicamento.valor * 2, 3);
     const valoresDiluentes = gerarRespostas(questao.diluente, questao.diluente.valor * 2, 3);
 
+    const valoresTemMesmaUnidade = questao.prescricao.unidade === questao.medicamento.unidade;
+
     return [
         (onAnswer) =>
             <MinigameSelecionarValor
@@ -147,9 +152,13 @@ function buscarConteudoParaRegraDeTres(questao) {
                     console.log(`onAnswer prescrição => ${e} ${valoresDiluentes.resposta}`);
                     onAnswer(e == valoresDiluentes.resposta);
                 }} />,
-        (onAnswer) => {
-            return (<p>Etapa 04</p>)
-        },
+        (onAnswer) =>
+            <MinigameEscolherOpcao 
+                titulo='O valor prescrito possui a mesma unidade do medicamento?'
+                opcoes={['Sim', 'Não']}
+                quandoResponder={(resposta) => {
+                    onAnswer(resposta == 0 && valoresTemMesmaUnidade);
+                }}/>,
         (onAnswer) => {
             return (<p>Etapa 05</p>)
         },
