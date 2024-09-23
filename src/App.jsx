@@ -5,6 +5,7 @@ import './App.css';
 
 import GamePage from './pages/GamePage';
 import SwapySandbox from './pages/SwapySandbox';
+import OkamiTeste from './pages/teste';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     path: '/app',
     element: <GamePage />
   },
+  {
+    path: '/okami',
+    element: <OkamiTeste/>
+  }
 ])
 
 function App() {
