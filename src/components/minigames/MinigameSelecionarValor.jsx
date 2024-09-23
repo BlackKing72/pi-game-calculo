@@ -29,7 +29,8 @@ const MinigameSelecionarValor = ({ titulo, valores, quandoResponder }) => {
 
     return (
         <div className='select-value'>
-            <p>{titulo}</p>
+            <p className='h-[2lh] font-medium'>{titulo}</p>
+            <hr className='my-2 w-full'/>
             <SwapyContainer animation='spring' onSwap={handleOnSwap} >
                 <SwapyGroup className='select-content' >
                     <SwapyGroup className='select-options' >

@@ -14,7 +14,7 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react",
+        "jsx": "react-jsx",
         "allowImportingTsExtensions": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true,
@@ -28,5 +28,8 @@
     "exclude": [
         "node_modules",
         "**/node_modules/*"
+    ],
+    "include": [
+        "**/*.tsx",
     ]
 }

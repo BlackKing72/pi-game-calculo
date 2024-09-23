@@ -1,5 +1,5 @@
 import { Miligramas, Mililitros, Horas, Minutos, Gramas, } from '../models/unidades.ts';
-import { Grandeza } from '@/models/grandeza.ts';
+import { Grandeza, gerarGrandeza } from '@/models/grandeza.ts'
 
 export class QuestaoRegraDeTres {
     enunciado: string;
@@ -27,7 +27,7 @@ export class QuestaoGotejamento {
     }
 }
 
-type Questao = QuestaoRegraDeTres | QuestaoGotejamento;
+export type Questao = QuestaoRegraDeTres | QuestaoGotejamento;
 
 const questoesRegraDeTres: QuestaoRegraDeTres[] = [
     new QuestaoRegraDeTres(
@@ -62,12 +62,30 @@ const questoesGotejamento: QuestaoGotejamento[] = [
 /** Retorna todas as questões disponíveis, tanto as de regra de 3 como as de gotejamento 
 (pq? sei lá... para min faz muito sentido, pq assim pelo menos o usuário não vai 
 precisar ficar escolhendo um modo de jogo para cada tipo de questão). */
-export const questoes: Questao[] = [...questoesRegraDeTres, ...questoesGotejamento];
+export const questoes: Questao[] = [...questoesRegraDeTres]; //, ...questoesGotejamento];
 
 /** Retorna uma questão aleatória */
 export const sortearQuestão = () : Questao => {
     return questoes[Math.floor(Math.random() * questoes.length)];
 };
+
+export const gerarRespostas = (valor: Grandeza, variacao: number, quantidade: number) => {
+    const valores: Grandeza[] = [];
+
+    for (let i = 0; i < quantidade - 1; i++) {
+        const index = Math.floor(Math.random() * valores.length);
+        const valorGerado = gerarGrandeza(valor, variacao, true, true);
+        valores.splice(index, 0, ...[valorGerado]);
+    }
+
+    const index = Math.floor(Math.random() * valores.length);
+    valores.splice(index, 0, ...[valor]);
+
+    return {
+        valores: valores,
+        resposta: index,
+    };
+}
 
 /** Retorna se uma questão é ou não uma Questão de Regra de Três */
 export const isQuestaoRegraDeTres = (questao: Questao) => {

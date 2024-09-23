@@ -5,19 +5,22 @@ import './MinigamePage.css';
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
 import * as perguntasService from '@/services/perguntasService.ts';
 import { gerarGrandeza } from '@/models/grandeza.ts';
+import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
 import MinigameEscolherOpcao from '@/components/minigames/MinigameEscolherOpcao';
 import MinigameConverterValor from '@/components/minigames/MinigameConverterValor';
 
 const MinigamePage = () => {
 
-    const [indexEtapaAtual, setStepIndex] = useState(0);
+    const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
     const [questao] = useState(perguntasService.sortearQuestão());
     const [etapas] = useState(buscarConteudoMinigame(questao));
 
-    const handleOnChangePage = (pageIndex) => {
+    const handleQuandoMudarEtapa = (pageIndex) => {
         pageIndex = Math.max(0, Math.min(pageIndex, etapas.length - 1));
-        setStepIndex(pageIndex);
+        setIndexEtapaAtual(pageIndex);
     }
+
+    
 
     return (
         <div className='app-page'>
@@ -28,19 +31,13 @@ const MinigamePage = () => {
 
                 <MinigameEtapa
                     etapa={etapas[indexEtapaAtual]}
-                    quandoResponder={correto => {
-                        if (correto) {
-                            alert("Resposta Certa!!! ^u^");
-                            handleOnChangePage(indexEtapaAtual + 1);
-                        } else {
-                            alert("Resposta Errada!!! T^T");
-                        }
-                    }} />
+                    etapaSelecionada={indexEtapaAtual}
+                    quandoMudarEtapa={handleQuandoMudarEtapa} />
                 </div>
                 <MinigameFooter
                     quantidadeEtapas={etapas.length}
                     etapaSelecionada={indexEtapaAtual}
-                    quandoMudarEtapa={handleOnChangePage} />
+                    quandoMudarEtapa={handleQuandoMudarEtapa} />
             </div>
         </div>
     );
@@ -54,11 +51,24 @@ function MinigameHeader({ enunciado }) {
     );
 };
 
-function MinigameEtapa({ etapa, quandoResponder }) {
+function MinigameEtapa({ etapa, etapaSelecionada, quandoMudarEtapa }) {
+    const handleQuandoResponder = (resposta, pularPaginas) => {
+        console.log(`pular paginas: ${pularPaginas}`);
+        pularPaginas = pularPaginas !== null ? pularPaginas : 1;
+
+
+        if (resposta) {
+            alert("Resposta Certa!!! ^u^");
+            quandoMudarEtapa(etapaSelecionada + pularPaginas);
+        } else {
+            alert("Resposta Errada!!! T^T");
+        }
+    }
+
     return (
         <div className='app-content'>
             <div className='app-content-container'>
-                {etapa(quandoResponder)}
+                { etapa(handleQuandoResponder) }
             </div>
         </div>
     );
@@ -85,7 +95,6 @@ function MinigameFooter({ quantidadeEtapas, etapaSelecionada, quandoMudarEtapa }
         </div>
     );
 };
-
 
 function buscarConteudoMinigame(questao) {
     return perguntasService.isQuestaoRegraDeTres(questao)
@@ -118,53 +127,53 @@ const gerarRespostas = (valor, variacao, quantidade) => {
 /** 
  * @param {perguntasService.QuestaoRegraDeTres} questao 
  */
-function buscarConteudoParaRegraDeTres(questao) {
-    const valoresPrescritos = gerarRespostas(questao.prescricao, questao.prescricao.valor * 2, 3);
-    const valoresMedicamentos = gerarRespostas(questao.medicamento, questao.medicamento.valor * 2, 3);
-    const valoresDiluentes = gerarRespostas(questao.diluente, questao.diluente.valor * 2, 3);
+// function buscarConteudoParaRegraDeTres(questao) {
+//     const valoresPrescritos = gerarRespostas(questao.prescricao, questao.prescricao.valor * 2, 3);
+//     const valoresMedicamentos = gerarRespostas(questao.medicamento, questao.medicamento.valor * 2, 3);
+//     const valoresDiluentes = gerarRespostas(questao.diluente, questao.diluente.valor * 2, 3);
 
-    const valoresTemMesmaUnidade = questao.prescricao.unidade === questao.medicamento.unidade;
+//     const valoresTemMesmaUnidade = questao.prescricao.unidade === questao.medicamento.unidade;
 
-    return [
-        (onAnswer) =>
-            <MinigameSelecionarValor
-                key={0}
-                titulo='O que foi prescrito?'
-                valores={valoresPrescritos.valores.map(valor => valor.toString())}
-                quandoResponder={e => {
-                    console.log(`onAnswer prescrição => ${e} ${valoresPrescritos.resposta}`);
-                    onAnswer(e == valoresPrescritos.resposta);
-                }} />,
-        (onAnswer) =>
-            <MinigameSelecionarValor
-                key={1}
-                titulo='Que medicamento tem disponível?'
-                valores={valoresMedicamentos.valores.map(valor => valor.toString())}
-                quandoResponder={e => {
-                    console.log(`onAnswer prescrição => ${e} ${valoresMedicamentos.resposta}`);
-                    onAnswer(e == valoresMedicamentos.resposta);
-                }} />,
-        (onAnswer) =>
-            <MinigameSelecionarValor
-                key={2}
-                titulo='Que diluente tem disponível?'
-                valores={valoresDiluentes.valores.map(valor => valor.toString())}
-                quandoResponder={e => {
-                    console.log(`onAnswer prescrição => ${e} ${valoresDiluentes.resposta}`);
-                    onAnswer(e == valoresDiluentes.resposta);
-                }} />,
-        (onAnswer) =>
-            <MinigameConverterValor 
-                origem={questao.prescricao}
-                destino={questao.medicamento}/>,
-        (onAnswer) => {
-            return (<p>Etapa 05</p>)
-        },
-        (onAnswer) => {
-            return (<p>Etapa 06</p>)
-        },
-    ];
-};
+//     return [
+//         (onAnswer) =>
+//             <MinigameSelecionarValor
+//                 key={0}
+//                 titulo='O que foi prescrito?'
+//                 valores={valoresPrescritos.valores.map(valor => valor.toString())}
+//                 quandoResponder={e => {
+//                     console.log(`onAnswer prescrição => ${e} ${valoresPrescritos.resposta}`);
+//                     onAnswer(e == valoresPrescritos.resposta);
+//                 }} />,
+//         (onAnswer) =>
+//             <MinigameSelecionarValor
+//                 key={1}
+//                 titulo='Que medicamento tem disponível?'
+//                 valores={valoresMedicamentos.valores.map(valor => valor.toString())}
+//                 quandoResponder={e => {
+//                     console.log(`onAnswer prescrição => ${e} ${valoresMedicamentos.resposta}`);
+//                     onAnswer(e == valoresMedicamentos.resposta);
+//                 }} />,
+//         (onAnswer) =>
+//             <MinigameSelecionarValor
+//                 key={2}
+//                 titulo='Que diluente tem disponível?'
+//                 valores={valoresDiluentes.valores.map(valor => valor.toString())}
+//                 quandoResponder={e => {
+//                     console.log(`onAnswer prescrição => ${e} ${valoresDiluentes.resposta}`);
+//                     onAnswer(e == valoresDiluentes.resposta);
+//                 }} />,
+//         (onAnswer) =>
+//             <MinigameConverterValor 
+//                 origem={questao.prescricao}
+//                 destino={questao.medicamento}/>,
+//         (onAnswer) => {
+//             return (<p>Etapa 05</p>)
+//         },
+//         (onAnswer) => {
+//             return (<p>Etapa 06</p>)
+//         },
+//     ];
+// };
 
 /** 
  * @param {perguntasService.QuestaoGotejamento} questao 

@@ -1,5 +1,5 @@
 .app-page {
-    background-color: #dbeafe;
+    background-color: #F8FAFC;
 
     --ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
     
@@ -26,11 +26,10 @@
     gap: 16px;
 }
 
-.app-container .app-header,
-.app-container .app-content,
+.app-container .app-main,
 .app-container .app-footer {
     width: 100%;
-    max-width: 65ch;
+    max-width: 50ch;
 }
 
 .app-main {
@@ -38,7 +37,7 @@
     flex-direction: column;
     flex-grow: 1;
     gap: 16px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .app-header {
@@ -93,6 +92,7 @@
     padding: 16px;
     flex-grow: 1;
     height: 100%;
+    width: 100% !important;
  
 }
 
@@ -108,7 +108,12 @@
 }
 
 @media screen and (hover: none) and (pointer: coarse) and (orientation:landscape) { 
+    .app-page {
+        background-color: #dbeafe;
+    }
+
     .app-main {
+        max-width: unset !important;
         width: 100%;
         flex-direction: row;
         flex: 1 1 0;
@@ -126,5 +131,9 @@
 
     .app-content {
         flex-basis: 70%;
+    }
+
+    .app-footer {
+        max-width: unset !important;
     }
 }

@@ -90,12 +90,12 @@ button:focus-visible {
 
 @layer base {
   :root {
-    --background: 210, 40%, 96.1%;
-    --foreground: 217.2, 32.6%, 17.5%;
-    --card: 210, 40%, 98%;
-    --card-foreground: 222.2, 47.4%, 11.2%;
-    --popover: 214.3, 31.8%, 91.4%;
-    --popover-foreground: 228.6, 84%, 4.9%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
@@ -117,12 +117,12 @@ button:focus-visible {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 217.2, 32.6%, 17.5%;
-    --foreground: 210, 40%, 96.1%;
-    --card: 222.2, 47.4%, 11.2%;
-    --card-foreground: 210, 40%, 98%;
-    --popover: 228.6, 84%, 4.9%;
-    --popover-foreground: 214.3, 31.8%, 91.4%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
