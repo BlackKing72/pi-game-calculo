@@ -4,18 +4,39 @@
     gap: 12px;
 }
 
+.swapy-group {
+    z-index: 0 !important;
+}
+
+.swapy-group:has(.swapy-slot[data-swapy-highlighted]) {
+    z-index: 20 !important;
+}
+
 .swapy-slot {
+    position: relative;
     background-color: #27272a;
     border-radius: 6px;
     padding: 12px;
     height: 200px;
     width: 200px;
+    z-index: 0 !important; 
 
-    transition: background-color 0.5s ease-in-out;
+    outline: 4px solid transparent;
+    transform: translate3D(0px, 0px, 10px) !important;
+
+    transition: 
+        background-color 0.5s ease-in-out,
+        outline 0.25s cubic-bezier(0.12, 0, 0.39, 0);
 }
 
 .swapy-slot[data-swapy-highlighted] {
     background-color: #3f3f46;
+    outline: 4px solid #3B82F6;    
+    z-index: 10 !important;   
+
+    .swapy-item {        
+        scale: 1.15;
+    }
 }
 
 .swapy-item {
@@ -28,4 +49,9 @@
     justify-content: center;
     align-items: center;
     display: flex;
+
+    scale: unset;
+    
+    /* transition: 
+        scale 0.35s cubic-bezier(0.68, -0.6, 0.32, 1.6); */
 }
