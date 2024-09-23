@@ -107,7 +107,7 @@
     align-items: center;
 }
 
-@media screen and (orientation:landscape) { 
+@media screen and (hover: none) and (pointer: coarse) and (orientation:landscape) { 
     .app-main {
         width: 100%;
         flex-direction: row;

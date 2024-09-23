@@ -43,4 +43,4 @@ const MinigameConverterValor = ({origem, destino}) => {
     );
 };
 
-export default MinigameConverterValor
+export default MinigameConverterValor;
