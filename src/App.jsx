@@ -3,7 +3,7 @@ import HomePage from './pages/HomePage';
 
 import './App.css';
 
-import GamePage from './pages/GamePage';
+import MinigamePage from './pages/MinigamePage';
 import SwapySandbox from './pages/SwapySandbox';
 import OkamiTeste from './pages/teste';
 
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/app',
-    element: <GamePage />
+    element: <MinigamePage />
   },
   {
     path: '/okami',
