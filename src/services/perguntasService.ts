@@ -1,4 +1,4 @@
-import { Miligramas, Mililitros, Horas, Minutos, Gramas, Unidade, Microgotas, Gotas, } from '../models/unidades.ts';
+import { Miligramas, Mililitros, Horas, Minutos, Gramas, Unidade, Microgotas, Gotas, } from '../models/unidade.ts';
 import { Grandeza, gerarGrandeza } from '@/models/grandeza.ts'
 
 export class QuestaoRegraDeTres {

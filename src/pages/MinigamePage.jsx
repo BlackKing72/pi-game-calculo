@@ -50,14 +50,10 @@ function MinigameHeader({ enunciado }) {
 };
 
 function MinigameEtapa({ etapa, etapaSelecionada, quandoMudarEtapa }) {
-    const handleQuandoResponder = (resposta, pularPaginas) => {
-        console.log(`pular paginas: ${pularPaginas}`);
-        pularPaginas = pularPaginas !== null ? pularPaginas : 1;
-
-
+    const handleQuandoResponder = (resposta) => {
         if (resposta) {
             alert("Resposta Certa!!! ^u^");
-            quandoMudarEtapa(etapaSelecionada + pularPaginas);
+            quandoMudarEtapa(etapaSelecionada + 1);
         } else {
             alert("Resposta Errada!!! T^T");
         }

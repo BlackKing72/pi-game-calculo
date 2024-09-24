@@ -1,4 +1,4 @@
-import { Unidade, buscarUnidadesAleatoria } from "./unidades.ts";
+import { Unidade, buscarUnidadesAleatoria } from "./unidade.ts";
 
 /** Representa uma grandeza (um valor com uma unidade definida). */
 export class Grandeza {
