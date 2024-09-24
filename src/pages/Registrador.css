@@ -1,0 +1,13 @@
+.TabelaResponsivo {
+    display: flex;
+    flex-direction:row;
+}
+
+.Tabela {
+    display: flex;
+    flex-direction: column;
+}
+
+.BotaoTabela {
+    width: 200px;
+}
