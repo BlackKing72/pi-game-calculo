@@ -131,7 +131,8 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
     const unidadeDestino = questao.prescricao.unidade;
 
     const [resultado, setResultado] = useState(new Grandeza(0, unidadeDestino));
-    const [operacao, setOperacao] = useState<'×'|'÷'>('×');
+    const [operacao, setOperacao] = useState(0);
+    const [operacaoDisplay, setOperacaoDisplay] = useState(' ')
 
     const atualizarResultado = (valor: number) => {
         setResultado(new Grandeza(valor, unidadeDestino));
@@ -141,15 +142,32 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
         let resultado = 0; 
 
         switch (operacao) {
-            case 0: resultado = questao.medicamento.valor * valor;
-            case 1: resultado = questao.medicamento.valor / valor;
+            case 0: resultado = 0.0;
+            case 1: resultado = questao.medicamento.valor * valor;
+            case 2: resultado = questao.medicamento.valor / valor;
         }
         
         atualizarResultado(resultado);
     }
 
     const quandoOpcaoMudar = (opcao: number) => {
-        setOperacao(opcao + 1);
+        let operacaoDisplay = ' ';
+        let operacao = 0;
+
+        switch (opcao) {
+            case 0: 
+                operacao = 1;
+                operacaoDisplay = '×'; 
+                break;
+            case 1: 
+                operacao = 2;
+                operacaoDisplay = '÷'; 
+                break;
+        }
+
+
+        setOperacao(operacao);
+        setOperacaoDisplay(operacaoDisplay)
         atualizarResultado(resultado.valor);
     };
 
@@ -176,7 +194,7 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
                 <input type='text' defaultValue={questao.medicamento.toString()}
                     className='w-0 flex-grow flex-shrink text-center h-8 rounded-lg bg-transparent' />
                 
-                <input type='text' value={operacao} readOnly
+                <input type='text' value={operacaoDisplay} readOnly
                     className='text-center text-3xl w-[1ch] h-8 rounded-lg bg-transparent' />
 
                 <input type='number' placeholder='0' onChange={e => quandoMultiplicarMudar(e.target.valueAsNumber)}

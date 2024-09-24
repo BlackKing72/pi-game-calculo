@@ -10,7 +10,6 @@ import MinigameEscolherOpcao from '@/components/minigames/MinigameEscolherOpcao'
 import MinigameConverterValor from '@/components/minigames/MinigameConverterValor';
 
 const MinigamePage = () => {
-
     const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
     const [questao] = useState(perguntasService.sortearQuestão());
     const [etapas] = useState(buscarConteudoMinigame(questao));
@@ -28,7 +27,6 @@ const MinigamePage = () => {
                 <div className='app-main'>
                 <MinigameHeader
                     enunciado={questao.enunciado} />
-
                 <MinigameEtapa
                     etapa={etapas[indexEtapaAtual]}
                     etapaSelecionada={indexEtapaAtual}
