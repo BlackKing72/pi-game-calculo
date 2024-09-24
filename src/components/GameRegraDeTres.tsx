@@ -5,8 +5,6 @@ import MinigameConverterValor from "./minigames/MinigameConverterValor";
 import MinigameSelecionarValor from "./minigames/MinigameSelecionarValor";
 import MinigameEscolherOpcao from "./minigames/MinigameEscolherOpcao";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { SelectIcon } from "@radix-ui/react-select";
-import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
 // Como estou usando TypeScript preciso definir alguns tipos para facilitar.
@@ -98,9 +96,9 @@ const VerificarConversaoUnidades = ({ questao, quandoResponder }: GameStepProps)
         // se unidades são diferentes -> precisa passar pela conversão (pula 1 etapa).
         // se unidades são iguais -> ignora a conversão (pula 2 etapas).
         // isso vai ser ignorado se a resposta estiver errada
-        const pularPaginas = unidadesSaoDiferentes ? 1 : 2;
+        // const pularPaginas = unidadesSaoDiferentes ? 1 : 2;
 
-        quandoResponder(resposta, pularPaginas);
+        quandoResponder(resposta, 1);
     };
 
     return (
@@ -133,7 +131,7 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
     const unidadeDestino = questao.prescricao.unidade;
 
     const [resultado, setResultado] = useState(new Grandeza(0, unidadeDestino));
-    const [operacao, setOperacao] = useState('~');
+    const [operacao, setOperacao] = useState<'×'|'÷'>('×');
 
     const atualizarResultado = (valor: number) => {
         setResultado(new Grandeza(valor, unidadeDestino));
@@ -143,22 +141,15 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
         let resultado = 0; 
 
         switch (operacao) {
-            case '×': resultado = questao.medicamento.valor * valor;
-            case '÷': resultado = questao.medicamento.valor / valor;
+            case 0: resultado = questao.medicamento.valor * valor;
+            case 1: resultado = questao.medicamento.valor / valor;
         }
         
         atualizarResultado(resultado);
     }
 
     const quandoOpcaoMudar = (opcao: number) => {
-        let operacao = '~';
-
-        switch (opcao) {
-            case 0: operacao = '×'; break;
-            case 1: operacao = '÷'; break;
-        }
-
-        setOperacao(operacao);
+        setOperacao(opcao + 1);
         atualizarResultado(resultado.valor);
     };
 

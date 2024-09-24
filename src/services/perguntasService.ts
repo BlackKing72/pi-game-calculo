@@ -1,13 +1,15 @@
-import { Miligramas, Mililitros, Horas, Minutos, Gramas, } from '../models/unidades.ts';
+import { Miligramas, Mililitros, Horas, Minutos, Gramas, Unidade, Microgotas, Gotas, } from '../models/unidades.ts';
 import { Grandeza, gerarGrandeza } from '@/models/grandeza.ts'
 
 export class QuestaoRegraDeTres {
+    id: number;
     enunciado: string;
     prescricao: Grandeza;
     medicamento: Grandeza;
     diluente: Grandeza;
 
-    constructor(enunciado: string, prescricao: Grandeza, medicamento: Grandeza, diluente: Grandeza) {
+    constructor(id: number, enunciado: string, prescricao: Grandeza, medicamento: Grandeza, diluente: Grandeza) {
+        this.id = id;
         this.enunciado = enunciado;
         this.prescricao = prescricao;
         this.medicamento = medicamento;
@@ -16,28 +18,32 @@ export class QuestaoRegraDeTres {
 }
 
 export class QuestaoGotejamento {
+    id: number;
     enunciado: string;
     volume: Grandeza;
     tempo: Grandeza;
+    unidadeDestino: Unidade;
 
-    constructor(enunciado: string, volume: Grandeza, tempo: Grandeza) {
+    constructor(id: number, enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: Unidade) {
+        this.id = id;
         this.enunciado = enunciado;
         this.volume = volume;
         this.tempo = tempo;
+        this.unidadeDestino = unidadeDestino;
     }
 }
 
 export type Questao = QuestaoRegraDeTres | QuestaoGotejamento;
 
 const questoesRegraDeTres: QuestaoRegraDeTres[] = [
-    new QuestaoRegraDeTres(
+    new QuestaoRegraDeTres(0,
         'O médico prescreveu 1,5mg de cloranfenicol. Mas o medicamento que existe na farmácia é de 1ml, contendo 2mg. Como proceder?',
         new Grandeza(1.5, Miligramas),
         new Grandeza(2, Miligramas),
         new Grandeza(1, Mililitros),
     ),
 
-    new QuestaoRegraDeTres(
+    new QuestaoRegraDeTres(1,
         'Foi prescrita para uma criança de 13 meses, acometida de pneumonia, a administração de 350 mg de Cefalotina - EV, de 6/6 horas. Na unidade só há frascos do medicamento contendo 1 g e diluentes de 5ml. Quanto irei administrar à criança?',
         new Grandeza(350, Miligramas),
         new Grandeza(1, Gramas),
@@ -46,16 +52,18 @@ const questoesRegraDeTres: QuestaoRegraDeTres[] = [
 ];
 
 const questoesGotejamento: QuestaoGotejamento[] = [
-    new QuestaoGotejamento(
+    new QuestaoGotejamento(0,
         'Para uma solução de 200 ml em 30 minutos, utilizando equipo de microgotas, devem ser infundidas quantas microgotas por minuto?',
         new Grandeza(200, Mililitros),
-        new Grandeza(30, Minutos)
+        new Grandeza(30, Minutos),
+        Microgotas,
     ),
 
-    new QuestaoGotejamento(
+    new QuestaoGotejamento(1,
         'Para que 500 ml de soro fisiológico seja administrado em 6 horas, devem ser infundidas quantas gotas por minuto?',
         new Grandeza(500, Mililitros),
-        new Grandeza(6, Horas)
+        new Grandeza(6, Horas),
+        Gotas
     ),
 ];
 
