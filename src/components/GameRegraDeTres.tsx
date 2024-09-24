@@ -139,14 +139,14 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
     }
 
     const quandoMultiplicarMudar = (valor: number) => {
-        let resultado = 0; 
+        let resultado = 0;
 
         switch (operacao) {
-            case 0: resultado = 0.0;
-            case 1: resultado = questao.medicamento.valor * valor;
-            case 2: resultado = questao.medicamento.valor / valor;
+            case 0: resultado = 0.0; break;
+            case 1: resultado = questao.medicamento.valor * valor; break;
+            case 2: resultado = questao.medicamento.valor / valor; break;
         }
-        
+
         atualizarResultado(resultado);
     }
 
@@ -155,13 +155,13 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
         let operacao = 0;
 
         switch (opcao) {
-            case 0: 
+            case 0:
                 operacao = 1;
-                operacaoDisplay = '×'; 
+                operacaoDisplay = '×';
                 break;
-            case 1: 
+            case 1:
                 operacao = 2;
-                operacaoDisplay = '÷'; 
+                operacaoDisplay = '÷';
                 break;
         }
 
@@ -179,33 +179,38 @@ const ConverterUnidades = ({ questao, quandoResponder }: GameStepProps) => {
             <hr className='my-2 w-full' />
 
             <div className="text-4xl">
-                    <Select onValueChange={e => quandoOpcaoMudar(parseInt(e))}>
-                        <SelectTrigger className="gap-2">
-                            <SelectValue placeholder='Selecionar uma opção' />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value='0'>Multiplicar valor por</SelectItem>
-                            <SelectItem value='1'>Dividir valor por</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-            <div className='flex gap-4 items-center w-full'>
-                <input type='text' defaultValue={questao.medicamento.toString()}
-                    className='w-0 flex-grow flex-shrink text-center h-8 rounded-lg bg-transparent' />
-                
-                <input type='text' value={operacaoDisplay} readOnly
-                    className='text-center text-3xl w-[1ch] h-8 rounded-lg bg-transparent' />
-
-                <input type='number' placeholder='0' onChange={e => quandoMultiplicarMudar(e.target.valueAsNumber)}
-                    className='w-0 flex-grow flex-shrink text-center h-8 rounded-lg bg-slate-200' />
-
-                <input type='text' defaultValue='='
-                    className=' text-3xl w-[1ch] h-8 bg-transparent' />
-
-                <input type='text' value={resultado.toString()}
-                    className='w-0 flex-grow flex-shrink text-center h-8 rounded-lg bg-transparent' />
+                <Select onValueChange={e => quandoOpcaoMudar(parseInt(e))}>
+                    <SelectTrigger className="gap-2">
+                        <SelectValue placeholder='Selecionar uma opção' />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value='0'>Multiplicar valor por</SelectItem>
+                        <SelectItem value='1'>Dividir valor por</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
+
+            {
+                operacao === 0
+                    ? null
+                    :
+                    <div className='flex gap-4 items-center w-full'>
+                        <input type='text' value={questao.medicamento.toString()} readOnly
+                            className='w-0 flex-grow flex-shrink text-center h-8 rounded-lg bg-transparent' />
+
+                        <input type='text' value={operacaoDisplay} readOnly
+                            className='text-center text-3xl w-[1ch] h-8 rounded-lg bg-transparent' />
+
+                        <input type='number' placeholder='0' onChange={e => quandoMultiplicarMudar(e.target.valueAsNumber)}
+                            className='w-0 flex-grow flex-shrink text-center h-8 rounded-lg bg-slate-200' />
+
+                        <input type='text' value='=' readOnly
+                            className=' text-3xl w-[1ch] h-8 bg-transparent' />
+
+                        <input type='text' value={resultado.toString()} readOnly
+                            className='w-0 flex-grow flex-shrink text-center h-8 rounded-lg bg-transparent' />
+                    </div>
+            }
         </div>
     )
 }
