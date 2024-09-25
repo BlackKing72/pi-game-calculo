@@ -5,7 +5,8 @@ import './App.css';
 
 import MinigamePage from './pages/MinigamePage';
 import SwapySandbox from './pages/SwapySandbox';
-import Registrador from './pages/Resgitrador';
+import ListaRegistro from './pages/ListaRegistro';
+import Registrar from './pages/Registrar';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,12 @@ const router = createBrowserRouter([
     element: <MinigamePage />
   },
   {
-    path: '/registrador',
-    element: <Registrador/>
+    path: '/listaregistro',
+    element: <ListaRegistro/>
+  },
+  {
+    path: '/registrar',
+    element: <Registrar/>
   }
 ])
 
