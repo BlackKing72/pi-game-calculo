@@ -11,3 +11,7 @@
 .BotaoTabela {
     width: 200px;
 }
+
+tr:nth-of-type(even){
+    background-color: aqua;
+}
