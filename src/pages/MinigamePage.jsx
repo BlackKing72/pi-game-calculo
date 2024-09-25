@@ -3,11 +3,10 @@ import { useEffect, useMemo, useState } from 'react';
 import './MinigamePage.css';
 
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
-import * as perguntasService from '@/services/perguntasService.ts';
 import { gerarGrandeza } from '@/models/grandeza.ts';
 import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
-import MinigameEscolherOpcao from '@/components/minigames/MinigameEscolherOpcao';
-import MinigameConverterValor from '@/components/minigames/MinigameConverterValor';
+
+import * as perguntasService from '../services/perguntasService';
 
 const MinigamePage = () => {
     const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
@@ -19,23 +18,59 @@ const MinigamePage = () => {
         setIndexEtapaAtual(pageIndex);
     }
 
-    
+    useEffect(() => {
+        const buscarQuestoes = async () => {
+            const questoes = await perguntasService.buscarQuestoes();
+            console.log(questoes);
+        };
+
+        buscarQuestoes();
+    }, [])
+
+
 
     return (
         <div className='app-page'>
             <div className='app-container'>
                 <div className='app-main'>
-                <MinigameHeader
-                    enunciado={questao.enunciado} />
-                <MinigameEtapa
-                    etapa={etapas[indexEtapaAtual]}
-                    etapaSelecionada={indexEtapaAtual}
-                    quandoMudarEtapa={handleQuandoMudarEtapa} />
+                    <MinigameHeader
+                        enunciado={questao.enunciado} />
+                    <MinigameEtapa
+                        etapa={etapas[indexEtapaAtual]}
+                        etapaSelecionada={indexEtapaAtual}
+                        quandoMudarEtapa={handleQuandoMudarEtapa} />
                 </div>
                 <MinigameFooter
                     quantidadeEtapas={etapas.length}
                     etapaSelecionada={indexEtapaAtual}
                     quandoMudarEtapa={handleQuandoMudarEtapa} />
+
+                <div className='flex gap-2'>
+                    <Button className='flex-grow' onClick={async () => {
+                        await perguntasService.criarQuestaoRegraDeTres('testando criação', questao.diluente, questao.diluente, questao.diluente);
+                        console.log('criado');
+                    }}>Criar R3</Button>
+
+                    <Button className='flex-grow' onClick={async () => {
+                        await perguntasService.criarQuestaoGotejamento('testando', questao.diluente, questao.diluente, questao.diluente.unidade);
+                        console.log('criado');
+                    }}>Criar GT</Button>
+
+                    <Button className='flex-grow' onClick={async () => {
+                        await perguntasService.deletarQuestaoPorID(7);
+                        console.log('deletado');
+                    }}>Deletar algo</Button>
+                    
+                    <Button className='flex-grow' onClick={async () => {
+                        await perguntasService.atualizaQuestaoRegraDeTres(8, 'testando criação', questao.medicamento, questao.medicamento, questao.medicamento);
+                        console.log('editado');
+                    }}>Editar R3</Button>
+
+                    <Button className='flex-grow' onClick={async () => {
+                        await perguntasService.atualizarQuestaoGotejamento(9, 'testando', questao.medicamento, questao.medicamento, questao.medicamento.unidade);
+                        console.log('editado');
+                    }}>Editar GT</Button>
+                </div>
             </div>
         </div>
     );
@@ -62,7 +97,7 @@ function MinigameEtapa({ etapa, etapaSelecionada, quandoMudarEtapa }) {
     return (
         <div className='app-content'>
             <div className='app-content-container'>
-                { etapa(handleQuandoResponder) }
+                {etapa(handleQuandoResponder)}
             </div>
         </div>
     );
