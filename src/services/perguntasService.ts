@@ -1,5 +1,7 @@
-import { Miligramas, Mililitros, Horas, Minutos, Gramas, Unidade, Microgotas, Gotas, } from '../models/unidades.ts';
+import { Miligramas, Mililitros, Horas, Minutos, Gramas, Unidade, Microgotas, Gotas, buscarUnidadePorNome, } from '../models/unidade.ts';
 import { Grandeza, gerarGrandeza } from '@/models/grandeza.ts'
+
+import axios from 'axios';
 
 export class QuestaoRegraDeTres {
     id: number;
@@ -73,7 +75,7 @@ precisar ficar escolhendo um modo de jogo para cada tipo de questão). */
 export const questoes: Questao[] = [...questoesRegraDeTres]; //, ...questoesGotejamento];
 
 /** Retorna uma questão aleatória */
-export const sortearQuestão = () : Questao => {
+export const sortearQuestão = (): Questao => {
     return questoes[Math.floor(Math.random() * questoes.length)];
 };
 
@@ -98,4 +100,178 @@ export const gerarRespostas = (valor: Grandeza, variacao: number, quantidade: nu
 /** Retorna se uma questão é ou não uma Questão de Regra de Três */
 export const isQuestaoRegraDeTres = (questao: Questao) => {
     return questao instanceof QuestaoRegraDeTres;
+}
+
+/* ----------------------------------------------------------------------------
+--- API banco de dados
+---------------------------------------------------------------------------- */
+
+const api = `http://localhost:3000/calculo`;
+
+const criarQuestaoUsandoDados = (dados: any) : Questao => {
+    if (dados.prescricao && dados.medicacao && dados.diluente) {
+        const prescricaoUnidade = buscarUnidadePorNome(dados.prescricaoUnidade);
+        const medicacaoUnidade = buscarUnidadePorNome(dados.medicacaoUnidade);
+        const diluenteUnidade = buscarUnidadePorNome(dados.diluenteUnidade);
+
+        if (!prescricaoUnidade || !medicacaoUnidade || !diluenteUnidade) {
+            throw new Error('Unidade não encontrada');
+        }
+
+        const prescricao = new Grandeza(dados.prescricao, prescricaoUnidade);
+        const medicacao = new Grandeza(dados.medicacao, medicacaoUnidade);
+        const diluente = new Grandeza(dados.diluente, diluenteUnidade);
+
+        return new QuestaoRegraDeTres(dados.id, dados.enunciado, prescricao, medicacao, diluente);
+    }
+    else if (dados.volume && dados.tempo) {
+        const volumeUnidade = buscarUnidadePorNome(dados.volumeUnidade);
+        const tempoUnidade = buscarUnidadePorNome(dados.tempoUnidade);
+        const destinoUnidade = buscarUnidadePorNome(dados.destinoUnidade);
+
+        if (!volumeUnidade || !tempoUnidade || !destinoUnidade) {
+            throw new Error('Unidade não encontrada');
+        }
+
+        const volume = new Grandeza(dados.volume, volumeUnidade);
+        const tempo = new Grandeza(dados.tempo, tempoUnidade);
+
+        return new QuestaoGotejamento(dados.id, dados.enunciado, volume, tempo, tempoUnidade);
+    }
+    else {
+        console.log(dados);
+        throw new Error('A questão parece estar corrompida');
+    }
+}
+
+export const buscarQuestoes = async () : Promise<Questao[]> => {
+    try {
+        const resposta = await axios.get(api);
+        return resposta.data.map((dados: any) => {
+            return criarQuestaoUsandoDados(dados);
+        });
+    }
+    catch (err) {
+        console.log(`Erro ao buscar questões. erro: ${err}`);
+        return [];
+    };
+};
+
+export const buscarQuestoesPorID = async (id: number) : Promise<Questao|null> => {
+    try {
+        const resposta = await axios.get(api + `?id=${id}`);
+        return criarQuestaoUsandoDados(resposta.data[0]);
+    }
+    catch (err) {
+        console.log(`Erro ao buscar questão por id. erro: ${err}`);
+        return null;
+    };
+};
+
+/** Retorna todas as questões em ordem aleatória ou uma lista vazia se acontecer algum erro. */
+export const buscarQuestoesAleatorias = async () : Promise<Questao[]> => {
+    try {
+        const resposta = await axios.get(api + `?random=true`);
+        return resposta.data.map((dados: any) => {
+            return criarQuestaoUsandoDados(dados);
+        });
+    }
+    catch (err) {
+        console.log(`Erro ao buscar questão por id. erro: ${err}`);
+        return [];
+    };
+}
+
+/** Retorna uma única questão aleatória ou null se acontecer algum erro. */
+export const buscarQuestaoAleatoria = async () : Promise<Questao|null> => {
+    try {
+        const resposta = await axios.get(api + `?random=true&count=1`);
+        return criarQuestaoUsandoDados(resposta.data[0]);
+    }
+    catch (err) {
+        console.log(`Erro ao buscar questão por id. erro: ${err}`);
+        return null;
+    };
+};
+
+
+export const criarQuestaoRegraDeTres = async (enunciado: string, prescricao: Grandeza, medicamento: Grandeza, diluente: Grandeza) => {
+    try {
+        await axios.post(api, {
+            tipo: 0,
+            enunciado: enunciado,
+            prescricao: prescricao.valor, 
+            prescricaoUnidade: prescricao.unidade.nome, 
+            medicacao: medicamento.valor, 
+            medicacaoUnidade: medicamento.unidade.nome, 
+            diluente: prescricao.valor, 
+            diluenteUnidade: prescricao.unidade.nome,
+        });
+    }
+    catch (err) {
+        console.error(`Erro ao criar questão de regra de três. erro: ${err}`);
+    };
+}
+
+export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: Unidade) => {
+    try {
+        await axios.post(api, {
+            tipo: 1,
+            enunciado: enunciado,
+            volume: volume.valor, 
+            volumeUnidade: volume.unidade.nome, 
+            tempo: tempo.valor, 
+            tempoUnidade: tempo.unidade.nome, 
+            destinoUnidade: unidadeDestino.nome,
+        });
+    }
+    catch (err) {
+        console.error(`Erro ao criar questão de regra de três. erro: ${err}`);
+    };
+}
+
+export const deletarQuestaoPorID = async (id: number) => {
+    try {
+        await axios.delete(api + `?id=${id}`);
+    } 
+    catch (err) {
+        console.error(`Erro ao deletar uma questão. erro: ${err}`);
+    }
+}
+
+export const atualizaQuestaoRegraDeTres = async (id: number, enunciado: string, prescricao: Grandeza, medicamento: Grandeza, diluente: Grandeza) => {
+    try {
+        await axios.patch(api, {
+            id: id,
+            tipo: 0,
+            enunciado: enunciado,
+            prescricao: prescricao.valor, 
+            prescricaoUnidade: prescricao.unidade.nome, 
+            medicacao: medicamento.valor, 
+            medicacaoUnidade: medicamento.unidade.nome, 
+            diluente: prescricao.valor, 
+            diluenteUnidade: prescricao.unidade.nome,
+        })
+    }
+    catch (err) {
+        console.error(`Erro ao atualizar questão de regra de três. erro: ${err}`);
+    }
+}
+
+export const atualizarQuestaoGotejamento = async (id: number, enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: Unidade) => {
+    try {
+        await axios.patch(api, {
+            id: id,
+            tipo: 1,
+            enunciado: enunciado,
+            volume: volume.valor, 
+            volumeUnidade: volume.unidade.nome, 
+            tempo: tempo.valor, 
+            tempoUnidade: tempo.unidade.nome, 
+            destinoUnidade: unidadeDestino.nome,
+        });
+    }
+    catch (err) {
+        console.error(`Erro ao atualizar questão de regra de três. erro: ${err}`);
+    };
 }

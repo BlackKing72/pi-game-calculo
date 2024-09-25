@@ -3,44 +3,59 @@ import { useEffect, useMemo, useState } from 'react';
 import './MinigamePage.css';
 
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
-import * as perguntasService from '@/services/perguntasService.ts';
 import { gerarGrandeza } from '@/models/grandeza.ts';
 import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
-import MinigameEscolherOpcao from '@/components/minigames/MinigameEscolherOpcao';
-import MinigameConverterValor from '@/components/minigames/MinigameConverterValor';
+
+import * as perguntasService from '../services/perguntasService';
+import { useParams } from 'react-router-dom';
+import { LoadingScreen } from '@/components/ui/loading';
 
 const MinigamePage = () => {
+    const { idQuestao } = useParams();
 
     const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
-    const [questao] = useState(perguntasService.sortearQuestão());
-    const [etapas] = useState(buscarConteudoMinigame(questao));
+    const [questao, setQuestao] = useState();
+    const [etapas, setEtapas] = useState();
 
     const handleQuandoMudarEtapa = (pageIndex) => {
         pageIndex = Math.max(0, Math.min(pageIndex, etapas.length - 1));
         setIndexEtapaAtual(pageIndex);
     }
 
-    
+    useEffect(() => {
+        const buscarQuestoes = async () => {
+            const questao =
+                await perguntasService.buscarQuestoesPorID(idQuestao);
 
-    return (
-        <div className='app-page'>
-            <div className='app-container'>
-                <div className='app-main'>
-                <MinigameHeader
-                    enunciado={questao.enunciado} />
+            setQuestao(questao);
+            setEtapas(buscarConteudoMinigame(questao))
+        };
 
-                <MinigameEtapa
-                    etapa={etapas[indexEtapaAtual]}
-                    etapaSelecionada={indexEtapaAtual}
-                    quandoMudarEtapa={handleQuandoMudarEtapa} />
+        buscarQuestoes();
+    }, [])
+
+
+
+    return !questao
+        ? <LoadingScreen /> 
+        : (
+            <div className='app-page'>
+                <div className='app-container'>
+                    <div className='app-main'>
+                        <MinigameHeader
+                            enunciado={questao.enunciado} />
+                        <MinigameEtapa
+                            etapa={etapas[indexEtapaAtual]}
+                            etapaSelecionada={indexEtapaAtual}
+                            quandoMudarEtapa={handleQuandoMudarEtapa} />
+                    </div>
+                    <MinigameFooter
+                        quantidadeEtapas={etapas.length}
+                        etapaSelecionada={indexEtapaAtual}
+                        quandoMudarEtapa={handleQuandoMudarEtapa} />
                 </div>
-                <MinigameFooter
-                    quantidadeEtapas={etapas.length}
-                    etapaSelecionada={indexEtapaAtual}
-                    quandoMudarEtapa={handleQuandoMudarEtapa} />
             </div>
-        </div>
-    );
+        );
 };
 
 function MinigameHeader({ enunciado }) {
@@ -52,14 +67,10 @@ function MinigameHeader({ enunciado }) {
 };
 
 function MinigameEtapa({ etapa, etapaSelecionada, quandoMudarEtapa }) {
-    const handleQuandoResponder = (resposta, pularPaginas) => {
-        console.log(`pular paginas: ${pularPaginas}`);
-        pularPaginas = pularPaginas !== null ? pularPaginas : 1;
-
-
+    const handleQuandoResponder = (resposta) => {
         if (resposta) {
             alert("Resposta Certa!!! ^u^");
-            quandoMudarEtapa(etapaSelecionada + pularPaginas);
+            quandoMudarEtapa(etapaSelecionada + 1);
         } else {
             alert("Resposta Errada!!! T^T");
         }
@@ -68,7 +79,7 @@ function MinigameEtapa({ etapa, etapaSelecionada, quandoMudarEtapa }) {
     return (
         <div className='app-content'>
             <div className='app-content-container'>
-                { etapa(handleQuandoResponder) }
+                {etapa(handleQuandoResponder)}
             </div>
         </div>
     );

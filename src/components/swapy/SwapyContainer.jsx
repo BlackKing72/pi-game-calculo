@@ -12,11 +12,10 @@ O 'children' é usado para renderizar/mostrar qualquer elemento que está dentro
 do SwapyContainer, ele funciona automáticamente não precisa passar um valor para ele.                
     ex: <SwapyContainer> <p>Isso é um children</p> </SwapyContainer>. 
 */
-
 /**
- * @param {{ animation: "dynamic"|"spring"|"none"}} props.animation
+ * @param {import('react').PropsWithChildren<{className?, animation?:'dynamic'|'spring'|'none', onSwap?, setSwapy?}} param0 
  */
-const SwapyContainer = ({ className = '', animation, onSwap, setSwapy, children }) => {
+const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) => {
     const swapy = useRef();
 
     useEffect(() => {
@@ -25,7 +24,11 @@ const SwapyContainer = ({ className = '', animation, onSwap, setSwapy, children 
             animation: animation || 'dynamic', 
         });
 
-        swapy.current.onSwap(event => onSwap(event.data));
+        swapy.current.onSwap(event => {
+            if (onSwap) {
+                onSwap(event.data);
+            }
+        });
 
         if (setSwapy) {
             setSwapy(swapy.current);
@@ -37,7 +40,7 @@ const SwapyContainer = ({ className = '', animation, onSwap, setSwapy, children 
     }, []);
 
     return (
-        <div className={`swapy-container ${className}`}>
+        <div className={`swapy-container ${className || ''}`}>
             {children}
         </div>
     );

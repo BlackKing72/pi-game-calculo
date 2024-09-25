@@ -44,10 +44,10 @@ export const Miligramas = new UnidadePeso('Miligramas', 'mg');
 export const Horas = new UnidadeTempo('Horas', 'h');
 export const Minutos = new UnidadeTempo('Minutos', 'min');
 export const Gotas = new UnidadeVolume('Gotas', null);
-export const Microgotas = new UnidadeVolume('MicroGotas', null);
+export const Microgotas = new UnidadeVolume('Microgotas', null);
 
 export const unidades = [
-    Litros, Mililitros, Gramas, Miligramas, Horas, Minutos
+    Litros, Mililitros, Gramas, Miligramas, Horas, Minutos, Gotas, Microgotas
 ];
 
 /**
@@ -71,3 +71,7 @@ export const buscarUnidadesAleatoria = (unidade: Unidade) => {
     return resultado[Math.floor(Math.random() * unidades.length)];
 }
 
+export const buscarUnidadePorNome = (nome: string) : Unidade | null => {
+    const unidade = unidades.find(unidade => unidade.nome === nome);
+    return unidade ?? null;
+};
