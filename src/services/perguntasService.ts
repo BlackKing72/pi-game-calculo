@@ -144,27 +144,56 @@ const criarQuestaoUsandoDados = (dados: any) : Questao => {
     }
 }
 
-export const buscarQuestoes = async () => {
+export const buscarQuestoes = async () : Promise<Questao[]> => {
     try {
         const resposta = await axios.get(api);
         return resposta.data.map((dados: any) => {
             return criarQuestaoUsandoDados(dados);
-        })
+        });
     }
     catch (err) {
         console.log(`Erro ao buscar questões. erro: ${err}`);
+        return [];
     };
 };
 
-export const buscarQuestoesPorID = async (id: number) => {
+export const buscarQuestoesPorID = async (id: number) : Promise<Questao|null> => {
     try {
         const resposta = await axios.get(api + `?id=${id}`);
         return criarQuestaoUsandoDados(resposta.data[0]);
     }
     catch (err) {
         console.log(`Erro ao buscar questão por id. erro: ${err}`);
+        return null;
     };
 };
+
+/** Retorna todas as questões em ordem aleatória ou uma lista vazia se acontecer algum erro. */
+export const buscarQuestoesAleatorias = async () : Promise<Questao[]> => {
+    try {
+        const resposta = await axios.get(api + `?random=true`);
+        return resposta.data.map((dados: any) => {
+            return criarQuestaoUsandoDados(dados);
+        });
+    }
+    catch (err) {
+        console.log(`Erro ao buscar questão por id. erro: ${err}`);
+        return [];
+    };
+}
+
+/** Retorna uma única questão aleatória ou null se acontecer algum erro. */
+export const buscarQuestaoAleatoria = async () : Promise<Questao|null> => {
+    try {
+        const resposta = await axios.get(api + `?random=true&count=1`);
+        return criarQuestaoUsandoDados(resposta.data[0]);
+    }
+    catch (err) {
+        console.log(`Erro ao buscar questão por id. erro: ${err}`);
+        return null;
+    };
+};
+
 
 export const criarQuestaoRegraDeTres = async (enunciado: string, prescricao: Grandeza, medicamento: Grandeza, diluente: Grandeza) => {
     try {

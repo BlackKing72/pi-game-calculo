@@ -7,11 +7,15 @@ import { gerarGrandeza } from '@/models/grandeza.ts';
 import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
 
 import * as perguntasService from '../services/perguntasService';
+import { useParams } from 'react-router-dom';
+import { LoadingScreen } from '@/components/ui/loading';
 
 const MinigamePage = () => {
+    const { idQuestao } = useParams();
+
     const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
-    const [questao] = useState(perguntasService.sortearQuestão());
-    const [etapas] = useState(buscarConteudoMinigame(questao));
+    const [questao, setQuestao] = useState();
+    const [etapas, setEtapas] = useState();
 
     const handleQuandoMudarEtapa = (pageIndex) => {
         pageIndex = Math.max(0, Math.min(pageIndex, etapas.length - 1));
@@ -20,8 +24,11 @@ const MinigamePage = () => {
 
     useEffect(() => {
         const buscarQuestoes = async () => {
-            const questoes = await perguntasService.buscarQuestoes();
-            console.log(questoes);
+            const questao =
+                await perguntasService.buscarQuestoesPorID(idQuestao);
+
+            setQuestao(questao);
+            setEtapas(buscarConteudoMinigame(questao))
         };
 
         buscarQuestoes();
@@ -29,51 +36,26 @@ const MinigamePage = () => {
 
 
 
-    return (
-        <div className='app-page'>
-            <div className='app-container'>
-                <div className='app-main'>
-                    <MinigameHeader
-                        enunciado={questao.enunciado} />
-                    <MinigameEtapa
-                        etapa={etapas[indexEtapaAtual]}
+    return !questao
+        ? <LoadingScreen /> 
+        : (
+            <div className='app-page'>
+                <div className='app-container'>
+                    <div className='app-main'>
+                        <MinigameHeader
+                            enunciado={questao.enunciado} />
+                        <MinigameEtapa
+                            etapa={etapas[indexEtapaAtual]}
+                            etapaSelecionada={indexEtapaAtual}
+                            quandoMudarEtapa={handleQuandoMudarEtapa} />
+                    </div>
+                    <MinigameFooter
+                        quantidadeEtapas={etapas.length}
                         etapaSelecionada={indexEtapaAtual}
                         quandoMudarEtapa={handleQuandoMudarEtapa} />
                 </div>
-                <MinigameFooter
-                    quantidadeEtapas={etapas.length}
-                    etapaSelecionada={indexEtapaAtual}
-                    quandoMudarEtapa={handleQuandoMudarEtapa} />
-
-                <div className='flex gap-2'>
-                    <Button className='flex-grow' onClick={async () => {
-                        await perguntasService.criarQuestaoRegraDeTres('testando criação', questao.diluente, questao.diluente, questao.diluente);
-                        console.log('criado');
-                    }}>Criar R3</Button>
-
-                    <Button className='flex-grow' onClick={async () => {
-                        await perguntasService.criarQuestaoGotejamento('testando', questao.diluente, questao.diluente, questao.diluente.unidade);
-                        console.log('criado');
-                    }}>Criar GT</Button>
-
-                    <Button className='flex-grow' onClick={async () => {
-                        await perguntasService.deletarQuestaoPorID(7);
-                        console.log('deletado');
-                    }}>Deletar algo</Button>
-                    
-                    <Button className='flex-grow' onClick={async () => {
-                        await perguntasService.atualizaQuestaoRegraDeTres(8, 'testando criação', questao.medicamento, questao.medicamento, questao.medicamento);
-                        console.log('editado');
-                    }}>Editar R3</Button>
-
-                    <Button className='flex-grow' onClick={async () => {
-                        await perguntasService.atualizarQuestaoGotejamento(9, 'testando', questao.medicamento, questao.medicamento, questao.medicamento.unidade);
-                        console.log('editado');
-                    }}>Editar GT</Button>
-                </div>
             </div>
-        </div>
-    );
+        );
 };
 
 function MinigameHeader({ enunciado }) {

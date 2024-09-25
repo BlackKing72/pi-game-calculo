@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     element: <SwapySandbox />
   },
   {
-    path: '/app',
+    path: '/app/:idQuestao',
     element: <MinigamePage />
   },
 ])
