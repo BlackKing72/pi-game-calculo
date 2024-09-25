@@ -22,6 +22,7 @@ const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) =>
         const container = document.querySelector('.swapy-container');
         swapy.current = createSwapy(container, { 
             animation: animation || 'dynamic', 
+            swapMode: 'drop',
         });
 
         swapy.current.onSwap(event => {
