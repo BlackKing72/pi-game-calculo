@@ -25,6 +25,27 @@ const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) =>
             swapMode: 'drop',
         });
 
+        const items = [...container.querySelectorAll('.swapy-item')];
+        items.forEach(item => {
+            item.addEventListener('pointerdown', () => item.setAttribute('data-swapy-current', ''));
+            item.addEventListener('pointerup', () => item.removeAttribute('data-swapy-current'));
+        });
+
+        swapy.current.onSwapStart(() => {
+            // console.log(`${items.length} item(s) founded`);
+            // const swapyItem = attr[0].querySelector('.slot-item');
+
+            // items[0].setAttribute('data-swapy-current', '');
+
+
+            // slots.forEach(slot => {
+            //     if (slot.hasAttribute('data-swapy-highlighted')) {
+            //         console.log('removendo attribute from ' + slot);
+            //         slot.removeAttribute('data-swapy-highlighted');
+            //     }
+            // });
+        });
+
         swapy.current.onSwap(event => {
             if (onSwap) {
                 onSwap(event.data);
