@@ -13,7 +13,11 @@ do SwapyContainer, ele funciona automáticamente não precisa passar um valor pa
     ex: <SwapyContainer> <p>Isso é um children</p> </SwapyContainer>. 
 */
 /**
- * @param {import('react').PropsWithChildren<{className?, animation?:'dynamic'|'spring'|'none', onSwap?, setSwapy?}} param0 
+ * @param {import('react').PropsWithChildren<{
+ *  className?, 
+ *  animation?:'dynamic'|'spring'|'none', 
+ *  onSwap?:
+ * , setSwapy?}} param0 
  */
 const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) => {
     const swapy = useRef();
@@ -29,21 +33,6 @@ const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) =>
         items.forEach(item => {
             item.addEventListener('pointerdown', () => item.setAttribute('data-swapy-current', ''));
             item.addEventListener('pointerup', () => item.removeAttribute('data-swapy-current'));
-        });
-
-        swapy.current.onSwapStart(() => {
-            // console.log(`${items.length} item(s) founded`);
-            // const swapyItem = attr[0].querySelector('.slot-item');
-
-            // items[0].setAttribute('data-swapy-current', '');
-
-
-            // slots.forEach(slot => {
-            //     if (slot.hasAttribute('data-swapy-highlighted')) {
-            //         console.log('removendo attribute from ' + slot);
-            //         slot.removeAttribute('data-swapy-highlighted');
-            //     }
-            // });
         });
 
         swapy.current.onSwap(event => {
