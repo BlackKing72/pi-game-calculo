@@ -1,8 +1,8 @@
 import Logo from '../assets/images/Group.svg';
 import './Navbar.css';
-import Profile from '../assets/images/Profile.svg';
 import NomeLogo from '../assets/images/NameLogo.svg';
 import {QuestaoGotejamento, gerarRespostas, QuestaoRegraDeTres} from "@/services/perguntasService";
+import { Link } from 'react-router-dom';
 
 
 import {
@@ -32,27 +32,21 @@ const NavRegraTres = async () => {
   return (
     <nav className="navbar">
       <div className="logo" onClick={()=> navigate('/')}>
-        <img 
-          src={Logo}
-          alt="" 
-          className="logo-image"
-        />
-        <img
-          src={NomeLogo}
-          className='logo-name'
-        />
-
-<div className="flex flex-row-reverse absolute top-0 left-0 w-screen p-0 m-0 bg-blue-600">
-            <DropdownMenu>
-                <DropdownMenuTrigger className="text-white">Criar nova questão</DropdownMenuTrigger>
-                <DropdownMenuContent>
-                <DropdownMenuLabel>Usando</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={NavRegraTres}>Regra de três</DropdownMenuItem>
-                  <DropdownMenuItem onClick={NavGotejamento}>Gotejamento</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-            </div>
+        <img src={Logo} alt="" className="logo-image"/>
+        <img src={NomeLogo} className='logo-name'/>
+      </div>
+      <div>
+        <DropdownMenu>
+            <DropdownMenuTrigger className="text-white">Navegar</DropdownMenuTrigger>
+            <DropdownMenuContent>
+            <DropdownMenuLabel className='bg-neutral-300 cursor-default'>Criar Pergunta</DropdownMenuLabel>
+              <DropdownMenuItem className='cursor-pointer' onClick={() => navigate('/registrarRegraTres')}>Regra de três</DropdownMenuItem>
+              <DropdownMenuItem className='cursor-pointer'  onClick={() => navigate('/registrarGotejamento')}>Gotejamento</DropdownMenuItem>
+              <DropdownMenuSeparator />
+            <DropdownMenuLabel className='bg-neutral-300 cursor-default'>Visualizar</DropdownMenuLabel>
+              <DropdownMenuItem className='cursor-pointer'  onClick={() => navigate('/listaregistro')}>Perguntas</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );

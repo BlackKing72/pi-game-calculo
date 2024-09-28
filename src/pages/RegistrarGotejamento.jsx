@@ -13,14 +13,13 @@ import Navbar from "../components/Navbar";
 const RegistrarGotejamento = () => {
     return(
         <>
-        <div className="absolute top-0 left-0 right-0 bg">
+        <div className="absolute top-0 left-0 right-0">
         <Navbar/>
+        </div>     
+        <div className="mb-10 mt-10">
+            <h1>Criar Pergunta de Gotejamento</h1>
         </div>
         <div className="flex flex-col gap-5">
-            <div className="absolute top-28 right-10 left-10">
-                <h1>Criar Pergunta de Gotejamento</h1>
-            </div>
-
             <Input placeholder="Enunciado"></Input>
             <Input type="number" placeholder="Valor Volume"></Input>
             <Select>
@@ -43,6 +42,7 @@ const RegistrarGotejamento = () => {
                     <SelectItem value="Micro_Gotas">Micro Gotas</SelectItem>
                 </SelectContent>
             </Select>
+            <Button>Enviar</Button>
         </div>
         </>
     )

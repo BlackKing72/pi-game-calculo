@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from '@/components/ui/loading';
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 import { Button } from "../components/ui/button";
 import {
@@ -21,31 +22,13 @@ const ListaRegistro = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const NavGotejamento = async () => {
-        setLoading(true);
-        navigate("/registrarGotejamento/")
-    }
-
-    const NavRegraTres = async () => {
-        setLoading(true);
-        navigate("/registrarRegraTres/")
-    }
-
     return loading
     ?<LoadingScreen/>
     :(
         <div>
-            <div className="flex flex-row-reverse absolute top-0 left-0 w-screen p-0 m-0 bg-blue-600">
-            <DropdownMenu>
-                <DropdownMenuTrigger className="text-white">Criar nova questão</DropdownMenuTrigger>
-                <DropdownMenuContent>
-                <DropdownMenuLabel>Usando</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={NavRegraTres}>Regra de três</DropdownMenuItem>
-                  <DropdownMenuItem onClick={NavGotejamento}>Gotejamento</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-            </div>
+            <div className="absolute top-0 left-0 right-0">
+                <Navbar/>
+            </div>  
             <div className="TabelaResponsivo">
                 <table className="table-auto border-collapse border-spacing-2 border border-slate-500">
                     <thead>

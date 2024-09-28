@@ -1,20 +1,12 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
-
-
 .navbar {
   height: 74px;
-  /* font-family: 'Montserrat', sans-serif; */
   font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   background: linear-gradient(to right, #002199 0%, #1643e7 59%, #002199 100%);;
-  /* background-image: linear-gradient(to right, #002199, #0027b2, #002ccb, #0032e5, #0037ff);  */
-  /* background-image: linear-gradient(to right,
-      var(--color-main-light) 0% ,
-      var(--color-main-normal) 85%,
-      var(--color-main-normal)); */
+ 
 }
 
 .logo {
