@@ -14,7 +14,7 @@ import {
 
 import VerificarConversaoUnidades from "./etapas/VerificarConversaoRegraDeTres.tsx";
 import ConverterUnidades from "./etapas/ConverterUnidadesRegraDeTres.tsx";
-import { EquacaoParte1, EquacaoParte2, EquacaoParte3, EquacaoParte4 } from "./etapas/EquacaoRegraDeTres.tsx";
+import { EquacaoParte1, EquacaoParte2, EquacaoParte3, EquacaoParte4, EquacaoParte5 } from "./etapas/EquacaoRegraDeTres.tsx";
 
 // Como estou usando TypeScript preciso definir alguns tipos para facilitar.
 // Alguns não precisam porque o TypeScript reconhece automaticamente.
@@ -74,6 +74,9 @@ export const buscarConteudoParaRegraDeTres = (questao: QuestaoRegraDeTres) => {
         ),
         (quandoResponder: CallbackResposta) => (
             <EquacaoParte4 questao={questao} quandoResponder={quandoResponder} />
+        ),
+        (quandoResponder: CallbackResposta) => (
+            <EquacaoParte5 questao={questao} quandoResponder={quandoResponder} />
         ),
     ];
 

@@ -286,16 +286,19 @@ const EquacaoParte3 = ({ questao, quandoResponder }: EtapaProps) => {
 const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
     const { dosePrescrita, doseDisponivel, volumeDisponível, volumeAdministrado } = extrairValoresDaQuestao(questao);
 
-    const data = localStorage.getItem('slotData2');
+    const data = localStorage.getItem('slotData3');
     const valores: string[] = !data
         ? [volumeAdministrado, dosePrescrita, volumeDisponível, doseDisponivel]
         : JSON.parse(data);
 
-    const [valor, setValor] = useState<number>();
+    const [multiplicacao, setMultiplicacao] = useState<number>();
+    const [divisao, setDivisao] = useState<number>();
 
     const handleQuandoResponder = () => {
-        const resposta = questao.prescricao.valor * questao.diluente.valor;
-        quandoResponder(resposta === valor);
+        const mult = questao.prescricao.valor * questao.diluente.valor;
+        const resposta = mult / questao.medicamento.valor;
+
+        quandoResponder(resposta === divisao);
     }
 
     return (
@@ -317,12 +320,21 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
                 <hr className="my-1 w-full" />
 
                 <div className='flex gap-4 items-center'>
-                    <p className='w-0 flex-grow'>{valores[1]}</p>
+                    <FakeSlot key={10} content={valores[1]} className='w-0 flex-grow h-12' />
                     <p>x</p>
-                    <p className='w-0 flex-grow'>{valores[2]}</p>
+                    <FakeSlot key={11} content={valores[2]} className='w-0 flex-grow h-12' />
                     <p>=</p>
-                    <Input className='w-1/2' type='number' onChange={e => setValor(e.target.valueAsNumber)} />
+                    <Input className='w-1/2' type='number' onChange={e => setMultiplicacao(e.target.valueAsNumber)} />
                 </div>
+
+                <div className='flex gap-4 items-center'>
+                    <FakeSlot key={12} content={multiplicacao} className='w-0 flex-grow h-12' />
+                    <p>/</p>
+                    <FakeSlot key={13} content={valores[3]} className='w-0 flex-grow h-12' />
+                    <p>=</p>
+                    <Input className='w-1/2' type='number' onChange={e => setDivisao(e.target.valueAsNumber)} />
+                </div>
+
                 <hr className="my-1 w-full" />
                 <Button onClick={handleQuandoResponder}>Responder</Button>
             </div>
@@ -330,7 +342,21 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
     );
 };
 
-type FakeSlotProps = { className?: string, content?: string }
+const EquacaoParte5 = ({ questao, quandoResponder }: EtapaProps) => {
+    const resposta = (questao.prescricao.valor * questao.diluente.valor) / questao.medicamento.valor;
+
+    return (
+        <div className="flex gap-4 w-full" >
+            <div className='flex gap-4 items-center w-full'>
+                <FakeSlot key={12} content='x' className='w-0 flex-grow h-12' />
+                <p>=</p>
+                <FakeSlot key={12} content={resposta} className='w-0 flex-grow h-12' />
+            </div>
+        </div>
+    );
+}
+
+type FakeSlotProps = { className?: string, content?: any }
 function FakeSlot({ className, content }: FakeSlotProps) {
     return (
         <div className={`p-1 bg-slate-200 rounded-lg ${className ?? ''}`}>
@@ -346,4 +372,5 @@ export {
     EquacaoParte2,
     EquacaoParte3,
     EquacaoParte4,
+    EquacaoParte5,
 };
