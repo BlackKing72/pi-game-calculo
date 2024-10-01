@@ -11,9 +11,20 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-  } from "../components/ui/dropdown-menu"
+} from "../components/ui/dropdown-menu"
 
-import {QuestaoGotejamento, gerarRespostas, QuestaoRegraDeTres} from "@/services/perguntasService";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+
+import { QuestaoGotejamento, gerarRespostas, QuestaoRegraDeTres } from "@/services/perguntasService";
 import VisualizarPerguntas from "../components/VisualizarPerguntas";
 import { Link } from "react-router-dom";
 import * as perguntasService from '../services/perguntasService'
@@ -38,36 +49,39 @@ const ListaRegistro = () => {
     }
 
     return loading
-    ? <LoadingScreen/>
-    :(
-        <div>
-            <div className="absolute top-0 left-0 right-0">
-                <Navbar/>
-            </div>  
-            <div className="TabelaResponsivo">
-                <table className="table-auto border-collapse border-spacing-2 border border-slate-500">
-                    <thead>
-                        <tr>
-                            <th className="border border-slate-600">Id</th>
-                            <th className="border border-slate-600">Enunciado</th>
-                            <th className="border border-slate-600">Data de alteração</th>
-                            <th className="border border-slate-600">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            questoes.map((questao, index) => 
-                                <VisualizarPerguntas key={index} questao={questao}/>
-                            )
+        ? <LoadingScreen />
+        : (
+            <div className="w-screen">
+                <div className="absolute top-0 left-0 right-0">
+                    <Navbar />
+                </div>
+                <Table className="rounded-lg overflow-hidden">
+                    <TableHeader>
+                        <TableRow className="w-screen">
+                            <TableHead className="bg-slate-300 font-bold text-slate-900 text-center w-20">ID</TableHead>
+                            <TableHead className="bg-slate-300 font-bold text-slate-900 text-center w-1/2">Enunciado</TableHead>
+                            <TableHead className="bg-slate-300 font-bold text-slate-900 text-center ">Data de Alteração</TableHead>
+                            <TableHead colSpan={2} className="bg-slate-300 font-bold text-slate-900 text-center">Ações</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {questoes.map(questao => 
+                            <TableRow key={questao.id} className="h-20">
+                                <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">{questao.id}</TableCell>
+                                <TableCell className="bg-slate-200 border-t border-l text-left border-slate-300 px-4">{questao.enunciado}</TableCell>
+                                <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">35/13/3668</TableCell>
+                                <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">
+                                    <Button className="w-24 mx-1">Alterar</Button>
+                                    <Button className="w-24 mx-1">Excluir</Button>
+                                </TableCell>
+                            </TableRow>
+                        )
+
                         }
-                        {/* <VisualizarPerguntas/>
-                        <VisualizarPerguntas/> */}
-                    </tbody>
-                </table>
-            
+                    </TableBody>
+                </Table>
             </div>
-        </div>
-    )
+        )
 };
 
 export default ListaRegistro;

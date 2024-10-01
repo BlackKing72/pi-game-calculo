@@ -1,12 +1,16 @@
 import { Button } from "./ui/button";
 
-const VisualizarPerguntas = ({questao}) => {
+const VisualizarPerguntas = ({ questao }) => {
   return (
     <tr>
-      <td className="border border-slate-700 w-20">{questao.id}</td>
-      <td className="border border-slate-700 w-44 text-ellipsis line-clamp-2">{questao.enunciado}</td>
-      <td className="border border-slate-700 w-44">Data de alteração</td>
-      <td className="border border-slate-700">
+      <td className="border border-slate-700 px-4">
+        <p>{questao.id}</p>
+      </td>
+      <td className="border border-slate-700 ">
+        <p className="text-ellipsis line-clamp-2">asdasdasdas</p>
+      </td>
+      <td className="border border-slate-700 ">Data de alteração</td>
+      <td className="border border-slate-700 flex gap-2 w-min">
         <Button className="rounded-none">Alterar</Button>
         <Button className="rounded-none">Excluir</Button>
       </td>
