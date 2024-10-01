@@ -7,314 +7,366 @@ import SwapyItem from "../swapy/SwapyItem";
 import SwapySlot from "../swapy/SwapySlot";
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { SwapEventArray, SwapEventMap, SwapEventObject, Swapy } from 'swapy';
 
 import * as conversoes from '@/models/conversao';
 import { QuestaoRegraDeTres } from '@/services/perguntasService';
+import { Grandeza } from '@/models/grandeza';
 
-const extrairValoresDaQuestao = (questao: QuestaoRegraDeTres) => {
+type SlotData = string | null;
+
+/** Se necessário converter o valor da dose disponível, senão mantem o valor original. */
+const converterDoseDisponivel = (questao: QuestaoRegraDeTres) => {
+    // se as unidades forem diferentes precisa converter o valor.
     const precisaConverter = questao.prescricao.unidade !== questao.medicamento.unidade;
+
+    // tenta achar uma conversão disponível para essas unidades.
+    // o medicamento é a unidade de origem (a unidade que você quer converter).
+    // a prescrição é a unidade de destino (a unidade do valor quando convertido).
     const conversao = conversoes.buscarConversao(questao.medicamento.unidade, questao.prescricao.unidade);
-    const doseDisponivel = (precisaConverter && conversao)
-        ? conversao.converter(questao.medicamento).toString()
-        : questao.medicamento.toString();
+
+    // se precisar converter e achar uma conversão para as unidades retorna o valor
+    // convertido, senão o valor original.
+    return (precisaConverter && conversao)
+        ? conversao.converter(questao.medicamento)
+        : questao.medicamento;
+}
+
+/** Retorna um objeto com os valores da questão no formato de texto. */
+const extrairValoresDaQuestao = (questao: QuestaoRegraDeTres) => {
+    const doseDisponivel = converterDoseDisponivel(questao);
 
     return {
         dosePrescrita: questao.prescricao.toString(),
-        doseDisponivel: doseDisponivel,
+        doseDisponivel: doseDisponivel.toString(),
         volumeDisponível: questao.diluente.toString(),
         volumeAdministrado: 'x',
     };
 }
 
-
 const EquacaoParte1 = ({ questao, quandoResponder }: EtapaProps) => {
-    const {
-        dosePrescrita,
-        doseDisponivel,
-        volumeDisponível,
-        volumeAdministrado
-    } = extrairValoresDaQuestao(questao);
+    // transformar os valores da questão em texto.
+    const { dosePrescrita, doseDisponivel, volumeDisponível, volumeAdministrado } = extrairValoresDaQuestao(questao);
 
+    // a lista de valores na ordem que vão aparecer.
+    // todo: podia ser aleatório para o jogador não conseguir decorar a orderm.
     const valores = [dosePrescrita, doseDisponivel, volumeDisponível, volumeAdministrado];
 
-    const respostas = [
-        [dosePrescrita, doseDisponivel,
-            volumeAdministrado, volumeDisponível],
+    // guarda as valores que foram colocados no slots de resposta.
+    const [slotData, setSlotData] = useState<SlotData[]>([]);
 
-        [dosePrescrita, volumeAdministrado,
-            doseDisponivel, volumeDisponível],
-
-        // Deixei só os dois modelos de fórmula, ver depois se tem outros jeitos de 
-        // organizar a fórmula
-    ];
-
-    const [slotData, setSlotData] = useState<(string | null)[]>([null, null, null, null]);
+    // o slot precisa ter um id que possa ser reconhecido para buscar o valor depois.
     const dropSlots = ['slotTL', 'slotTR', 'slotBL', 'slotBR'];
 
     const handleOnSwap = (data: any) => {
-        const slotTopLeft = valores[parseInt(data.object.slotTL)];
-        const slotTopRight = valores[parseInt(data.object.slotTR)];
-        const slotBottomLeft = valores[parseInt(data.object.slotBL)];
-        const slotBottomRight = valores[parseInt(data.object.slotBR)];
-
-        setSlotData([slotTopLeft, slotTopRight, slotBottomLeft, slotBottomRight]);
+        // toda vez q algum slot é trocado, guarda os valores que foram colocados dentro 
+        // do slots de resposta. o 'data.object.slotXX' retorna o id do slot que é um 
+        // index para a array de valores, mas como o 'swapy' salva o id do slot como
+        // texto, precisa ser convertido para número de novo.
+        setSlotData([
+            valores[parseInt(data.object.slotTL)],
+            valores[parseInt(data.object.slotTR)],
+            valores[parseInt(data.object.slotBL)],
+            valores[parseInt(data.object.slotBR)]]);
     };
 
     const handleQuandoResponder = () => {
+        // uma lista que representa a ordem correta dos valores do slot.
+        const respostas = [
+            [dosePrescrita, doseDisponivel, volumeAdministrado, volumeDisponível],
+            [dosePrescrita, volumeAdministrado, doseDisponivel, volumeDisponível],
+
+            // deixei só os dois modelos de fórmula, ver depois se tem outros jeitos de 
+            // organizar a fórmula.
+        ];
+
+        // está correto se a ordem de alguma das resposta for exatamente igual a ordem 
+        // que o jogador respondeu.
         let estaCorreto = respostas.some(resposta => {
             return slotData.every((value, index) => value === resposta[index]);
         });
 
-        localStorage.setItem('slotData1', JSON.stringify(slotData));
+        // salva a resposta no localStorage para ser usado pela próxima etapa.
+        localStorage.setItem('respostaEquacao1', JSON.stringify(slotData));
+
+        // chama o evento que avisa o jogo se o usuário respondeu a pergunta.
         quandoResponder(estaCorreto);
     };
 
     return (
-        <div className="flex gap-4 w-full" >
-            <SwapyContainer animation="spring" className='flex flex-col w-full' onSwap={handleOnSwap}>
-                <SwapyGroup className="flex gap-2 w-full">
+        <div className='flex flex-col gap-2 w-full h-full justify-center'>
+            <p className="font-medium"> Arraste os valores para montar a fórmula na ordem correta.</p>
+
+            <SwapyContainer animation="spring" className='equacao-container' onSwap={handleOnSwap}>
+                <SwapyGroup className="equacao-values-container">
                     {
                         valores.map((valor, index) =>
-                            <SwapySlot className='w-0 flex-grow h-12 p-1 bg-slate-200' key={index} slotID={index}>
-                                <SwapyItem className='bg-orange-500' itemID={index}>
-                                    <p>{valor}</p>
-                                </SwapyItem>
-                            </SwapySlot>
+                            <PickSlot key={index} slotID={index} itemID={index} content={valor} className='w-0 flex-grow flex-shrink basis-1/3 h-12' />
                         )
                     }
                 </SwapyGroup>
+
                 <hr className="my-1 w-full" />
+
                 <SwapyGroup className="relative flex flex-wrap gap-x-16 gap-y-4 justify-center w-full">
                     <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-                        <p className='text-8xl font-light'>×</p>
+                        <p className='text-5xl font-light'>×</p>
                     </div>
                     {
                         dropSlots.map((slot, index) =>
-                            <SwapySlot key={index + 3} slotID={slot} className='w-0 flex-grow flex-shrink basis-1/3 h-12 drop-slot'></SwapySlot>
+                            <DropSlot key={index} slotID={slot} className='w-0 flex-grow flex-shrink basis-1/3 h-12' />
                         )
                     }
                 </SwapyGroup>
-                <hr className="my-1 w-full" />
-                <Button onClick={handleQuandoResponder}>Responder</Button>
             </SwapyContainer>
+
+            <hr className="my-1 w-full" />
+            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
         </div>
     );
 };
 
 const EquacaoParte2 = ({ questao, quandoResponder }: EtapaProps) => {
-    const {
-        dosePrescrita,
-        doseDisponivel,
-        volumeDisponível,
-        volumeAdministrado
-    } = extrairValoresDaQuestao(questao);
+    // transformar os valores da questão em texto.
+    const { dosePrescrita, doseDisponivel, volumeDisponível, volumeAdministrado } = extrairValoresDaQuestao(questao);
 
-    const data = localStorage.getItem('slotData1');
-    const valores: string[] = !data
+    // busca a resposta da etapa anterior no localStorage e tranforma em uma lista de 
+    // valores. se não encontrar (provavelmente por algum erro) usa um valor padrão.
+    const repostaAnterior = localStorage.getItem('respostaEquacao1');
+    const valores: string[] = !repostaAnterior
         ? [dosePrescrita, doseDisponivel, volumeAdministrado, volumeDisponível]
-        : JSON.parse(data);
+        : JSON.parse(repostaAnterior);
 
-    const [slotData, setSlotData] = useState<(string | null)[]>([null, null, null, null]);
+    // guarda as valores que foram colocados no slots de resposta.
+    const [slotData, setSlotData] = useState<SlotData[]>([]);
 
-    const respostas = [
-        [dosePrescrita, volumeDisponível, volumeAdministrado, doseDisponivel],  // 0 * 1 = 2 * 3
-        [dosePrescrita, volumeDisponível, doseDisponivel, volumeAdministrado],  // 0 * 1 = 3 * 2 
-        [volumeDisponível, dosePrescrita, doseDisponivel, volumeAdministrado],  // 1 * 0 = 3 * 2
-        [volumeDisponível, dosePrescrita, volumeAdministrado, doseDisponivel],  // 1 * 0 = 2 * 3
-
-        [doseDisponivel, volumeAdministrado, dosePrescrita, volumeDisponível],  // 3 * 2 = 0 * 1 
-        [doseDisponivel, volumeAdministrado, volumeDisponível, dosePrescrita],  // 3 * 2 = 1 * 0
-        [volumeAdministrado, doseDisponivel, dosePrescrita, volumeDisponível],  // 2 * 3 = 0 * 1
-        [volumeAdministrado, doseDisponivel, volumeDisponível, dosePrescrita],  // 2 * 3 = 1 * 0
-    ];
-
+    // o slot precisa ter um id que possa ser reconhecido para buscar o valor depois.
     const dropSlots = ['slotL1', 'slotL0', 'slotR0', 'slotR1'];
-    const handleOnSwap = (data: any) => {
-        const slotL1 = valores[parseInt(data.object.slotL1)];
-        const slotL0 = valores[parseInt(data.object.slotL0)];
-        const slotR0 = valores[parseInt(data.object.slotR0)];
-        const slotR1 = valores[parseInt(data.object.slotR1)];
 
-        setSlotData([slotL1, slotL0, slotR0, slotR1]);
+    const handleOnSwap = (data: any) => {
+        // toda vez q algum slot é trocado, guarda os valores que foram colocados dentro 
+        // do slots de resposta. o 'data.object.slotXX' retorna o id do slot que é um 
+        // index para a array de valores, mas como o 'swapy' salva o id do slot como
+        // texto, precisa ser convertido para número de novo.
+        setSlotData([
+            valores[parseInt(data.object.slotL1)],
+            valores[parseInt(data.object.slotL0)],
+            valores[parseInt(data.object.slotR0)],
+            valores[parseInt(data.object.slotR1)]]);
     };
 
     const handleQuandoResponder = () => {
+        // uma lista que representa a ordem correta dos valores do slot. como o jogador
+        // pode colocar as respostas de várias maneiras e ainda estarem corretas, precisa
+        // de todas as combinações certas possíveis.
+        const respostas = [
+            [dosePrescrita, volumeDisponível, volumeAdministrado, doseDisponivel],  // 0 * 1 = 2 * 3
+            [dosePrescrita, volumeDisponível, doseDisponivel, volumeAdministrado],  // 0 * 1 = 3 * 2 
+            [volumeDisponível, dosePrescrita, doseDisponivel, volumeAdministrado],  // 1 * 0 = 3 * 2
+            [volumeDisponível, dosePrescrita, volumeAdministrado, doseDisponivel],  // 1 * 0 = 2 * 3
+            [doseDisponivel, volumeAdministrado, dosePrescrita, volumeDisponível],  // 3 * 2 = 0 * 1 
+            [doseDisponivel, volumeAdministrado, volumeDisponível, dosePrescrita],  // 3 * 2 = 1 * 0
+            [volumeAdministrado, doseDisponivel, dosePrescrita, volumeDisponível],  // 2 * 3 = 0 * 1
+            [volumeAdministrado, doseDisponivel, volumeDisponível, dosePrescrita],  // 2 * 3 = 1 * 0
+        ];
+
+        // está correto se a ordem de alguma das resposta for exatamente igual a ordem 
+        // que o jogador respondeu.
         let estaCorreto = respostas.some(resposta => {
             return slotData.every((value, index) => value === resposta[index]);
         });
 
-        localStorage.setItem('slotData2', JSON.stringify(slotData));
+        // salva a resposta no localStorage para ser usado pela próxima etapa.
+        localStorage.setItem('respostaEquacao2', JSON.stringify(slotData));
+
+        // chama o evento que avisa o jogo se o usuário respondeu a pergunta.
         quandoResponder(estaCorreto);
     }
 
     return (
-        <div className="flex gap-4 w-full" >
-            <SwapyContainer animation="spring" className='flex flex-col w-full' onSwap={handleOnSwap}>
-                <SwapyGroup className="relative flex flex-wrap gap-x-16 gap-y-4 justify-center w-full">
+        <div className='flex flex-col gap-2 w-full h-full justify-center'>
+            <p className="font-medium"> Arraste os valores para montar a fórmula na ordem correta.</p>
+
+            <SwapyContainer animation="spring" className='equacao-container' onSwap={handleOnSwap}>
+                <SwapyGroup className="relative flex flex-wrap gap-x-8 gap-y-4 justify-center w-full">
                     <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-                        <p className='text-8xl font-light'>×</p>
+                        <p className='text-5xl font-light'>×</p>
                     </div>
                     {
                         valores.map((slot, index) =>
-                            <SwapySlot className='w-0 flex-grow flex-shrink basis-1/3 h-12 p-1 bg-slate-200' key={index} slotID={index}>
-                                <SwapyItem className='bg-orange-500' itemID={index}>
-                                    <p>{slot}</p>
-                                </SwapyItem>
-                            </SwapySlot>
+                            <PickSlot key={index} slotID={index} itemID={index} content={slot} className='w-0 flex-grow basis-1/3 h-12' />
                         )
                     }
                 </SwapyGroup>
+
                 <hr className="my-1 w-full" />
-                <SwapyGroup className="flex gap-2 w-full items-center">
+
+                <SwapyGroup className="equacao-parte-2">
                     {
                         dropSlots.slice(0, 2).map((slot, index) =>
-                            <SwapySlot className='w-0 flex-grow h-12 drop-slot' key={index} slotID={slot}></SwapySlot>
+                            <DropSlot className='w-0 flex-grow h-12 drop-slot' key={index + 3} slotID={slot} />
                         )
                     }
                     <p className='text-4xl m-2'>=</p>
                     {
                         dropSlots.slice(2, 4).map((slot, index) =>
-                            <SwapySlot className='w-0 flex-grow h-12 drop-slot' key={index} slotID={slot}></SwapySlot>
+                            <DropSlot className='w-0 flex-grow h-12 drop-slot' key={index + 5} slotID={slot} />
                         )
                     }
                 </SwapyGroup>
-                <hr className="my-1 w-full" />
-                <Button onClick={handleQuandoResponder}>Responder</Button>
             </SwapyContainer>
+
+            <hr className="my-1 w-full" />
+            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
         </div>
     );
 };
 
 const EquacaoParte3 = ({ questao, quandoResponder }: EtapaProps) => {
+    // transformar os valores da questão em texto.
     const { dosePrescrita, doseDisponivel, volumeDisponível, volumeAdministrado } = extrairValoresDaQuestao(questao);
-    const data = localStorage.getItem('slotData2');
-    const valores: string[] = !data
+
+    // busca a resposta da etapa anterior no localStorage e tranforma em uma lista de 
+    // valores. se não encontrar (provavelmente por algum erro) usa um valor padrão.
+    const repostaAnterior = localStorage.getItem('respostaEquacao2');
+    const valores: string[] = !repostaAnterior
         ? [dosePrescrita, volumeDisponível, volumeAdministrado, doseDisponivel]
-        : JSON.parse(data);
+        : JSON.parse(repostaAnterior);
 
-    const xEstaNaDireita = valores.indexOf(volumeAdministrado) >= 2;
+    // usado para inverter a posição dos slots de resposta.
+    // verifica se a solução ('x') está na direita ou esquerda da fórmula, antes ou depois 
+    // do '='. como a ordem dos valores é conhecida (v0 * v1 = v2 * v3) se o index de 'x' 
+    // for >= 2 ele vai estar posicionado depois do '='.
+    const solucaoEstaNaDireita = valores.indexOf(volumeAdministrado) >= 2;
 
-    const [slotData, setSlotData] = useState<(string | null)[]>([null, null, null, null]);
+    // guarda as valores que foram colocados no slots de resposta.
+    const [slotData, setSlotData] = useState<SlotData[]>([]);
 
+    // o slot precisa ter um id que possa ser reconhecido para buscar o valor depois.
     const dropSlots = ['slotX0', 'slotT0', 'slotT1', 'slotB0'];
-    const handleOnSwap = (data: any) => {
-        const slotX0 = valores[parseInt(data.object.slotX0)];
-        const slotT0 = valores[parseInt(data.object.slotT0)];
-        const slotT1 = valores[parseInt(data.object.slotT1)];
-        const slotB0 = valores[parseInt(data.object.slotB0)];
 
-        setSlotData([slotX0, slotT0, slotT1, slotB0]);
+    const handleOnSwap = (data: any) => {
+        // toda vez q algum slot é trocado, guarda os valores que foram colocados dentro 
+        // do slots de resposta. o 'data.object.slotXX' retorna o id do slot que é um 
+        // index para a array de valores, mas como o 'swapy' salva o id do slot como
+        // texto, precisa ser convertido para número de novo.
+        setSlotData([
+            valores[parseInt(data.object.slotX0)],
+            valores[parseInt(data.object.slotT0)],
+            valores[parseInt(data.object.slotT1)],
+            valores[parseInt(data.object.slotB0)]]);
     };
 
-    const respostas = [
-        [volumeAdministrado, dosePrescrita, volumeDisponível, doseDisponivel], // x = (dp * vd) / dd,
-        [volumeAdministrado, volumeDisponível, dosePrescrita, doseDisponivel], // x = (vd * dp) / dd,
-    ]
-
     const handleQuandoResponder = () => {
+        // uma lista que representa a ordem correta dos valores do slot. como o jogador só 
+        // pode inverter o valor da dose prescrita e do volume disponível, não precisa de
+        // tantas respostas como na etapa anterior.
+        const respostas = [
+            [volumeAdministrado, dosePrescrita, volumeDisponível, doseDisponivel], // x = (dp * vd) / dd,
+            [volumeAdministrado, volumeDisponível, dosePrescrita, doseDisponivel], // x = (vd * dp) / dd,
+        ]
+
+        // está correto se a ordem de alguma das resposta for exatamente igual a ordem 
+        // que o jogador respondeu.
         let estaCorreto = respostas.some(resposta => {
             return slotData.every((value, index) => value === resposta[index]);
         });
 
-        localStorage.setItem('slotData3', JSON.stringify(slotData));
+        // salva a resposta no localStorage para ser usado pela próxima etapa.
+        localStorage.setItem('respostaEquacao3', JSON.stringify(slotData));
+
+        // chama o evento que avisa o jogo se o usuário respondeu a pergunta.
         quandoResponder(estaCorreto);
     }
 
     return (
-        <div className="flex gap-4 w-full" >
+        <div className='flex flex-col gap-2 w-full h-full justify-center'>
+            <p className="font-medium"> Arraste os valores para montar a fórmula na ordem correta.</p>
+
             <SwapyContainer animation="spring" className='flex flex-col w-full' onSwap={handleOnSwap}>
                 <SwapyGroup className="flex gap-2 w-full items-center">
                     {
                         valores.slice(0, 2).map((slot, index) =>
-                            <SwapySlot className='w-0 flex-grow h-12 p-1 bg-slate-200' key={index} slotID={slot}>
-                                <SwapyItem className='bg-orange-500' itemID={index}>
-                                    <p>{slot}</p>
-                                </SwapyItem>
-                            </SwapySlot>
+                            <PickSlot key={index} slotID={index} itemID={index} content={slot} className='w-0 flex-grow h-12' />
                         )
                     }
                     <p className='text-2xl mx-1'>=</p>
                     {
                         valores.slice(2, 4).map((slot, index) =>
-                            <SwapySlot className='w-0 flex-grow h-12 p-1 bg-slate-200' key={index} slotID={slot}>
-                                <SwapyItem className='bg-orange-500' itemID={index + 2}>
-                                    <p>{slot}</p>
-                                </SwapyItem>
-                            </SwapySlot>
+                            <PickSlot key={index + 2} slotID={index + 2} itemID={index + 2} content={slot} className='w-0 flex-grow h-12' />
                         )
                     }
                 </SwapyGroup>
                 <hr className="my-1 w-full" />
-                <SwapyGroup className={`flex gap-2 w-full items-center ${xEstaNaDireita ? 'flex-row-reverse' : ''}`}>
-                    {
-                        dropSlots.slice(0, 1).map((slot, index) =>
-                            <SwapySlot className='w-0 flex-grow h-12 basis-1/3 drop-slot' key={index} slotID={slot}></SwapySlot>
-                        )
-                    }
+                <SwapyGroup className={`flex gap-2 w-full items-center ${solucaoEstaNaDireita ? 'flex-row-reverse' : ''}`}>
+                    <DropSlot className='w-0 flex-grow h-12 basis-1/3' slotID={dropSlots[0]} />
                     <p className='text-4xl mx-2'>=</p>
+
                     <SwapyGroup className='flex flex-col w-0 flex-grow basis-2/3 items-center'>
                         <SwapyGroup className='flex w-full flex-grow items-center'>
-                            {
-                                dropSlots.slice(1, 2).map((slot, index) =>
-                                    <SwapySlot className='w-0 flex-grow h-12 drop-slot' key={index} slotID={slot}></SwapySlot>
-                                )
-                            }
+                            <SwapySlot className='w-0 flex-grow h-12 drop-slot' slotID={dropSlots[1]}></SwapySlot>
                             <p className='text-2xl mx-4'>x</p>
-                            {
-                                dropSlots.slice(2, 3).map((slot, index) =>
-                                    <SwapySlot className='w-0 flex-grow h-12 drop-slot' key={index} slotID={slot}></SwapySlot>
-                                )
-                            }
+                            <SwapySlot className='w-0 flex-grow h-12 drop-slot' slotID={dropSlots[2]}></SwapySlot>
                         </SwapyGroup>
+
                         <hr className="my-2 w-full" />
-                        {
-                            dropSlots.slice(3, 4).map((slot, index) =>
-                                <SwapySlot className='flex-grow w-1/2 h-12 drop-slot' key={index} slotID={slot}></SwapySlot>
-                            )
-                        }
+
+                        <SwapySlot className='flex-grow w-1/2 h-12 drop-slot' slotID={dropSlots[3]}></SwapySlot>
                     </SwapyGroup>
                 </SwapyGroup>
-                <hr className="my-1 w-full" />
-                <Button onClick={handleQuandoResponder}>Responder</Button>
             </SwapyContainer>
+
+            <hr className="my-1 w-full" />
+            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
         </div>
     );
 };
 
 const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
+    // transformar os valores da questão em texto.
     const { dosePrescrita, doseDisponivel, volumeDisponível, volumeAdministrado } = extrairValoresDaQuestao(questao);
 
-    const data = localStorage.getItem('slotData3');
-    const valores: string[] = !data
+    // busca a resposta da etapa anterior no localStorage e tranforma em uma lista de 
+    // valores. se não encontrar (provavelmente por algum erro) usa um valor padrão.
+    const repostaAnterior = localStorage.getItem('respostaEquacao3');
+    const valores: string[] = !repostaAnterior
         ? [volumeAdministrado, dosePrescrita, volumeDisponível, doseDisponivel]
-        : JSON.parse(data);
+        : JSON.parse(repostaAnterior);
 
+    // salva os valores inseridos pelo jogador.
     const [multiplicacao, setMultiplicacao] = useState<number>();
     const [divisao, setDivisao] = useState<number>();
 
     const handleQuandoResponder = () => {
-        const mult = questao.prescricao.valor * questao.diluente.valor;
-        const resposta = mult / questao.medicamento.valor;
+        // se as unidades forem diferentes precisa converter o valor.
+        const doseDisponivel = converterDoseDisponivel(questao);
 
+        // o valor esperado.
+        const resposta = (questao.prescricao.valor * questao.diluente.valor) / doseDisponivel.valor;
+
+        // chama o evento que avisa o jogo se o usuário respondeu a pergunta.
         quandoResponder(resposta === divisao);
     }
 
     return (
-        <div className="flex gap-4 w-full" >
-            <div className='flex flex-col w-full gap-4'>
+        <div className='flex flex-col gap-2 w-full h-full justify-center'>
+            <p className="font-medium">Calcule o valor da equação para descobrir a dose que deve ser administrada</p>
+
+            <div className='flex flex-col w-full gap-2'>
                 <div className='flex gap-2 w-full items-center'>
-                    {valores.slice(0, 1).map((slot, index) => <FakeSlot key={index} content={slot} className='w-0 flex-grow basis-1/3 h-12' />)}
+                    <FakeSlot content={valores[0]} className='w-0 flex-grow basis-1/3 h-12' />
                     <p className='text-4xl mx-2'>=</p>
+
                     <div className='flex flex-col w-0 flex-grow basis-2/3 items-center'>
                         <div className='flex w-full flex-grow items-center'>
-                            {valores.slice(1, 2).map((slot, index) => <FakeSlot key={index} content={slot} className='w-0 flex-grow h-12' />)}
+                            <FakeSlot content={valores[1]} className='w-0 flex-grow h-12' />
                             <p className='text-2xl mx-4'>x</p>
-                            {valores.slice(2, 3).map((slot, index) => <FakeSlot key={index} content={slot} className='w-0 flex-grow h-12' />)}
+                            <FakeSlot content={valores[2]} className='w-0 flex-grow h-12' />
                         </div>
+
                         <hr className="my-2 w-full" />
-                        {valores.slice(3, 4).map((slot, index) => <FakeSlot key={index} content={slot} className='w-1/2 flex-grow h-12' />)}
+                        <FakeSlot content={valores[3]} className='w-1/2 flex-grow h-12' />
                     </div>
                 </div>
                 <hr className="my-1 w-full" />
@@ -324,7 +376,7 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
                     <p>x</p>
                     <FakeSlot key={11} content={valores[2]} className='w-0 flex-grow h-12' />
                     <p>=</p>
-                    <Input className='w-1/2' type='number' onChange={e => setMultiplicacao(e.target.valueAsNumber)} />
+                    <Input className='w-1/3' type='number' onChange={e => setMultiplicacao(e.target.valueAsNumber)} />
                 </div>
 
                 <div className='flex gap-4 items-center'>
@@ -332,7 +384,7 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
                     <p>/</p>
                     <FakeSlot key={13} content={valores[3]} className='w-0 flex-grow h-12' />
                     <p>=</p>
-                    <Input className='w-1/2' type='number' onChange={e => setDivisao(e.target.valueAsNumber)} />
+                    <Input className='w-1/3' type='number' onChange={e => setDivisao(e.target.valueAsNumber)} />
                 </div>
 
                 <hr className="my-1 w-full" />
@@ -343,17 +395,39 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
 };
 
 const EquacaoParte5 = ({ questao, quandoResponder }: EtapaProps) => {
-    const resposta = (questao.prescricao.valor * questao.diluente.valor) / questao.medicamento.valor;
+    const doseDisponivel = converterDoseDisponivel(questao);
+    const resposta = (questao.prescricao.valor * questao.diluente.valor) / doseDisponivel.valor;
+    const grandeza = new Grandeza(resposta, questao.diluente.unidade);
 
     return (
-        <div className="flex gap-4 w-full" >
-            <div className='flex gap-4 items-center w-full'>
-                <FakeSlot key={12} content='x' className='w-0 flex-grow h-12' />
-                <p>=</p>
-                <FakeSlot key={12} content={resposta} className='w-0 flex-grow h-12' />
+        <div className='flex flex-col gap-2 w-full h-full justify-center items-center'>
+            <p className="font-medium">A quantidade de medicamento a ser administrada é de:</p>
+            <div className='flex w-full gap-4 justify-center'>
+                <FakeSlot key={12} content={grandeza.toString()} className='flex-grow max-w-[50%] h-12' />
             </div>
         </div>
     );
+}
+
+
+type PickSlotProps = { className?: string, content?: any, slotID: any, itemID: any }
+function PickSlot({ className, content, slotID, itemID }: PickSlotProps) {
+    return (
+        <SwapySlot className={`p-1 bg-slate-200 ${className || ''}`} slotID={slotID}>
+            <SwapyItem className='bg-orange-500' itemID={itemID}>
+                <p className='text-sm'>{content}</p>
+            </SwapyItem>
+        </SwapySlot>
+    );
+};
+
+type DropSlotProps = { className?: string, slotID: any }
+function DropSlot({ className, slotID, children }: PropsWithChildren<DropSlotProps>) {
+    return (
+        <SwapySlot className={`drop-slot ${className || ''}`} slotID={slotID}>
+            {children}
+        </SwapySlot>
+    )
 }
 
 type FakeSlotProps = { className?: string, content?: any }
@@ -361,7 +435,7 @@ function FakeSlot({ className, content }: FakeSlotProps) {
     return (
         <div className={`p-1 bg-slate-200 rounded-lg ${className ?? ''}`}>
             <div className='bg-slate-500 rounded-lg w-full h-full flex items-center justify-center'>
-                <p className='text-slate-50'>{content ?? ''}</p>
+                <p className='text-slate-50 text-sm'>{content ?? ''}</p>
             </div>
         </div>
     )
