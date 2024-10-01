@@ -91,11 +91,8 @@ function MinigameFooter({ quantidadeEtapas, etapaSelecionada, quandoMudarEtapa }
             <div className='progress'>
                 {
                     [...Array(quantidadeEtapas)].map((_, index) =>
-                        index === etapaSelecionada
-                            ? <span key={index} className='progress-bar active' />
-                            : index < etapaSelecionada
-                                ? <span key={index} className='progress-bar completed' />
-                                : <span key={index} className='progress-bar' />
+                        <span key={index} onClick={() => quandoMudarEtapa(index)} className={`progress-bar ${
+                            index === etapaSelecionada ? 'active' : index < etapaSelecionada ? 'completed' : '' }`} />
                     )
                 }
             </div>

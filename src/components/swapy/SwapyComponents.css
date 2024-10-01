@@ -1,16 +1,15 @@
 .swapy-container {
+    position: relative;
     align-items: center;
     display: flex;
     gap: 12px;
 }
 
-.swapy-group {
-    z-index: 0 !important;
-}
 
-.swapy-group:has(.swapy-slot[data-swapy-highlighted]) {
-    z-index: 20 !important;
-}
+
+/* .swapy-group:has(.swapy-slot[data-swapy-highlighted]) {
+    z-index: 20;
+} */
 
 .swapy-slot {
     position: relative;
@@ -19,7 +18,7 @@
     padding: 12px;
     height: 200px;
     width: 200px;
-    z-index: 0 !important; 
+    
 
     outline: 4px solid transparent;
     transform: translate3D(0px, 0px, 10px) !important;
@@ -29,10 +28,11 @@
         outline 0.25s cubic-bezier(0.12, 0, 0.39, 0);
 }
 
+
+
 .swapy-slot[data-swapy-highlighted] {
     background-color: #3f3f46;
     outline: 4px solid #3B82F6;    
-    z-index: 10 !important;   
 
     .swapy-item {        
         scale: 1.15;
@@ -54,4 +54,18 @@
     
     /* transition: 
         scale 0.35s cubic-bezier(0.68, -0.6, 0.32, 1.6); */
+}
+
+/* Corrige o bug do z-index */
+.swapy-group {
+    z-index: 0;
+}
+.swapy-slot {
+    z-index: 0; 
+}
+.swapy-group:has(.swapy-item[data-swapy-current]) {
+    z-index: 20;
+}
+.swapy-slot:has(.swapy-item[data-swapy-current]) {
+    z-index: 10;  
 }
