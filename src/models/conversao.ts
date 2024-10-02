@@ -1,3 +1,5 @@
+import { ValueNoneIcon } from '@radix-ui/react-icons';
+import { Grandeza } from './grandeza.ts';
 import { Gramas, Litros, Miligramas, Mililitros, Unidade } from './unidade.ts';
 
 /** Recebe um valor como argumento e retorna o valor convertido. */
@@ -6,16 +8,21 @@ type ValidarConversaoFn = (valor: number) => number;
 export class Conversao {
     origem: Unidade;
     destino: Unidade;
-    quandoValidar: ValidarConversaoFn;
+    quandoConverter: ValidarConversaoFn;
 
-    constructor(origem: Unidade, destino: Unidade, quandoValidar: ValidarConversaoFn) {
+    constructor(origem: Unidade, destino: Unidade, quandoConverter: ValidarConversaoFn) {
         this.origem = origem;
         this.destino = destino;
-        this.quandoValidar = quandoValidar;
+        this.quandoConverter = quandoConverter;
     }
 
     validar(valor: number) : number {
-        return this.quandoValidar(valor);
+        return this.quandoConverter(valor);
+    }
+
+    converter(de: Grandeza) : Grandeza {
+        const valorConvertido = this.quandoConverter(de.valor);
+        return new Grandeza(valorConvertido, this.destino);
     }
 };
 

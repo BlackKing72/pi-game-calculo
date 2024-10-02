@@ -1,44 +1,9 @@
-.equacao-regra-tres .equacao-dropzone {
-    position: relative;
-    border: 1px solid orange;
-    width: 100%;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 3rem 3rem;
-    column-gap: 64px;
-    row-gap: 16px;
+@layer components{
+    .drop-slot {
+        @apply p-1 bg-slate-200 outline-2 outline-dashed outline-blue-500;
+    }
 }
-
-.equacao-regra-tres .equacao-dropzone .swapy-slot {
-    background-color: #E2E8F0;
-    width: 100%;
-    height: 100%;
-    padding: 4px;
-}
-
-.equacao-regra-tres .equacao-dropzone .formula {
-    width: 100%;
-    height: 2lh;
-    text-wrap: pretty;
-    font-size: small;
-}
-
-.equacao-regra-tres .equacao-xmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.equacao-regra-tres .equacao-xmark p {
-    font-size: 5rem;
-    font-weight: 300;
-}
-
-
