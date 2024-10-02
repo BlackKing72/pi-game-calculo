@@ -14,7 +14,7 @@ import {
 
 import VerificarConversaoUnidades from "./etapas/VerificarConversaoRegraDeTres.tsx";
 import ConverterUnidades from "./etapas/ConverterUnidadesRegraDeTres.tsx";
-import { EquacaoParte1, EquacaoParte2, EquacaoParte3, EquacaoParte4, EquacaoParte5 } from "./etapas/EquacaoRegraDeTres.tsx";
+import { EquacaoParte1, EquacaoParte2, EquacaoParte3, EquacaoParte4, IdentificarConvercao, IdentificarValores, RealizarConversao } from "./etapas/EquacaoRegraDeTres.tsx";
 
 // Como estou usando TypeScript preciso definir alguns tipos para facilitar.
 // Alguns não precisam porque o TypeScript reconhece automaticamente.
@@ -39,27 +39,31 @@ export const buscarConteudoParaRegraDeTres = (questao: QuestaoRegraDeTres) => {
     // do react. Dessa maneira posso ter uma lista pre-definida de componentes e
     // ainda poder passar valores para modificar eles.
     const inicio = [
+        // (quandoResponder: CallbackResposta) => (
+        //     <SelecionarMedicamentoPrescrito key={0} questao={questao} quandoResponder={quandoResponder} />
+        // ),
+
+        // (quandoResponder: CallbackResposta) => (
+        //     <SelecionarMedicamentoDisponivel key={1} questao={questao} quandoResponder={quandoResponder} />
+        // ),
+
+        // (quandoResponder: CallbackResposta) => (
+        //     <SelecionarDiluenteDisponivel key={2} questao={questao} quandoResponder={quandoResponder} />
+        // ),
+
         (quandoResponder: CallbackResposta) => (
-            <SelecionarMedicamentoPrescrito key={0} questao={questao} quandoResponder={quandoResponder} />
+            <IdentificarValores key={0} questao={questao} quandoResponder={quandoResponder} />
         ),
 
         (quandoResponder: CallbackResposta) => (
-            <SelecionarMedicamentoDisponivel key={1} questao={questao} quandoResponder={quandoResponder} />
-        ),
-
-        (quandoResponder: CallbackResposta) => (
-            <SelecionarDiluenteDisponivel key={2} questao={questao} quandoResponder={quandoResponder} />
-        ),
-
-        (quandoResponder: CallbackResposta) => (
-            <VerificarConversaoUnidades key={3} questao={questao} quandoResponder={quandoResponder} />
+            <IdentificarConvercao key={1} questao={questao} quandoResponder={quandoResponder} />
         )
     ];
 
     // Se as unidades forem iguais não precisa da etapa de conversão (por isso a lista vazia).
     const convercao = unidadesSaoIguais ? []
         : [(quandoResponder: CallbackResposta) => (
-            <ConverterUnidades key={4} questao={questao} quandoResponder={quandoResponder} />
+            <RealizarConversao key={4} questao={questao} quandoResponder={quandoResponder} />
         )];
 
     const equacao = [
@@ -74,9 +78,6 @@ export const buscarConteudoParaRegraDeTres = (questao: QuestaoRegraDeTres) => {
         ),
         (quandoResponder: CallbackResposta) => (
             <EquacaoParte4 questao={questao} quandoResponder={quandoResponder} />
-        ),
-        (quandoResponder: CallbackResposta) => (
-            <EquacaoParte5 questao={questao} quandoResponder={quandoResponder} />
         ),
     ];
 

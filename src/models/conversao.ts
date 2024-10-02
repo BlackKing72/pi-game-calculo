@@ -4,32 +4,49 @@ import { Gramas, Litros, Miligramas, Mililitros, Unidade } from './unidade.ts';
 
 /** Recebe um valor como argumento e retorna o valor convertido. */
 type ValidarConversaoFn = (valor: number) => number;
+export type Operacao = 'multiplicar'|'dividir';
+
+export const operacaoToString = (operacao: Operacao) => {
+    switch (operacao) {
+        case 'multiplicar': return '×';
+        case 'dividir': return '÷';
+    }
+}
 
 export class Conversao {
     origem: Unidade;
     destino: Unidade;
-    quandoConverter: ValidarConversaoFn;
+    operacao: Operacao;
+    constante: number;
 
-    constructor(origem: Unidade, destino: Unidade, quandoConverter: ValidarConversaoFn) {
+    constructor(origem: Unidade, destino: Unidade, operacao: Operacao, constante: number) {
         this.origem = origem;
         this.destino = destino;
-        this.quandoConverter = quandoConverter;
+        this.operacao = operacao;
+        this.constante = constante;
     }
 
     validar(valor: number) : number {
-        return this.quandoConverter(valor);
+        let resultado = 0;
+
+        switch (this.operacao) {
+            case 'multiplicar': resultado = valor * this.constante; break;
+            case 'dividir': resultado = valor / this.constante; break;
+        }
+
+        return resultado;
     }
 
     converter(de: Grandeza) : Grandeza {
-        const valorConvertido = this.quandoConverter(de.valor);
+        const valorConvertido = this.validar(de.valor);
         return new Grandeza(valorConvertido, this.destino);
     }
 };
 
-export const GramasParaMiligramas = new Conversao(Gramas, Miligramas, (g) => g * 1000);
-export const MiligramasParaGramas = new Conversao(Miligramas, Gramas, (mg) => mg / 1000);
-export const LitrosParaMililitros = new Conversao(Litros, Mililitros, (l) => l * 1000);
-export const MililitrosParaLitros = new Conversao(Mililitros, Litros, (ml) => ml / 1000);
+export const GramasParaMiligramas = new Conversao(Gramas, Miligramas, 'multiplicar', 1000);
+export const MiligramasParaGramas = new Conversao(Miligramas, Gramas, 'dividir', 1000);
+export const LitrosParaMililitros = new Conversao(Litros, Mililitros, 'multiplicar', 1000);
+export const MililitrosParaLitros = new Conversao(Mililitros, Litros, 'dividir', 1000);
 
 export const conversoes: Conversao[] = [
     GramasParaMiligramas,

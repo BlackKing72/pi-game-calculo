@@ -7,10 +7,12 @@ import { gerarGrandeza } from '@/models/grandeza.ts';
 import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
 
 import * as perguntasService from '../services/perguntasService';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingScreen } from '@/components/ui/loading';
 
 const MinigamePage = () => {
+    const navigate = useNavigate();
+
     const { idQuestao } = useParams();
 
     const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
