@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from '@/components/ui/loading';
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-
 import { Button } from "../components/ui/button";
 import {
     DropdownMenu,
@@ -23,29 +22,33 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-
 import { QuestaoGotejamento, gerarRespostas, QuestaoRegraDeTres } from "@/services/perguntasService";
 import VisualizarPerguntas from "../components/VisualizarPerguntas";
 import { Link } from "react-router-dom";
 import * as perguntasService from '../services/perguntasService'
+
 const ListaRegistro = () => {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
     const [questoes, setQuestoes] = useState([]);
 
+    const carregarDados = async () => {
+        const questoes = await perguntasService.buscarQuestoes();
+        setQuestoes(questoes);
+    };
     useEffect(() => {
-        const carregarDados = async () => {
-            const questoes = await perguntasService.buscarQuestoes();
-            setQuestoes(questoes);
-        };
 
         carregarDados();
         setLoading(false);
     }, []);
 
-    const handleDeletarQuestao = () => {
+    const handleDeletarQuestao = async (id) => {
         // chamo a api
+        
+           await perguntasService.deletarQuestaoPorID(id);
+           await carregarDados();
+        
     }
 
     return loading
@@ -72,7 +75,7 @@ const ListaRegistro = () => {
                                 <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">35/13/3668</TableCell>
                                 <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">
                                     <Button className="w-24 mx-1">Alterar</Button>
-                                    <Button className="w-24 mx-1">Excluir</Button>
+                                    <Button className="w-24 mx-1" onClick={() => handleDeletarQuestao(questao.id)}>Excluir</Button>
                                 </TableCell>
                             </TableRow>
                         )
