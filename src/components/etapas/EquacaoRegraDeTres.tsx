@@ -11,7 +11,7 @@ import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { SwapEventArray, SwapEventMap, SwapEventObject, Swapy } from 'swapy';
 
 import * as conversoes from '@/models/conversao';
-import { QuestaoRegraDeTres } from '@/services/perguntasService';
+import { gerarRespostas, QuestaoRegraDeTres } from '@/services/perguntasService';
 import { Grandeza } from '@/models/grandeza';
 
 type SlotData = string | null;
@@ -44,6 +44,36 @@ const extrairValoresDaQuestao = (questao: QuestaoRegraDeTres) => {
         volumeAdministrado: 'x',
     };
 }
+
+const IdentificarValores = ({ questao, quandoResponder }: EtapaProps) => {
+    const valoresPrescritos = gerarRespostas(questao.prescricao, questao.prescricao.valor * 2, 3);
+    const valoresMedicacoes = gerarRespostas(questao.medicamento, questao.medicamento.valor * 2, 3);
+    const valoresDiluentes = gerarRespostas(questao.diluente, questao.diluente.valor * 2, 3);
+
+    return (
+        <div className='flex flex-col gap-2 w-full h-full justify-center'>
+            <p className="font-medium"> Arraste os valores para montar a fórmula na ordem correta.</p>
+
+            <SwapyContainer animation="spring" className='equacao-container' >
+                {
+                    valoresPrescritos.valores.map((valor, index) => 
+                        <PickSlot key={index} slotID={index} itemID={index} content={valor} />
+                    )
+                }
+                {
+                    valoresMedicacoes.valores.map((valor, index) => 
+                        <PickSlot key={index} slotID={index} itemID={index} content={valor} />
+                    )
+                }
+                {
+                    valoresDiluentes.valores.map((valor, index) => 
+                        <PickSlot key={index} slotID={index} itemID={index} content={valor} />
+                    )
+                }
+            </SwapyContainer>
+        </div>
+    );
+};
 
 const EquacaoParte1 = ({ questao, quandoResponder }: EtapaProps) => {
     // transformar os valores da questão em texto.
