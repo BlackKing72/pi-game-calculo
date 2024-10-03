@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import * as perguntasService from '../services/perguntasService'
 import * as unidade from '../models/unidade'
 import * as grandeza from '../models/grandeza'
-import { Move3D } from "lucide-react";
 
 const RegistrarRegraTres = () => {
 
@@ -20,11 +19,13 @@ const RegistrarRegraTres = () => {
     const [diluenteUnidade, setDiluenteUnidade] = useState();
 
     const handleEnviar = async () => {
-     await perguntasService.criarQuestaoRegraDeTres(
-        enunciado,
-        new grandeza.Grandeza(prescricao, prescricaoUnidade),
-        new grandeza.Grandeza(medicamento, medicamentoUnidade),
-        new grandeza.Grandeza(diluente, diluenteUnidade));
+    //  await perguntasService.criarQuestaoRegraDeTres(
+    //     enunciado,
+    //     new grandeza.Grandeza(prescricao, prescricaoUnidade),
+    //     new grandeza.Grandeza(medicamento, medicamentoUnidade),
+    //     new grandeza.Grandeza(diluente, diluenteUnidade));
+
+    console.log(prescricaoUnidade)
     };
 
     return (
@@ -37,11 +38,12 @@ const RegistrarRegraTres = () => {
             </div>
             <div className="flex flex-col gap-5">
                 <Input placeholder="Enunciado" value={enunciado} on onChange={e => setEnunciado(e.target.value)}/>
+                <h3 className="text-left pl-5">Prescrição</h3>
                 <div className="flex gap-5">
                     <Input type="number" value={prescricao} placeholder="Valor Prescrição" onChange={e => setPrescricao(e.target.valueAsNumber)}/>
                     <Select onValueChange={index => setPrescricaoUnidade(unidade.unidades[index])}>
-                        <SelectTrigger value={prescricaoUnidade}>
-                            <SelectValue placeholder="Selecionar um valor" />
+                        <SelectTrigger >
+                            <SelectValue value={prescricaoUnidade} placeholder="Selecionar uma unidade" />
                         </SelectTrigger>
                         <SelectContent>
                             {
@@ -52,11 +54,12 @@ const RegistrarRegraTres = () => {
                         </SelectContent>
                     </Select>
                 </div>
+                <h3 className="text-left pl-5">Medicamento</h3>
                 <div className="flex gap-5">
                     <Input type="number" value={medicamento} placeholder="Valor Medicamento" onChange={m => setMedicamento(m.target.valueAsNumber)}/>
                     <Select onValueChange={index => setMedicamentoUnidade(unidade.unidades[index])}>
                         <SelectTrigger >
-                            <SelectValue value={medicamentoUnidade} placeholder="Selecionar um valor"/>
+                            <SelectValue value={medicamentoUnidade} placeholder="Selecionar uma unidade"/>
                         </SelectTrigger>
                         <SelectContent>
                             {
@@ -67,11 +70,12 @@ const RegistrarRegraTres = () => {
                         </SelectContent>
                     </Select>
                 </div>
+                <h3 className="text-left pl-5">Diluente</h3>
                 <div className="flex gap-5">
                     <Input type="number" value={diluente} placeholder="Valor Diluente" onChange={e => setDiluente(e.target.valueAsNumber)}/>
                     <Select onValueChange={index => setDiluenteUnidade(unidade.unidades[index])}>
                         <SelectTrigger>
-                            <SelectValue value={diluenteUnidade} placeholder="Selecionar um valor" />
+                            <SelectValue value={diluenteUnidade} placeholder="Selecionar uma unidade" />
                         </SelectTrigger>
                         <SelectContent>
                             {
