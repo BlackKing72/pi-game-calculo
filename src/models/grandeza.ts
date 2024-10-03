@@ -10,6 +10,11 @@ export class Grandeza {
         this.unidade = unidade;
     }
 
+    equals(other: Grandeza) : boolean {
+        return this.valor === other.valor 
+            && this.unidade === other.unidade;
+    }
+
     toString() : string {
         return `${this.valor}${this.unidade}`
     }

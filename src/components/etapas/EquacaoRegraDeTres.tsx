@@ -121,7 +121,7 @@ const IdentificarValores = ({ questao, quandoResponder }: EtapaProps) => {
 
     const handleQuandoResponder = () => {
         const resposta = [questao.prescricao, questao.medicamento, questao.diluente];
-        const estaCorreto = slotData.length > 0 && slotData.every((value, index) => value === resposta[index])
+        const estaCorreto = slotData.length > 0 && slotData.every((value, index) => value.equals(resposta[index]))
         quandoResponder(estaCorreto);
     }
 
@@ -701,7 +701,7 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
                             <FakeSlot key={12} content={resposta} className='flex-grow max-w-[50%] h-12' />
                         </div>
                     </div>
-                    <DialogClose className='text-slate-50'>Fechar</DialogClose>
+                    <DialogClose>Fechar</DialogClose>
                 </DialogContent>
             </Dialog>
         </div>

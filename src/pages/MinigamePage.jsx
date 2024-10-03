@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useState } from 'react';
 import './MinigamePage.css';
-
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
 import { gerarGrandeza } from '@/models/grandeza.ts';
 import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
@@ -9,6 +9,9 @@ import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
 import * as perguntasService from '../services/perguntasService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingScreen } from '@/components/ui/loading';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const MinigamePage = () => {
     const navigate = useNavigate();
@@ -19,9 +22,29 @@ const MinigamePage = () => {
     const [questao, setQuestao] = useState();
     const [etapas, setEtapas] = useState();
 
+    const [openDialogoSucesso, setOpenDialogSucesso] = useState();
+    const [dialogProgress, setDialogProgress] = useState(100);
+
     const handleQuandoMudarEtapa = (pageIndex) => {
         pageIndex = Math.max(0, Math.min(pageIndex, etapas.length - 1));
         setIndexEtapaAtual(pageIndex);
+    }
+
+    const handleQuandoResponder = (resposta) => {
+        if (resposta) {
+            setOpenDialogSucesso(true);
+        } else {
+            alert("Resposta Errada!!! T^T");
+        }
+    }
+
+    const handleOnDialogOpenChanged = (open) => {
+        if (open) {
+            return
+        }
+
+        handleQuandoMudarEtapa(indexEtapaAtual + 1);
+        setOpenDialogSucesso(false);
     }
 
     useEffect(() => {
@@ -37,74 +60,83 @@ const MinigamePage = () => {
     }, [])
 
 
+    useEffect(() => {
+        if (!openDialogoSucesso) {
+            return;
+        }
+
+        // const interval = setInterval(onUpdate, 1 / 60);
+
+        // function onUpdate() {
+        //     setDialogProgress(value => {
+        //         let progress = value - 1;    
+        //         if (dialogProgress <= 0) {
+        //             clearInterval(interval)
+        //             progress = 0;
+        //             setOpenDialogSucesso(false);
+        //         }
+        //         return progress;
+        //     })
+        // }
+
+
+    }, [openDialogoSucesso])
+
 
     return !questao
-        ? <LoadingScreen /> 
+        ? <LoadingScreen />
         : (
             <div className='app-page'>
                 <div className='app-container'>
                     <div className='app-main'>
-                        <MinigameHeader
-                            enunciado={questao.enunciado} />
-                        <MinigameEtapa
-                            etapa={etapas[indexEtapaAtual]}
-                            etapaSelecionada={indexEtapaAtual}
-                            quandoMudarEtapa={handleQuandoMudarEtapa} />
+                        <div className="app-header">
+                            <p className="app-question">{questao.enunciado}</p>
+                        </div>
+
+                        <div className='app-content'>
+                            <div className='app-content-container'>
+                                {
+                                    etapas[indexEtapaAtual](handleQuandoResponder)
+                                }
+                            </div>
+                        </div>
+
                     </div>
-                    <MinigameFooter
-                        quantidadeEtapas={etapas.length}
-                        etapaSelecionada={indexEtapaAtual}
-                        quandoMudarEtapa={handleQuandoMudarEtapa} />
+
+                    <div className="app-footer">
+                        <div className='progress'>
+                            {
+                                etapas.map((_, index) =>
+                                    <span key={index} onClick={() => handleQuandoMudarEtapa(index)}
+                                        className={`progress-bar ${index === indexEtapaAtual ? 'active' : index < indexEtapaAtual ? 'completed' : ''}`} />
+                                )
+                            }
+                        </div>
+                        <div className='flex gap-2'>
+                            <Button className='flex-grow' onClick={() => handleQuandoMudarEtapa(indexEtapaAtual - 1)}>Anterior</Button>
+                            <Button className='flex-grow' onClick={() => handleQuandoMudarEtapa(indexEtapaAtual + 1)}>Próximo</Button>
+                        </div>
+                    </div>
                 </div>
+
+                <Dialog open={openDialogoSucesso} onOpenChange={handleOnDialogOpenChanged} modal={true}>
+                    <DialogContent hideCloseButton={true} 
+                        className='w-full h-full flex flex-col gap-4 items-center justify-center rounded-lg bg-transparent border-0 backdrop-blur-sm'>
+                        <DialogHeader >
+                            <FontAwesomeIcon className='w-24 h-24 text-lime-500' icon={faCircleCheck} bounce/>
+                            <p className='absolute left-0 bottom-8 w-full text-center text-slate-50'>Toque na tela para continuar</p>
+                            <div className={`absolute left-0 bottom-0 w-full h-2 bg-lime-500 scale-x-[50%]`}/>
+                        </DialogHeader>
+                        {/* <DialogClose className='absolute top-4 right-4'>
+                            <FontAwesomeIcon icon={faXmark}/>
+                        </DialogClose> */}
+                    </DialogContent>
+                </Dialog>
+
             </div>
         );
 };
 
-function MinigameHeader({ enunciado }) {
-    return (
-        <div className="app-header">
-            <p className="app-question">{enunciado}</p>
-        </div>
-    );
-};
-
-function MinigameEtapa({ etapa, etapaSelecionada, quandoMudarEtapa }) {
-    const handleQuandoResponder = (resposta) => {
-        if (resposta) {
-            alert("Resposta Certa!!! ^u^");
-            quandoMudarEtapa(etapaSelecionada + 1);
-        } else {
-            alert("Resposta Errada!!! T^T");
-        }
-    }
-
-    return (
-        <div className='app-content'>
-            <div className='app-content-container'>
-                {etapa(handleQuandoResponder)}
-            </div>
-        </div>
-    );
-};
-
-function MinigameFooter({ quantidadeEtapas, etapaSelecionada, quandoMudarEtapa }) {
-    return (
-        <div className="app-footer">
-            <div className='progress'>
-                {
-                    [...Array(quantidadeEtapas)].map((_, index) =>
-                        <span key={index} onClick={() => quandoMudarEtapa(index)} className={`progress-bar ${
-                            index === etapaSelecionada ? 'active' : index < etapaSelecionada ? 'completed' : '' }`} />
-                    )
-                }
-            </div>
-            <div className='flex gap-2'>
-                <Button className='flex-grow' onClick={() => quandoMudarEtapa(etapaSelecionada - 1)}>Anterior</Button>
-                <Button className='flex-grow' onClick={() => quandoMudarEtapa(etapaSelecionada + 1)}>Próximo</Button>
-            </div>
-        </div>
-    );
-};
 
 function buscarConteudoMinigame(questao) {
     return perguntasService.isQuestaoRegraDeTres(questao)

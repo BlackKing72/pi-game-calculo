@@ -1,20 +1,13 @@
-import { QuestaoRegraDeTres, gerarRespostas } from "@/services/perguntasService";
-import { Grandeza } from "@/models/grandeza";
-
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { useMemo, useState } from "react";
-import { Button } from "./ui/button";
-import { buscarConversao } from '../models/conversao.ts'
-
+import { QuestaoRegraDeTres } from "@/services/perguntasService";
 import { 
-    SelecionarMedicamentoPrescrito,
-    SelecionarMedicamentoDisponivel,
-    SelecionarDiluenteDisponivel
-} from "./etapas/SelecionarValoresRegraDeTres.tsx";
-
-import VerificarConversaoUnidades from "./etapas/VerificarConversaoRegraDeTres.tsx";
-import ConverterUnidades from "./etapas/ConverterUnidadesRegraDeTres.tsx";
-import { EquacaoParte1, EquacaoParte2, EquacaoParte3, EquacaoParte4, IdentificarConvercao, IdentificarValores, RealizarConversao } from "./etapas/EquacaoRegraDeTres.tsx";
+    EquacaoParte1, 
+    EquacaoParte2, 
+    EquacaoParte3, 
+    EquacaoParte4, 
+    IdentificarConvercao, 
+    IdentificarValores, 
+    RealizarConversao 
+} from "./etapas/EquacaoRegraDeTres.tsx";
 
 // Como estou usando TypeScript preciso definir alguns tipos para facilitar.
 // Alguns não precisam porque o TypeScript reconhece automaticamente.
@@ -31,6 +24,10 @@ export type EtapaProps = {
 };
 
 export const buscarConteudoParaRegraDeTres = (questao: QuestaoRegraDeTres) => {
+    localStorage.removeItem('respostaEquacao1');
+    localStorage.removeItem('respostaEquacao2');
+    localStorage.removeItem('respostaEquacao3');
+
     const unidadesSaoIguais = questao.prescricao.unidade === questao.medicamento.unidade;
 
     // A lista de etapas que precisam ser passadas para completar o game.
@@ -39,18 +36,6 @@ export const buscarConteudoParaRegraDeTres = (questao: QuestaoRegraDeTres) => {
     // do react. Dessa maneira posso ter uma lista pre-definida de componentes e
     // ainda poder passar valores para modificar eles.
     const inicio = [
-        // (quandoResponder: CallbackResposta) => (
-        //     <SelecionarMedicamentoPrescrito key={0} questao={questao} quandoResponder={quandoResponder} />
-        // ),
-
-        // (quandoResponder: CallbackResposta) => (
-        //     <SelecionarMedicamentoDisponivel key={1} questao={questao} quandoResponder={quandoResponder} />
-        // ),
-
-        // (quandoResponder: CallbackResposta) => (
-        //     <SelecionarDiluenteDisponivel key={2} questao={questao} quandoResponder={quandoResponder} />
-        // ),
-
         (quandoResponder: CallbackResposta) => (
             <IdentificarValores key={0} questao={questao} quandoResponder={quandoResponder} />
         ),
@@ -81,6 +66,6 @@ export const buscarConteudoParaRegraDeTres = (questao: QuestaoRegraDeTres) => {
         ),
     ];
 
-    // Usando lista é possível junta-las, e as listas que forem vazias são ignoradas.
+    // Usando lista é possível junta-las em uma unica lista, e as listas que forem vazias são ignoradas.
     return [...inicio, ...convercao, ...equacao];
 };
