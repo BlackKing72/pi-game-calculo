@@ -5,6 +5,7 @@ import './App.css';
 
 import MinigamePage from './pages/MinigamePage';
 import SwapySandbox from './pages/SwapySandbox';
+import Resultados from './pages/Resultados';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     path: '/app/:idQuestao',
     element: <MinigamePage />
   },
+  {
+    path: '/app/resultados',
+    element: <Resultados />
+  }
 ])
 
 function App() {

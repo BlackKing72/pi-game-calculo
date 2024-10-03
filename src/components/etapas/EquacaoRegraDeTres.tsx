@@ -618,31 +618,15 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
     const [multiplicacao, setMultiplicacao] = useState<number>();
     const [divisao, setDivisao] = useState<number>();
 
-    const [resposta, setResposta] = useState('');
-    const [openFinalDialog, setOpenFinalDialog] = useState<boolean>(false);
-
     const handleQuandoResponder = () => {
         // se as unidades forem diferentes precisa converter o valor.
         const doseDisponivel = converterDoseDisponivel(questao);
 
         // o valor esperado.
         const respostaCorreta = (questao.prescricao.valor * questao.diluente.valor) / doseDisponivel.valor;
-        setResposta(new Grandeza(respostaCorreta, questao.diluente.unidade).toString());
-
         const estaCorreto = respostaCorreta === divisao;
-
-        if (estaCorreto) {
-            setOpenFinalDialog(true);
-        }        
-    }
-
-    const onFinalDialogOpenChanged = (open: boolean) => {
-        if (open) {
-             return;
-        }
-        setOpenFinalDialog(false);
         // chama o evento que avisa o jogo se o usuário respondeu a pergunta.
-        quandoResponder(true);
+        quandoResponder(estaCorreto);
     }
 
     return (
@@ -688,25 +672,31 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
             </div>
 
             <hr className="my-1 w-full" />
-            <Button onClick={handleQuandoResponder}>Responder</Button>
-
-            <Dialog open={openFinalDialog} onOpenChange={onFinalDialogOpenChanged} modal={true}>
-                <DialogContent hideCloseButton={true} className='flex flex-col gap-4 rounded-lg'>
-                    <DialogHeader >
-                        <DialogTitle>Parabéns você completou o cálculo</DialogTitle>
-                    </DialogHeader>
-                    <div className='flex flex-col gap-2 w-full h-full justify-center items-center'>
-                        <p className="text-center font-medium">A quantidade de medicamento a ser administrada é de:</p>
-                        <div className='flex w-full gap-4 justify-center'>
-                            <FakeSlot key={12} content={resposta} className='flex-grow max-w-[50%] h-12' />
-                        </div>
-                    </div>
-                    <DialogClose>Fechar</DialogClose>
-                </DialogContent>
-            </Dialog>
+            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
         </div>
     );
 };
+
+const EquacaoParte5 = ({ questao, quandoResponder }: EtapaProps) => {
+    const doseDisponivel = converterDoseDisponivel(questao);
+    const resposta = (questao.prescricao.valor * questao.diluente.valor) / doseDisponivel.valor;
+    const grandeza = new Grandeza(resposta, questao.diluente.unidade);
+
+    return (
+        <div className='flex flex-col gap-4 w-full h-full justify-center items-center'>
+            <p className="font-medium">Parabéns você completou o cálculo!</p>
+            <hr className="my-1 w-full" />
+
+            <p >A quantidade de medicamento a ser administrada é de:</p>
+            <div className='flex w-full gap-4 justify-center'>
+                <FakeSlot key={12} content={grandeza.toString()} className='flex-grow max-w-[50%] h-12' />
+            </div>
+
+            <hr className="my-1 w-full" />
+            <Button className='w-full' onClick={() => quandoResponder(true)}>Continuar</Button>
+        </div>
+    );
+}
 
 export {
     IdentificarValores,
@@ -716,4 +706,5 @@ export {
     EquacaoParte2,
     EquacaoParte3,
     EquacaoParte4,
+    EquacaoParte5,
 };
