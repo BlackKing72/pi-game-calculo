@@ -4,7 +4,9 @@ import './MinigamePage.css';
 import { Dialog, DialogClose, DialogDescription, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
 import { gerarGrandeza } from '@/models/grandeza.ts';
-import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres.tsx'
+
+import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres'
+import { buscarConteudoParaGotejamento } from '@/components/GameGotejamento'
 
 import * as perguntasService from '../services/perguntasService';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -188,36 +190,36 @@ const gerarRespostas = (valor, variacao, quantidade) => {
 /** 
  * @param {perguntasService.QuestaoGotejamento} questao 
  */
-function buscarConteudoParaGotejamento(questao) {
-    const valoresVolume = gerarRespostas(questao.volume, questao.volume.valor * 2, 3);
-    const valoresTempo = gerarRespostas(questao.tempo, questao.tempo.valor * 2, 3);
+// function buscarConteudoParaGotejamento(questao) {
+//     const valoresVolume = gerarRespostas(questao.volume, questao.volume.valor * 2, 3);
+//     const valoresTempo = gerarRespostas(questao.tempo, questao.tempo.valor * 2, 3);
 
-    return [
-        (onAnswer) =>
-            <MinigameSelecionarValor
-                key={0}
-                titulo='Que diluente tem disponível?'
-                valores={valoresVolume.valores.map(valor => valor.toString())}
-                quandoResponder={e => {
-                    console.log(`onAnswer prescrição => ${e} ${valoresVolume.resposta}`);
-                    onAnswer(e == valoresVolume.resposta);
-                }} />,
-        (onAnswer) =>
-            <MinigameSelecionarValor
-                key={1}
-                titulo='Que diluente tem disponível?'
-                valores={valoresTempo.valores.map(valor => valor.toString())}
-                quandoResponder={e => {
-                    console.log(`onAnswer prescrição => ${e} ${valoresTempo.resposta}`);
-                    onAnswer(e == valoresTempo.resposta);
-                }} />,
-        (onAnswer) => {
-            return (<p>Etapa 04</p>)
-        },
-        (onAnswer) => {
-            return (<p>Etapa 04</p>)
-        },
-    ];
-};
+//     return [
+//         (onAnswer) =>
+//             <MinigameSelecionarValor
+//                 key={0}
+//                 titulo='Que diluente tem disponível?'
+//                 valores={valoresVolume.valores.map(valor => valor.toString())}
+//                 quandoResponder={e => {
+//                     console.log(`onAnswer prescrição => ${e} ${valoresVolume.resposta}`);
+//                     onAnswer(e == valoresVolume.resposta);
+//                 }} />,
+//         (onAnswer) =>
+//             <MinigameSelecionarValor
+//                 key={1}
+//                 titulo='Que diluente tem disponível?'
+//                 valores={valoresTempo.valores.map(valor => valor.toString())}
+//                 quandoResponder={e => {
+//                     console.log(`onAnswer prescrição => ${e} ${valoresTempo.resposta}`);
+//                     onAnswer(e == valoresTempo.resposta);
+//                 }} />,
+//         (onAnswer) => {
+//             return (<p>Etapa 04</p>)
+//         },
+//         (onAnswer) => {
+//             return (<p>Etapa 04</p>)
+//         },
+//     ];
+// };
 
 export default MinigamePage;

@@ -114,8 +114,8 @@ export const isQuestaoRegraDeTres = (questao: Questao) => {
 --- API banco de dados
 ---------------------------------------------------------------------------- */
 
-const api = `http://localhost:3000/calculo`;
-// const api = `http://10.23.49.20:3000/calculo`;
+// const api = `http://localhost:3000/calculo`;
+const api = `http://10.23.49.20:3000/calculo`;
 
 const criarQuestaoUsandoDados = (dados: any): Questao => {
     if (dados.prescricao && dados.medicacao && dados.diluente) {

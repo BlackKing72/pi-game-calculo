@@ -28,8 +28,8 @@ export const gerarGrandeza = (grandeza: Grandeza, variacaoMaxima: number, variac
         const valorGerado = grandeza.valor + (Math.max(Math.random(), 0.1) + variacaoMaxima);
 
         valor = temCasaDecimal                      
-            ? Math.round(valorGerado * 10) / 10     // Truque para arredondar para uma casa decimal
-            : Math.round(valorGerado);              // Arredonda normalmente
+            ? Math.round(valorGerado * 100) / 100     // Truque para arredondar para uma casa decimal
+            : Math.round(valorGerado);                // Arredonda normalmente
     }
 
     let unidade = grandeza.unidade;
