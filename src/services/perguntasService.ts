@@ -222,7 +222,7 @@ export const criarQuestaoRegraDeTres = async (enunciado: string, prescricao: Gra
     };
 }
 
-export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: Unidade) => {
+export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: 'gts/min'|'gts/hora'|'mgts/min'|'mgts/hora') => {
     try {
         await axios.post(api, {
             tipo: 1,
@@ -231,7 +231,7 @@ export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandez
             volumeUnidade: volume.unidade.nome,
             tempo: tempo.valor,
             tempoUnidade: tempo.unidade.nome,
-            destinoUnidade: unidadeDestino.nome,
+            destinoUnidade: unidadeDestino,
         });
     }
     catch (err) {
