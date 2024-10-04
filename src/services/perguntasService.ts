@@ -58,14 +58,14 @@ const questoesGotejamento: QuestaoGotejamento[] = [
         'Para uma solução de 200 ml em 30 minutos, utilizando equipo de microgotas, devem ser infundidas quantas microgotas por minuto?',
         new Grandeza(200, Mililitros),
         new Grandeza(30, Minutos),
-        Microgotas,
+        'mgts/min',
     ),
 
     new QuestaoGotejamento(1,
         'Para que 500 ml de soro fisiológico seja administrado em 6 horas, devem ser infundidas quantas gotas por minuto?',
         new Grandeza(500, Mililitros),
         new Grandeza(6, Horas),
-        Gotas
+        'gts/min'
     ),
 ];
 
@@ -136,7 +136,7 @@ const criarQuestaoUsandoDados = (dados: any): Questao => {
     else if (dados.volume && dados.tempo) {
         const volumeUnidade = buscarUnidadePorNome(dados.volumeUnidade);
         const tempoUnidade = buscarUnidadePorNome(dados.tempoUnidade);
-        const destinoUnidade = buscarUnidadePorNome(dados.destinoUnidade);
+        const destinoUnidade = dados.destinoUnidade;
 
         if (!volumeUnidade || !tempoUnidade || !destinoUnidade) {
             throw new Error('Unidade não encontrada');
@@ -145,7 +145,7 @@ const criarQuestaoUsandoDados = (dados: any): Questao => {
         const volume = new Grandeza(dados.volume, volumeUnidade);
         const tempo = new Grandeza(dados.tempo, tempoUnidade);
 
-        return new QuestaoGotejamento(dados.id, dados.enunciado, volume, tempo, tempoUnidade);
+        return new QuestaoGotejamento(dados.id, dados.enunciado, volume, tempo, destinoUnidade);
     }
     else {
         console.log(dados);
