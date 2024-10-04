@@ -40,8 +40,8 @@ const NavRegraTres = async () => {
             <DropdownMenuTrigger className="text-white">Navegar</DropdownMenuTrigger>
             <DropdownMenuContent>
             <DropdownMenuLabel className='bg-neutral-300 cursor-default'>Criar Pergunta</DropdownMenuLabel>
-              <DropdownMenuItem className='cursor-pointer' onClick={() => navigate('/registrarRegraTres')}>Regra de três</DropdownMenuItem>
-              <DropdownMenuItem className='cursor-pointer'  onClick={() => navigate('/registrarGotejamento')}>Gotejamento</DropdownMenuItem>
+              <DropdownMenuItem className='cursor-pointer' onClick={() => navigate('/RegraTres')}>Regra de três</DropdownMenuItem>
+              <DropdownMenuItem className='cursor-pointer'  onClick={() => navigate('/Gotejamento')}>Gotejamento</DropdownMenuItem>
               <DropdownMenuSeparator />
             <DropdownMenuLabel className='bg-neutral-300 cursor-default'>Visualizar</DropdownMenuLabel>
               <DropdownMenuItem className='cursor-pointer'  onClick={() => navigate('/listaregistro')}>Perguntas</DropdownMenuItem>
