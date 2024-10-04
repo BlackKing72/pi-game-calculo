@@ -28,7 +28,7 @@ const router = createBrowserRouter([
   {
     path: '/app/resultados',
     element: <Resultados />
-  }
+  },
   {
     path: '/listaregistro',
     element: <ListaRegistro/>
