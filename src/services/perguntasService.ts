@@ -226,7 +226,7 @@ export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandez
         });
     }
     catch (err) {
-        console.error(`Erro ao criar questão de regra de três. erro: ${err}`);
+        console.error(`Erro ao criar questão de Gotejamento. erro: ${err}`);
     };
 }
 

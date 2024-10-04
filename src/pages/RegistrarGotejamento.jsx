@@ -15,12 +15,16 @@ const RegistrarGotejamento = () => {
     const [tempoUnidade, setTempoUnidade] = useState();
     const [volume, setVolume] = useState(new grandeza.Grandeza(0, unidade.UnidadeVolume));
     const [volumeUnidade, setVolumeUnidade] = useState();
+    const [infusaoUnidade, setInfusaoUnidade] = useState();
 
     const handleEnviar = async () =>{
+
+        console.log(tempoUnidade, volumeUnidade, infusaoUnidade);
         await perguntasService.criarQuestaoGotejamento(
             enunciado,
             new grandeza.Grandeza(tempo, tempoUnidade),
-            new grandeza.Grandeza(volume, volumeUnidade));
+            new grandeza.Grandeza(volume, volumeUnidade),
+            infusaoUnidade);
     }
 
     return(
@@ -43,7 +47,7 @@ const RegistrarGotejamento = () => {
                     <SelectContent>
                     {
                                 unidade.unidades.map((unidade, index) =>
-                                    <SelectItem key={index} value={index} >{unidade.nome}</SelectItem>
+                                    <SelectItem key={index} value={unidade.nome} >{unidade.nome}</SelectItem>
                                 )
                             }
                     </SelectContent>
@@ -62,10 +66,10 @@ const RegistrarGotejamento = () => {
                     </SelectContent>
                 </Select>
             </div>
-            <h3 className="text-left pl-5">Unidade de gotas</h3>
-            <Select onValueChange={nome => setVolumeUnidade(unidade.buscarUnidadePorNome(nome))}>
+            <h3 className="text-left pl-5">Unidade de infusão</h3>
+            <Select onValueChange={nome => setInfusaoUnidade(unidade.buscarUnidadePorNome(nome))}>
                     <SelectTrigger>
-                        <SelectValue value={volumeUnidade} placeholder="Unidade de Medida"/>
+                        <SelectValue value={infusaoUnidade} placeholder="Unidade de infusão"/>
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value={Gotas.nome}>{Gotas.nome}</SelectItem>
