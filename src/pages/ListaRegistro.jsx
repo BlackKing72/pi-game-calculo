@@ -3,27 +3,9 @@ import { LoadingScreen } from '@/components/ui/loading';
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu"
-
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "../components/ui/dropdown-menu"
+import {Table,TableBody,TableCaption,TableCell,TableFooter,TableHead,TableHeader,TableRow} from "@/components/ui/table"
 import { QuestaoGotejamento, gerarRespostas, QuestaoRegraDeTres } from "@/services/perguntasService";
-import VisualizarPerguntas from "../components/VisualizarPerguntas";
 import { Link } from "react-router-dom";
 import * as perguntasService from '../services/perguntasService'
 
@@ -51,6 +33,18 @@ const ListaRegistro = () => {
         
     }
 
+    const handleAlterarQuestao = async(id) => {
+
+        const questao = await perguntasService.buscarQuestoesPorID(id)
+
+        if (perguntasService.isQuestaoRegraDeTres(questao)){
+            navigate //regratres
+        }
+        else{
+            navigate //gotejamento
+        }
+    }
+
     return loading
         ? <LoadingScreen />
         : (
@@ -74,7 +68,7 @@ const ListaRegistro = () => {
                                 <TableCell className="bg-slate-200 border-t border-l text-left border-slate-300 px-4">{questao.enunciado}</TableCell>
                                 <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">35/13/3668</TableCell>
                                 <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">
-                                    <Button className="w-24 mx-1">Alterar</Button>
+                                    <Button className="w-24 mx-1" onClick={() => handleAlterarQuestao(questao.id)}>Alterar</Button>
                                     <Button className="w-24 mx-1" onClick={() => handleDeletarQuestao(questao.id)}>Excluir</Button>
                                 </TableCell>
                             </TableRow>

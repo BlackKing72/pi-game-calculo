@@ -8,6 +8,8 @@ import SwapySandbox from './pages/SwapySandbox';
 import ListaRegistro from './pages/ListaRegistro';
 import RegistrarGotejamento from './pages/RegistrarGotejamento';
 import RegistrarRegraTres from './pages/RegistrarRegraTres';
+import AlterarGotejamento from './pages/AlterarGotejamento';
+import AlterarRegraTres from './pages/AlterarRegraTres';
 
 const router = createBrowserRouter([
   {
@@ -27,12 +29,20 @@ const router = createBrowserRouter([
     element: <ListaRegistro/>
   },
   {
-    path: '/registrarGotejamento',
+    path: '/gotejamento',
     element: <RegistrarGotejamento/>
   },
   {
-    path: '/registrarRegraTres',
+    path: '/regraTres',
     element: <RegistrarRegraTres/>
+  },
+  {
+    path: '/gotejamento/:id',
+    element: <AlterarGotejamento/>
+  },
+  {
+    path: '/regraTres/:id',
+    element: <AlterarRegraTres/>
   }
 ])
 

@@ -1,15 +1,5 @@
-import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
-import Navbar from "../components/Navbar";
-import { useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-
-import * as perguntasService from '../services/perguntasService'
-import * as unidade from '../models/unidade'
-import * as grandeza from '../models/grandeza'
-
-const RegistrarRegraTres = () => {
-
+const AlterarRegraTres = () => {
+    
     const [enunciado, setEnunciado] = useState();
     const [prescricao, setPrescricao] = useState(new grandeza.Grandeza(0, unidade.UnidadeVolume));
     const [prescricaoUnidade, setPrescricaoUnidade] = useState();
@@ -90,6 +80,6 @@ const RegistrarRegraTres = () => {
             </div>
         </>
     )
-}
+};
 
-export default RegistrarRegraTres;
+export default AlterarRegraTres;
