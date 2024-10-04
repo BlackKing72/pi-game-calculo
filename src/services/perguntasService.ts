@@ -24,9 +24,9 @@ export class QuestaoGotejamento {
     enunciado: string;
     volume: Grandeza;
     tempo: Grandeza;
-    unidadeDestino: Unidade;
+    unidadeDestino: 'gts/min'|'gts/hora'|'mgts/min'|'mgts/hora';
 
-    constructor(id: number, enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: Unidade) {
+    constructor(id: number, enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: 'gts/min'|'gts/hora'|'mgts/min'|'mgts/hora') {
         this.id = id;
         this.enunciado = enunciado;
         this.volume = volume;
@@ -267,7 +267,7 @@ export const atualizaQuestaoRegraDeTres = async (id: number, enunciado: string, 
     }
 }
 
-export const atualizarQuestaoGotejamento = async (id: number, enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: Unidade) => {
+export const atualizarQuestaoGotejamento = async (id: number, enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: 'gts/min'|'gts/hora'|'mgts/min'|'mgts/hora') => {
     try {
         await axios.patch(api, {
             id: id,
@@ -277,7 +277,7 @@ export const atualizarQuestaoGotejamento = async (id: number, enunciado: string,
             volumeUnidade: volume.unidade.nome,
             tempo: tempo.valor,
             tempoUnidade: tempo.unidade.nome,
-            destinoUnidade: unidadeDestino.nome,
+            destinoUnidade: unidadeDestino,
         });
     }
     catch (err) {
