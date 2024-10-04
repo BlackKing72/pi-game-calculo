@@ -10,6 +10,11 @@ export class Grandeza {
         this.unidade = unidade;
     }
 
+    equals(other: Grandeza) : boolean {
+        return this.valor === other.valor 
+            && this.unidade === other.unidade;
+    }
+
     toString() : string {
         return `${this.valor}${this.unidade}`
     }
@@ -20,11 +25,11 @@ export const gerarGrandeza = (grandeza: Grandeza, variacaoMaxima: number, variac
 
     if (variacaoAleatoria) {
         const temCasaDecimal = !Number.isInteger(valor);
-        const valorGerado = Math.random() * (grandeza.valor + variacaoMaxima);
+        const valorGerado = grandeza.valor + (Math.max(Math.random(), 0.1) + variacaoMaxima);
 
         valor = temCasaDecimal                      
-            ? Math.round(valorGerado * 10) / 10     // Truque para arredondar para uma casa decimal
-            : Math.round(valorGerado);              // Arredonda normalmente
+            ? Math.round(valorGerado * 100) / 100     // Truque para arredondar para uma casa decimal
+            : Math.round(valorGerado);                // Arredonda normalmente
     }
 
     let unidade = grandeza.unidade;

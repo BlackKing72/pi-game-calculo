@@ -43,8 +43,8 @@ export const Gramas = new UnidadePeso('Gramas', 'g');
 export const Miligramas = new UnidadePeso('Miligramas', 'mg');
 export const Horas = new UnidadeTempo('Horas', 'h');
 export const Minutos = new UnidadeTempo('Minutos', 'min');
-export const Gotas = new UnidadeVolume('Gotas', null);
-export const Microgotas = new UnidadeVolume('Microgotas', null);
+export const Gotas = new UnidadeVolume('Gotas', 'gts');
+export const Microgotas = new UnidadeVolume('Microgotas', 'mgts');
 
 export const unidades = [
     Litros, Mililitros, Gramas, Miligramas, Horas, Minutos, Gotas, Microgotas

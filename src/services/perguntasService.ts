@@ -84,7 +84,15 @@ export const gerarRespostas = (valor: Grandeza, variacao: number, quantidade: nu
 
     for (let i = 0; i < quantidade - 1; i++) {
         const index = Math.floor(Math.random() * valores.length);
-        const valorGerado = gerarGrandeza(valor, variacao, true, true);
+        let valorGerado = gerarGrandeza(valor, variacao, true, true);
+
+        const valorDuplicado = valores.some(valor => valor.valor === valorGerado.valor);
+
+        if (valorDuplicado)
+            valorGerado = new Grandeza(
+                Math.round((valorGerado.valor * (Math.random() + 0.25)) * 10 / 10),
+                valorGerado.unidade);
+
         valores.splice(index, 0, ...[valorGerado]);
     }
 
@@ -106,9 +114,10 @@ export const isQuestaoRegraDeTres = (questao: Questao) => {
 --- API banco de dados
 ---------------------------------------------------------------------------- */
 
-const api = `http://localhost:3000/calculo`;
+// const api = `http://localhost:3000/calculo`;
+const api = `http://10.23.49.20:3000/calculo`;
 
-const criarQuestaoUsandoDados = (dados: any) : Questao => {
+const criarQuestaoUsandoDados = (dados: any): Questao => {
     if (dados.prescricao && dados.medicacao && dados.diluente) {
         const prescricaoUnidade = buscarUnidadePorNome(dados.prescricaoUnidade);
         const medicacaoUnidade = buscarUnidadePorNome(dados.medicacaoUnidade);
@@ -144,7 +153,7 @@ const criarQuestaoUsandoDados = (dados: any) : Questao => {
     }
 }
 
-export const buscarQuestoes = async () : Promise<Questao[]> => {
+export const buscarQuestoes = async (): Promise<Questao[]> => {
     try {
         const resposta = await axios.get(api);
         return resposta.data.map((dados: any) => {
@@ -157,7 +166,7 @@ export const buscarQuestoes = async () : Promise<Questao[]> => {
     };
 };
 
-export const buscarQuestoesPorID = async (id: number) : Promise<Questao|null> => {
+export const buscarQuestoesPorID = async (id: number): Promise<Questao | null> => {
     try {
         const resposta = await axios.get(api + `?id=${id}`);
         return criarQuestaoUsandoDados(resposta.data[0]);
@@ -169,7 +178,7 @@ export const buscarQuestoesPorID = async (id: number) : Promise<Questao|null> =>
 };
 
 /** Retorna todas as questões em ordem aleatória ou uma lista vazia se acontecer algum erro. */
-export const buscarQuestoesAleatorias = async () : Promise<Questao[]> => {
+export const buscarQuestoesAleatorias = async (): Promise<Questao[]> => {
     try {
         const resposta = await axios.get(api + `?random=true`);
         return resposta.data.map((dados: any) => {
@@ -183,7 +192,7 @@ export const buscarQuestoesAleatorias = async () : Promise<Questao[]> => {
 }
 
 /** Retorna uma única questão aleatória ou null se acontecer algum erro. */
-export const buscarQuestaoAleatoria = async () : Promise<Questao|null> => {
+export const buscarQuestaoAleatoria = async (): Promise<Questao | null> => {
     try {
         const resposta = await axios.get(api + `?random=true&count=1`);
         return criarQuestaoUsandoDados(resposta.data[0]);
@@ -200,11 +209,11 @@ export const criarQuestaoRegraDeTres = async (enunciado: string, prescricao: Gra
         await axios.post(api, {
             tipo: 0,
             enunciado: enunciado,
-            prescricao: prescricao.valor, 
-            prescricaoUnidade: prescricao.unidade.nome, 
-            medicacao: medicamento.valor, 
-            medicacaoUnidade: medicamento.unidade.nome, 
-            diluente: prescricao.valor, 
+            prescricao: prescricao.valor,
+            prescricaoUnidade: prescricao.unidade.nome,
+            medicacao: medicamento.valor,
+            medicacaoUnidade: medicamento.unidade.nome,
+            diluente: prescricao.valor,
             diluenteUnidade: prescricao.unidade.nome,
         });
     }
@@ -213,16 +222,16 @@ export const criarQuestaoRegraDeTres = async (enunciado: string, prescricao: Gra
     };
 }
 
-export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: Unidade) => {
+export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandeza, tempo: Grandeza, unidadeDestino: 'gts/min'|'gts/hora'|'mgts/min'|'mgts/hora') => {
     try {
         await axios.post(api, {
             tipo: 1,
             enunciado: enunciado,
-            volume: volume.valor, 
-            volumeUnidade: volume.unidade.nome, 
-            tempo: tempo.valor, 
-            tempoUnidade: tempo.unidade.nome, 
-            destinoUnidade: unidadeDestino.nome,
+            volume: volume.valor,
+            volumeUnidade: volume.unidade.nome,
+            tempo: tempo.valor,
+            tempoUnidade: tempo.unidade.nome,
+            destinoUnidade: unidadeDestino,
         });
     }
     catch (err) {
@@ -233,7 +242,7 @@ export const criarQuestaoGotejamento = async (enunciado: string, volume: Grandez
 export const deletarQuestaoPorID = async (id: number) => {
     try {
         await axios.delete(api + `?id=${id}`);
-    } 
+    }
     catch (err) {
         console.error(`Erro ao deletar uma questão. erro: ${err}`);
     }
@@ -245,11 +254,11 @@ export const atualizaQuestaoRegraDeTres = async (id: number, enunciado: string, 
             id: id,
             tipo: 0,
             enunciado: enunciado,
-            prescricao: prescricao.valor, 
-            prescricaoUnidade: prescricao.unidade.nome, 
-            medicacao: medicamento.valor, 
-            medicacaoUnidade: medicamento.unidade.nome, 
-            diluente: prescricao.valor, 
+            prescricao: prescricao.valor,
+            prescricaoUnidade: prescricao.unidade.nome,
+            medicacao: medicamento.valor,
+            medicacaoUnidade: medicamento.unidade.nome,
+            diluente: prescricao.valor,
             diluenteUnidade: prescricao.unidade.nome,
         })
     }
@@ -264,10 +273,10 @@ export const atualizarQuestaoGotejamento = async (id: number, enunciado: string,
             id: id,
             tipo: 1,
             enunciado: enunciado,
-            volume: volume.valor, 
-            volumeUnidade: volume.unidade.nome, 
-            tempo: tempo.valor, 
-            tempoUnidade: tempo.unidade.nome, 
+            volume: volume.valor,
+            volumeUnidade: volume.unidade.nome,
+            tempo: tempo.valor,
+            tempoUnidade: tempo.unidade.nome,
             destinoUnidade: unidadeDestino.nome,
         });
     }

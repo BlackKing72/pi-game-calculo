@@ -4,6 +4,56 @@
 
 @layer components{
     .drop-slot {
-        @apply p-1 bg-slate-200 outline-2 outline-dashed outline-blue-500;
+        @apply p-1 bg-slate-200 border-2 border-dashed border-blue-500;
+    }
+}
+
+.equacao-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.equacao-values-container {
+    width: 100%;
+    gap: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.equacao-parte-2 {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    align-items: center;
+}
+
+@media screen and (pointer: coarse) and (orientation:landscape) { 
+    .equacao-container {
+        flex-grow: 1;
+        flex-direction: row;
+    }
+
+    .equacao-container hr {
+        display: none;
+    }
+
+    .equacao-values-container {
+        flex-wrap: wrap;
+        width: 0;
+        flex: 1 0 40%;
+
+        .swapy-slot {
+            width: 0;
+            flex: 1 0 33.33%;
+        }
+    }
+    
+    .equacao-parte-2 {
+        display: flex;
+        gap: 0.5rem;
+        width: 0;
+        flex: 1 0 55%;
     }
 }
