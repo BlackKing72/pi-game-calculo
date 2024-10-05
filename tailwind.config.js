@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
   	extend: {
+		backgroundImage: {
+			'home': "url('/public/images/bg-1.jpg')",
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

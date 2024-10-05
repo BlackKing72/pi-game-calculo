@@ -12,6 +12,9 @@
     padding: 8px;
 
     transition: height 0.5s var(--ease-in-out-back);
+
+    background-image: url('../../public/images/bg-1.jpg');
+    background-size: cover;
 }
 
 .app-container {
@@ -24,6 +27,7 @@
     align-items: center;
 
     gap: 16px;
+    
 }
 
 .app-container .app-main,
@@ -87,9 +91,11 @@
 }
 
 .app-content {
-    background-color:  #F8FAFC;
+    background-color:  #f8fafcc0;
+    backdrop-filter: blur(4px);
+    /* background-color:  #f8fafc; */
     border-radius: 8px;
-    padding: 0;
+    padding: 0.5rem;
     flex-grow: 1;
     height: 100%;
     width: 100% !important;

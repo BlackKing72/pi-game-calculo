@@ -11,19 +11,42 @@ const HomePage = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const handleOnClick = async () => {
+    
+
+    const handleOnClickJogar = async () => {
         setLoading(true);
-        
         const questao = await perguntasService.buscarQuestaoAleatoria();
-        navigate(`/app/` + questao.id);
+
+        if (questao) {
+            navigate(`/app/` + questao.id);
+        }
+
+        setLoading(false);
     };
+
+    const opcoes = [
+        { nome: 'Jogar', onClick: handleOnClickJogar },
+        { nome: 'Tutorial', onClick: () => { } },
+        { nome: 'Opções', onClick: () => { } },
+    ]
 
     return loading
         ? <LoadingScreen />
         : (
-            <div className="homepage">
-                <h1>Titulo do Game</h1>
-                <Button onClick={handleOnClick}>Jogar</Button>
+            <div className="absolute inset-0 w-screen h-[100dvh] flex flex-col items-center justify-center transition-all">
+                <div className="fixed z-0 inset-0 bg-home bg-repeat bg-cover transition-all" />
+
+                <div className="w-full flex flex-col flex-grow gap-4 max-w-[50ch] justify-center p-4">
+                    <div className="bg-[#f8fafc10] text-slate-50 backdrop-blur-[4px] z-10 rounded-lg p-10 flex flex-col gap-4 items-center ring-1 ring-[#f8fafc40]">
+                        <h1>OwlCalc</h1>
+                        <hr className="mb-8 w-full" />
+                        {
+                            opcoes.map((opcao, index) =>
+                                <Button className="w-full bg-blue-600 hover:bg-blue-800" key={index} onClick={opcao.onClick}>{opcao.nome}</Button>
+                            )
+                        }
+                    </div>
+                </div>
             </div>
         )
 };
