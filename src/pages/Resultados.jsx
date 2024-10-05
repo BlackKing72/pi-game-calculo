@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeartPulse } from "@fortawesome/free-solid-svg-icons";
 
 import * as perguntasService from "../services/perguntasService";
+import { GameButton } from "../components/game/game-button";
 
 const Resultados = () => {
     const navigate = useNavigate();
@@ -44,8 +45,8 @@ const Resultados = () => {
                     <Progress value={resultados.precisao} className="w-full bg-slate-300 *:bg-orange-500" />
                 </div>
                 <div className="flex gap-2 w-full">
-                <Button className='w-0 flex-grow' onClick={handleClickMenuPrincipal}>Menu Principal</Button>
-                <Button className='w-0 flex-grow' onClick={handleClickJogarNovamente}>Jogar Novamente</Button>
+                <GameButton className='w-0 flex-grow' onClick={handleClickMenuPrincipal}>Menu Principal</GameButton>
+                <GameButton className='w-0 flex-grow' onClick={handleClickJogarNovamente}>Jogar Novamente</GameButton>
                 </div>
             </div>
         </div>

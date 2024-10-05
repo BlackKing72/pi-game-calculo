@@ -10,43 +10,16 @@ import { Input } from '../ui/input';
 import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { SwapEventArray, SwapEventMap, SwapEventObject, Swapy } from 'swapy';
 
+import { FakeSlot, PickSlot, DropSlot } from '../game/game-slots';
 import * as conversoes from '@/models/conversao';
 import { QuestaoRegraDeTres } from '@/services/perguntasService';
 import { gerarGrandeza, Grandeza } from '@/models/grandeza';
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { GameButton } from '../game/game-button';
 
 type SlotData = string | null;
 
-type PickSlotProps = { className?: string, content?: any, slotID: any, itemID: any }
-function PickSlot({ className, content, slotID, itemID }: PickSlotProps) {
-    return (
-        <SwapySlot className={`p-1 bg-slate-200 border border-transparent ${className || ''}`} slotID={slotID}>
-            <SwapyItem className='bg-orange-500' itemID={itemID}>
-                <p className='text-sm'>{content}</p>
-            </SwapyItem>
-        </SwapySlot>
-    );
-};
 
-type DropSlotProps = { className?: string, slotID: any }
-function DropSlot({ className, slotID, children }: PropsWithChildren<DropSlotProps>) {
-    return (
-        <SwapySlot className={`drop-slot ${className || ''}`} slotID={slotID}>
-            {children}
-        </SwapySlot>
-    )
-}
-
-type FakeSlotProps = { className?: string, content?: any }
-function FakeSlot({ className, content }: FakeSlotProps) {
-    return (
-        <div className={`p-1 bg-slate-200 rounded-lg ${className ?? ''}`}>
-            <div className='bg-slate-500 rounded-lg w-full h-full flex items-center justify-center'>
-                <p className='text-slate-50 text-sm'>{content ?? ''}</p>
-            </div>
-        </div>
-    )
-}
 
 /** Se necessário converter o valor da dose disponível, senão mantem o valor original. */
 const converterDoseDisponivel = (questao: QuestaoRegraDeTres) => {
@@ -156,7 +129,7 @@ const IdentificarValores = ({ questao, quandoResponder }: EtapaProps) => {
             </SwapyContainer>
 
             <hr className="my-1 w-full" />
-            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
+            <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
         </div>
     );
 };
@@ -206,8 +179,8 @@ const IdentificarConvercao = ({ questao, quandoResponder }: EtapaProps) => {
             </p>
 
             <div className='flex gap-2'>
-                <Button className='flex-grow' onClick={() => handleQuandoResponder(true)}>Sim</Button>
-                <Button className='flex-grow' onClick={() => handleQuandoResponder(false)}>Não</Button>
+                <GameButton className='flex-grow' onClick={() => handleQuandoResponder(true)}>Sim</GameButton>
+                <GameButton className='flex-grow' onClick={() => handleQuandoResponder(false)}>Não</GameButton>
             </div>
         </div>
     );
@@ -291,7 +264,7 @@ const RealizarConversao = ({ questao, quandoResponder }: EtapaProps) => {
             </SwapyContainer>
 
             <hr className="my-1 w-full" />
-            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
+            <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
         </div>
     );
 };
@@ -382,7 +355,7 @@ const EquacaoParte1 = ({ questao, quandoResponder }: EtapaProps) => {
             </SwapyContainer>
 
             <hr className="my-1 w-full" />
-            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
+            <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
         </div>
     );
 };
@@ -486,7 +459,7 @@ const EquacaoParte2 = ({ questao, quandoResponder }: EtapaProps) => {
             </SwapyContainer>
 
             <hr className="my-1 w-full" />
-            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
+            <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
         </div>
     );
 };
@@ -594,7 +567,7 @@ const EquacaoParte3 = ({ questao, quandoResponder }: EtapaProps) => {
             </SwapyContainer>
 
             <hr className="my-1 w-full" />
-            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
+            <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
         </div>
     );
 };
@@ -672,7 +645,7 @@ const EquacaoParte4 = ({ questao, quandoResponder }: EtapaProps) => {
             </div>
 
             <hr className="my-1 w-full" />
-            <Button className='w-full' onClick={handleQuandoResponder}>Responder</Button>
+            <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
         </div>
     );
 };
@@ -693,7 +666,7 @@ const EquacaoParte5 = ({ questao, quandoResponder }: EtapaProps) => {
             </div>
 
             <hr className="my-1 w-full" />
-            <Button className='w-full' onClick={() => quandoResponder(true)}>Continuar</Button>
+            <GameButton className='w-full' onClick={() => quandoResponder(true)}>Continuar</GameButton>
         </div>
     );
 }

@@ -8,13 +8,21 @@ export default {
   theme: {
   	extend: {
 		backgroundImage: {
-			'home': "url('/public/images/bg-1.jpg')",
+			'home': "url('/images/bg-1.jpg')",
 		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+		transitionTimingFunction: {
+			'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
+			'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
+			'in-out-expo': 'cubic-bezier(0.87, 0, 0.13, 1)',
+			'in-back': 'cubic-bezier(0.36, 0, 0.66, -0.56)',
+			'out-back': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+			'in-out-back': 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
