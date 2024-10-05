@@ -1,6 +1,14 @@
 import { QuestaoGotejamento } from "@/services/perguntasService";
 import {
-    IdentificarValores
+    ArredondarValor,
+    EquacaoParte1,
+    EquacaoParte2,
+    IdentificarConvercao,
+    IdentificarEquacao,
+    IdentificarValores,
+    RealizarConversao,
+    VisualizarResultado,
+    precisaConverterValores,
 } from '@/components/etapas/EquacaoGotejamento';
 
 
@@ -20,7 +28,6 @@ export type EtapaProps = {
 
 export const buscarConteudoParaGotejamento = (questao: QuestaoGotejamento) => {
 
-
     // A lista de etapas que precisam ser passadas para completar o game.
     //
     // É uma função que aceita um evento como argumento e retorna um componente 
@@ -31,35 +38,38 @@ export const buscarConteudoParaGotejamento = (questao: QuestaoGotejamento) => {
             <IdentificarValores key={0} questao={questao} quandoResponder={quandoResponder} />
         ),
 
-        // (quandoResponder: CallbackResposta) => (
-        //     <IdentificarConvercao key={1} questao={questao} quandoResponder={quandoResponder} />
-        // )
+        (quandoResponder: CallbackResposta) => (
+            <IdentificarEquacao key={0} questao={questao} quandoResponder={quandoResponder} />
+        ),
+
+        (quandoResponder: CallbackResposta) => (
+            <IdentificarConvercao key={0} questao={questao} quandoResponder={quandoResponder} />
+        ),
     ];
 
     // Se as unidades forem iguais não precisa da etapa de conversão (por isso a lista vazia).
-    const convercao: CallbackResposta[] = [];
-    // const convercao = unidadesSaoIguais ? []
-    //     : [(quandoResponder: CallbackResposta) => (
-    //         <RealizarConversao key={4} questao={questao} quandoResponder={quandoResponder} />
-    //     )];
+    const convercao = !precisaConverterValores(questao) ? []
+        : [(quandoResponder: CallbackResposta) => (
+            <RealizarConversao key={0} questao={questao} quandoResponder={quandoResponder} />
+        ),];
 
-    const equacao: CallbackResposta[] = [];
-    //     (quandoResponder: CallbackResposta) => (
-    //         <EquacaoParte1 questao={questao} quandoResponder={quandoResponder} />
-    //     ),
-    //     (quandoResponder: CallbackResposta) => (
-    //         <EquacaoParte2 questao={questao} quandoResponder={quandoResponder} />
-    //     ),
-    //     (quandoResponder: CallbackResposta) => (
-    //         <EquacaoParte3 questao={questao} quandoResponder={quandoResponder} />
-    //     ),
-    //     (quandoResponder: CallbackResposta) => (
-    //         <EquacaoParte4 questao={questao} quandoResponder={quandoResponder} />
-    //     ),
-    //     (quandoResponder: CallbackResposta) => (
-    //         <EquacaoParte5 questao={questao} quandoResponder={quandoResponder} />
-    //     ),
-    // ];
+    const equacao = [
+        (quandoResponder: CallbackResposta) => (
+            <EquacaoParte1 key={0} questao={questao} quandoResponder={quandoResponder} />
+        ),
+
+        (quandoResponder: CallbackResposta) => (
+            <EquacaoParte2 key={0} questao={questao} quandoResponder={quandoResponder} />
+        ),
+
+        (quandoResponder: CallbackResposta) => (
+            <ArredondarValor key={0} questao={questao} quandoResponder={quandoResponder} />
+        ),
+        
+        (quandoResponder: CallbackResposta) => (
+            <VisualizarResultado key={0} questao={questao} quandoResponder={quandoResponder} />
+        ),
+    ];
 
     // Usando lista é possível junta-las em uma unica lista, e as listas que forem vazias são ignoradas.
     return [...inicio, ...convercao, ...equacao];

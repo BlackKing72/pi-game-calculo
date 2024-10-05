@@ -1,6 +1,6 @@
 import { ValueNoneIcon } from '@radix-ui/react-icons';
 import { Grandeza } from './grandeza.ts';
-import { Gramas, Litros, Miligramas, Mililitros, Unidade } from './unidade.ts';
+import { Gramas, Horas, Litros, Miligramas, Mililitros, Minutos, Unidade } from './unidade.ts';
 
 /** Recebe um valor como argumento e retorna o valor convertido. */
 type ValidarConversaoFn = (valor: number) => number;
@@ -47,12 +47,16 @@ export const GramasParaMiligramas = new Conversao(Gramas, Miligramas, 'multiplic
 export const MiligramasParaGramas = new Conversao(Miligramas, Gramas, 'dividir', 1000);
 export const LitrosParaMililitros = new Conversao(Litros, Mililitros, 'multiplicar', 1000);
 export const MililitrosParaLitros = new Conversao(Mililitros, Litros, 'dividir', 1000);
+export const HorasParaMinutos     = new Conversao(Horas, Minutos, 'multiplicar', 60);
+export const MinutosParaHoras     = new Conversao(Minutos, Horas, 'dividir', 60);
 
 export const conversoes: Conversao[] = [
     GramasParaMiligramas,
     MiligramasParaGramas,
     LitrosParaMililitros,
     MililitrosParaLitros,
+    HorasParaMinutos,
+    MinutosParaHoras,
 ];
 
 export const buscarConversao = (origem: Unidade, destino: Unidade) : Conversao|null => {

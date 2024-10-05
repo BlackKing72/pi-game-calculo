@@ -20,7 +20,7 @@ type SlotData = string | null;
 type PickSlotProps = { className?: string, content?: any, slotID: any, itemID: any }
 function PickSlot({ className, content, slotID, itemID }: PickSlotProps) {
     return (
-        <SwapySlot className={`p-1 bg-slate-200 ${className || ''}`} slotID={slotID}>
+        <SwapySlot className={`p-1 bg-slate-200 border border-transparent ${className || ''}`} slotID={slotID}>
             <SwapyItem className='bg-orange-500' itemID={itemID}>
                 <p className='text-sm'>{content}</p>
             </SwapyItem>
@@ -31,7 +31,7 @@ function PickSlot({ className, content, slotID, itemID }: PickSlotProps) {
 type DropSlotProps = { className?: string, slotID: any }
 function DropSlot({ className, slotID, children }: PropsWithChildren<DropSlotProps>) {
     return (
-        <SwapySlot className={`drop-slot ${className || ''}`} slotID={slotID}>
+        <SwapySlot className={`drop-slot border border-transparent ${className || ''}`} slotID={slotID}>
             {children}
         </SwapySlot>
     )
