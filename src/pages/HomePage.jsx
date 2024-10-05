@@ -38,7 +38,7 @@ const HomePage = () => {
 
                 <div className="w-full flex flex-col flex-grow gap-4 max-w-[50ch] justify-center p-4">
                     <div className="bg-[#f8fafc10] text-slate-50 backdrop-blur-[4px] z-10 rounded-lg p-10 flex flex-col gap-4 items-center ring-1 ring-[#f8fafc40]">
-                        <h1>OwlCalc</h1>
+                        <h1 className="font-bold">OwlCalc</h1>
                         <hr className="mb-8 w-full" />
                         {
                             opcoes.map((opcao, index) =>

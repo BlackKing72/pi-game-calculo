@@ -31,8 +31,9 @@ const Resultados = () => {
     }
 
     return (
-        <div className="w-screen h-full min-h-[100dvh] flex flex-col items-center justify-center ">
-            <div className="w-full flex flex-col flex-grow gap-4 max-w-[50ch] justify-center p-4">
+        <div className="absolute inset-0 w-screen h-[100dvh] flex flex-col items-center justify-center transition-all">
+            <div className="fixed z-0 inset-0 bg-home bg-repeat bg-cover transition-all" />
+            <div className="w-full flex flex-col z-10 flex-grow gap-4 max-w-[50ch] justify-center p-4">
                 <div className="bg-slate-50 rounded-lg p-10 flex flex-col gap-4 items-center">
                     <p>Você completou a equação em<br/>{tempoGasto}</p>
                     <hr className="w-full my-4"/>

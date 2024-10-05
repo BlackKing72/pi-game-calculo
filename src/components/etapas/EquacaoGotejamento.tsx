@@ -32,7 +32,7 @@ function PickSlot({ className, content, slotID, itemID }: PickSlotProps) {
 type DropSlotProps = { className?: string, slotID: any }
 function DropSlot({ className, slotID, children }: PropsWithChildren<DropSlotProps>) {
     return (
-        <SwapySlot className={`drop-slot border border-transparent ${className || ''}`} slotID={slotID}>
+        <SwapySlot className={`drop-slot ${className || ''}`} slotID={slotID}>
             {children}
         </SwapySlot>
     )

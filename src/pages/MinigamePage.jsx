@@ -4,6 +4,7 @@ import './MinigamePage.css';
 import { Dialog, DialogClose, DialogDescription, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
 import { gerarGrandeza } from '@/models/grandeza.ts';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres'
 import { buscarConteudoParaGotejamento } from '@/components/GameGotejamento'
