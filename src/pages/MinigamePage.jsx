@@ -19,7 +19,7 @@ import { faCircleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons'
 const MinigamePage = () => {
     const navigate = useNavigate();
 
-    const { idQuestao } = useParams();
+    const idQuestao = parseInt(useParams().idQuestao);
 
     const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
     const [questao, setQuestao] = useState();

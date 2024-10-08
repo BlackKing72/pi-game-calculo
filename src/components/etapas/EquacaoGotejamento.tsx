@@ -1,26 +1,20 @@
-import './EquacaoRegraDeTres.css'
+import { useState } from 'react';
 
 import { EtapaProps } from "../GameGotejamento";
 
 import SwapyContainer, { SwapyGroup } from "../swapy/SwapyContainer";
-import SwapyItem from "../swapy/SwapyItem";
-import SwapySlot from "../swapy/SwapySlot";
 import { FakeSlot, PickSlot, DropSlot } from '../game/game-slots';
-import { Button } from '../ui/button';
-import { Input, InputError } from '../ui/input';
-import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
-import { SwapEventArray, SwapEventMap, SwapEventObject, Swapy } from 'swapy';
-
-import * as conversoes from '@/models/conversao';
-import { QuestaoGotejamento, QuestaoRegraDeTres } from '@/services/perguntasService';
-import { gerarGrandeza, Grandeza } from '@/models/grandeza';
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { GotasHora, GotasMin, Horas, MicrogotasHora, MicrogotasMin, Minutos, Unidade } from '@/models/unidade';
 import { GameButton } from '../game/game-button';
+import { Input, InputError } from '../ui/input';
+
+import { GotasHora, GotasMin, Horas, MicrogotasHora, MicrogotasMin, Minutos, Unidade } from '@/models/unidade';
+import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
+import { gerarGrandeza, Grandeza } from '@/models/grandeza';
+import * as conversoes from '@/models/conversao';
+
+import './EquacaoRegraDeTres.css'
 
 type SlotData = string | null;
-
-
 
 const embaralharLista = (lista: any[]) => {
     let resultado = [...lista];

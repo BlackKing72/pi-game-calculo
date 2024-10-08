@@ -3,9 +3,11 @@ import { LoadingScreen } from '@/components/ui/loading';
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
-import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "../components/ui/dropdown-menu"
-import {Table,TableBody,TableCaption,TableCell,TableFooter,TableHead,TableHeader,TableRow} from "@/components/ui/table"
-import { QuestaoGotejamento, gerarRespostas, QuestaoRegraDeTres } from "@/services/perguntasService";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/ui/dropdown-menu"
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
+import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
+
 import { Link } from "react-router-dom";
 import * as perguntasService from '../services/perguntasService'
 
@@ -27,20 +29,20 @@ const ListaRegistro = () => {
 
     const handleDeletarQuestao = async (id) => {
         // chamo a api
-        
-           await perguntasService.deletarQuestaoPorID(id);
-           await carregarDados();
-        
+
+        await perguntasService.deletarQuestaoPorID(id);
+        await carregarDados();
+
     }
 
-    const handleAlterarQuestao = async(id) => {
+    const handleAlterarQuestao = async (id) => {
 
         const questao = await perguntasService.buscarQuestoesPorID(id)
 
-        if (perguntasService.isQuestaoRegraDeTres(questao)){
+        if (perguntasService.isQuestaoRegraDeTres(questao)) {
             navigate //regratres
         }
-        else{
+        else {
             navigate //gotejamento
         }
     }
@@ -62,7 +64,7 @@ const ListaRegistro = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {questoes.map(questao => 
+                        {questoes.map(questao =>
                             <TableRow key={questao.id} className="h-20">
                                 <TableCell className="bg-slate-200 border-t border-l border-slate-300 px-4">{questao.id}</TableCell>
                                 <TableCell className="bg-slate-200 border-t border-l text-left border-slate-300 px-4">{questao.enunciado}</TableCell>

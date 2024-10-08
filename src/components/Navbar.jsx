@@ -1,7 +1,10 @@
 import Logo from '../assets/images/Group.svg';
 import './Navbar.css';
 import NomeLogo from '../assets/images/NameLogo.svg';
-import {QuestaoGotejamento, gerarRespostas, QuestaoRegraDeTres} from "@/services/perguntasService";
+
+import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
+import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
+
 import { Link } from 'react-router-dom';
 
 

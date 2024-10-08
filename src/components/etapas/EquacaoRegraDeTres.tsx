@@ -1,21 +1,16 @@
 import './EquacaoRegraDeTres.css'
 
 import { EtapaProps } from "../GameRegraDeTres";
-import SwapyContainer from "../swapy/SwapyContainer";
-import { SwapyGroup } from "../swapy/SwapyContainer";
-import SwapyItem from "../swapy/SwapyItem";
-import SwapySlot from "../swapy/SwapySlot";
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
-import { SwapEventArray, SwapEventMap, SwapEventObject, Swapy } from 'swapy';
 
+import SwapyContainer, { SwapyGroup } from "../swapy/SwapyContainer";
 import { FakeSlot, PickSlot, DropSlot } from '../game/game-slots';
-import * as conversoes from '@/models/conversao';
-import { QuestaoRegraDeTres } from '@/services/perguntasService';
-import { gerarGrandeza, Grandeza } from '@/models/grandeza';
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { GameButton } from '../game/game-button';
+import { Input } from '../ui/input';
+import { useState } from 'react';
+
+import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
+import { gerarGrandeza, Grandeza } from '@/models/grandeza';
+import * as conversoes from '@/models/conversao';
 
 type SlotData = string | null;
 
@@ -554,14 +549,14 @@ const EquacaoParte3 = ({ questao, quandoResponder }: EtapaProps) => {
 
                     <SwapyGroup className='flex flex-col w-0 flex-grow basis-2/3 items-center'>
                         <SwapyGroup className='flex w-full flex-grow items-center'>
-                            <SwapySlot className='w-0 flex-grow h-12 drop-slot' slotID={dropSlots[1]}></SwapySlot>
+                            <DropSlot className='w-0 flex-grow h-12 drop-slot' slotID={dropSlots[1]}></DropSlot>
                             <p className='text-2xl mx-4'>x</p>
-                            <SwapySlot className='w-0 flex-grow h-12 drop-slot' slotID={dropSlots[2]}></SwapySlot>
+                            <DropSlot className='w-0 flex-grow h-12 drop-slot' slotID={dropSlots[2]}></DropSlot>
                         </SwapyGroup>
 
                         <hr className="my-2 w-full" />
 
-                        <SwapySlot className='flex-grow w-1/2 h-12 drop-slot' slotID={dropSlots[3]}></SwapySlot>
+                        <DropSlot className='flex-grow w-1/2 h-12 drop-slot' slotID={dropSlots[3]}></DropSlot>
                     </SwapyGroup>
                 </SwapyGroup>
             </SwapyContainer>
