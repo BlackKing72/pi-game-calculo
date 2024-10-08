@@ -13,6 +13,14 @@ import { gerarGrandeza, Grandeza } from '@/models/grandeza';
 import * as conversoes from '@/models/conversao';
 
 import './EquacaoRegraDeTres.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestion } from '@fortawesome/free-solid-svg-icons';
+import GameHelp from '../game/game-help';
+
+import helpGtsHoras from '@/assets/images/owlcalc-help-gts-hora.png';
+import helpGtsMinutos from '@/assets/images/owlcalc-help-gts-min.png';
+import helpMgtsHoras from '@/assets/images/owlcalc-help-mgts-hora.png';
+import helpMgtsMinutos from '@/assets/images/owlcalc-help-mgts-min.png';
 
 type SlotData = string | null;
 
@@ -349,6 +357,7 @@ const RealizarConversao = ({ questao, quandoResponder }: EtapaProps) => {
         quandoResponder(estaCorreto);
     };
 
+    const [openHelp, setOpenHelp] = useState<boolean>(false);
 
     return (
         <div className='flex flex-col gap-2 w-full h-full justify-center'>
@@ -372,6 +381,38 @@ const RealizarConversao = ({ questao, quandoResponder }: EtapaProps) => {
 
             <hr className="my-1 w-full" />
             <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
+
+            <GameButton className='absolute top-0 right-0 w-8 h-8 rounded-lg' onClick={() => setOpenHelp(true)}>
+                <FontAwesomeIcon icon={faQuestion}/>
+            </GameButton>
+
+            <GameHelp open={openHelp} onOpenChanged={open => setOpenHelp(open)}>
+                <div className='flex flex-col w-full text-sm gap-1'>
+                    <h3 className='w-full font-bold text-center'>Algumas conversões</h3>
+                    <hr className='my-2'/>
+
+                    <div className='flex justify-between'><p>Gramas(g) para Miligramas(mg): </p><b>× 1000</b></div>
+                    <div className='flex justify-between'><p>Miligramas(mg) para Gramas(g): </p><b>÷ 1000</b></div>
+                    <hr className='my-1'/>
+                    <div className='flex justify-between'><p>Litros(l) para Mililitros(ml):</p><b>× 1000</b></div>
+                    <div className='flex justify-between'><p>Mililitros(ml) para Litros(l):</p><b>÷ 1000</b></div>
+                    <hr className='my-1'/>
+                    <div className='flex justify-between'><p>Horas(h) para Minutos(min):</p><b>× 60</b></div>
+                    <div className='flex justify-between'><p>Minutos(min) para Horas(h):</p><b>÷ 60</b></div>
+                    <hr className='my-1'/>
+                    <div className='flex justify-between'><p>Gotas(gts) para Microgotas(mgts):</p><b>× 3</b></div>
+                    <div className='flex justify-between'><p>Microgotas(mgts) para Gotas(gts):</p><b>÷ 3</b></div>
+                    <hr className='my-1'/>
+                    <div className='flex justify-between'><p>Gotas(gts) para Microgotas(mgts):</p><b>× 3</b></div>
+                    <div className='flex justify-between'><p>Microgotas(mgts) para Gotas(gts):</p><b>÷ 3</b></div>
+                    <hr className='my-1'/>
+                    <div className='flex justify-between'><p>Mililitros(ml) para Gotas(gts):</p><b>× 20</b></div>
+                    <div className='flex justify-between'><p>Gotas(gts) para Mililitros(ml):</p><b>÷ 20</b></div>
+                    <hr className='my-1'/>
+                    <div className='flex justify-between'><p>Mililitros(ml) para Microgotas(mgts):</p><b>× 60</b></div>
+                    <div className='flex justify-between'><p>Microgotas(mgts) para Mililitros(ml):</p><b>÷ 60</b></div>
+                </div>
+            </GameHelp>
         </div>
     );
 };
@@ -379,6 +420,7 @@ const RealizarConversao = ({ questao, quandoResponder }: EtapaProps) => {
 /* ---------------------------------------------------------------------------------------------------------------------
 --------- Equação Parte 01 ---------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------- */
+
 
 const EquacaoGtsHoras = ({ questao, quandoResponder }: EtapaProps) => {
     const { volumePrescrito, tempoPrescrito, constanteGotas, constanteMicrogotas, constanteTempo } = extrairValoresDaQuestao(questao);
@@ -401,8 +443,10 @@ const EquacaoGtsHoras = ({ questao, quandoResponder }: EtapaProps) => {
         quandoResponder(estaCorreto);
     };
 
+    const [openHelp, setOpenHelp] = useState<boolean>(false);
+
     return (
-        <div className='flex flex-col gap-4 w-full h-full justify-center'>
+        <div className='relative flex flex-col gap-4 w-full h-full justify-center'>
             <p className="font-medium">Monte a equação na ordem correta.</p>
 
             <hr className="my-1 w-full" />
@@ -437,6 +481,14 @@ const EquacaoGtsHoras = ({ questao, quandoResponder }: EtapaProps) => {
 
             <hr className="my-1 w-full" />
             <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
+            
+            <GameButton className='absolute top-0 right-0 w-8 h-8 rounded-lg' onClick={() => setOpenHelp(true)}>
+                <FontAwesomeIcon icon={faQuestion}/>
+            </GameButton>
+
+            <GameHelp open={openHelp} onOpenChanged={open => setOpenHelp(open)}>
+                <img src={helpGtsHoras} alt="Volume vezes 60 dividio por tempo" />
+            </GameHelp>
         </div>
     );
 };
@@ -462,8 +514,10 @@ const EquacaoGtsMinutos = ({ questao, quandoResponder }: EtapaProps) => {
         quandoResponder(estaCorreto);
     };
 
+    const [openHelp, setOpenHelp] = useState<boolean>(false);
+
     return (
-        <div className='flex flex-col gap-4 w-full h-full justify-center'>
+        <div className='relative flex flex-col gap-4 w-full h-full justify-center'>
             <p className="font-medium">Monte a equação na ordem correta.</p>
 
             <hr className="my-1 w-full" />
@@ -498,6 +552,14 @@ const EquacaoGtsMinutos = ({ questao, quandoResponder }: EtapaProps) => {
 
             <hr className="my-1 w-full" />
             <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
+
+            <GameButton className='absolute top-0 right-0 w-8 h-8 rounded-lg' onClick={() => setOpenHelp(true)}>
+                <FontAwesomeIcon icon={faQuestion}/>
+            </GameButton>
+
+            <GameHelp open={openHelp} onOpenChanged={open => setOpenHelp(open)}>
+                <img src={helpGtsMinutos} alt="Volume vezes 60 dividio por tempo" />
+            </GameHelp>
         </div>
     );
 };
@@ -522,8 +584,10 @@ const EquacaoMgtsHoras = ({ questao, quandoResponder }: EtapaProps) => {
         quandoResponder(estaCorreto);
     };
 
+    const [openHelp, setOpenHelp] = useState<boolean>(false);
+
     return (
-        <div className='flex flex-col gap-4 w-full h-full justify-center'>
+        <div className='relative flex flex-col gap-4 w-full h-full justify-center'>
             <p className="font-medium">Monte a equação na ordem correta.</p>
 
             <hr className="my-1 w-full" />
@@ -550,6 +614,14 @@ const EquacaoMgtsHoras = ({ questao, quandoResponder }: EtapaProps) => {
 
             <hr className="my-1 w-full" />
             <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
+
+            <GameButton className='absolute top-0 right-0 w-8 h-8 rounded-lg' onClick={() => setOpenHelp(true)}>
+                <FontAwesomeIcon icon={faQuestion}/>
+            </GameButton>
+
+            <GameHelp open={openHelp} onOpenChanged={open => setOpenHelp(open)}>
+                <img src={helpMgtsHoras} alt="Volume vezes 60 dividio por tempo" />
+            </GameHelp>
         </div>
     );
 };
@@ -575,8 +647,10 @@ const EquacaoMgtsMinutos = ({ questao, quandoResponder }: EtapaProps) => {
         quandoResponder(estaCorreto);
     };
 
+    const [openHelp, setOpenHelp] = useState<boolean>(false);
+
     return (
-        <div className='flex flex-col gap-4 w-full h-full justify-center'>
+        <div className='relative flex flex-col gap-4 w-full h-full justify-center'>
             <p className="font-medium">Monte a equação na ordem correta.</p>
 
             <hr className="my-1 w-full" />
@@ -611,6 +685,14 @@ const EquacaoMgtsMinutos = ({ questao, quandoResponder }: EtapaProps) => {
 
             <hr className="my-1 w-full" />
             <GameButton className='w-full' onClick={handleQuandoResponder}>Responder</GameButton>
+            
+            <GameButton className='absolute top-0 right-0 w-8 h-8 rounded-lg' onClick={() => setOpenHelp(true)}>
+                <FontAwesomeIcon icon={faQuestion}/>
+            </GameButton>
+
+            <GameHelp open={openHelp} onOpenChanged={open => setOpenHelp(open)}>
+                <img src={helpMgtsMinutos} alt="Volume vezes 60 dividio por tempo" />
+            </GameHelp>
         </div>
     );
 };
