@@ -7,8 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import * as perguntasService from '../services/perguntasService'
 import * as unidade from '../models/unidade'
 import * as grandeza from '../models/grandeza'
-import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
-import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
 
 const RegistrarRegraTres = () => {
 

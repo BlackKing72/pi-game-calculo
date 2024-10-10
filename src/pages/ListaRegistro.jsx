@@ -3,12 +3,8 @@ import { LoadingScreen } from '@/components/ui/loading';
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/ui/dropdown-menu"
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
-import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-import { Link } from "react-router-dom";
 import * as perguntasService from '../services/perguntasService'
 
 const ListaRegistro = () => {

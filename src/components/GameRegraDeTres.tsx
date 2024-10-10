@@ -1,4 +1,4 @@
-import { QuestaoRegraDeTres } from "@/services/perguntasService";
+import { QuestaoRegraDeTres } from "@/models/questoes-regradetres.ts";
 import { 
     EquacaoParte1, 
     EquacaoParte2, 

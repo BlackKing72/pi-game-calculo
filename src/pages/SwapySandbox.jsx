@@ -80,7 +80,7 @@ function SwapyAnswers({ alternativas, onSubmit }) {
             </div>
         </SwapyContainer>
     );
-};
+}
 
 class Pergunta {
     constructor(titulo, alternativas, resposta) {

@@ -6,9 +6,7 @@ import * as grandeza from '../models/grandeza'
 import * as unidade from '../models/unidade'
 import Navbar from "../components/Navbar";
 import * as perguntasService from '../services/perguntasService'
-import { Gotas, Microgotas, Horas, Minutos, Miligramas, Mililitros, Gramas, Litros } from "../models/unidade";
-import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
-import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
+import { Horas, Minutos } from "../models/unidade";
 
 const RegistrarGotejamento = () => {
 
