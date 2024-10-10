@@ -46,11 +46,11 @@ const ListaRegistro = () => {
     return loading
         ? <LoadingScreen />
         : (
-            <div className="w-screen">
-                <div className="absolute top-0 left-0 right-0">
+            <div className="w-screen max-h-dvh flex flex-col">
+                <div className="w-full h-20">
                     <Navbar />
                 </div>
-                <Table className="rounded-lg overflow-hidden">
+                <Table className="w-full rounded-lg overflow-y-auto overflow-x-hidden p-0 m-0">
                     <TableHeader>
                         <TableRow className="w-screen">
                             <TableHead className="bg-slate-300 font-bold text-slate-900 text-center w-20">ID</TableHead>

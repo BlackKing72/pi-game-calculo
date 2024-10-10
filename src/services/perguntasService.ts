@@ -98,8 +98,8 @@ export const criarQuestaoRegraDeTres = async (enunciado: string, prescricao: Gra
             prescricaoUnidade: prescricao.unidade.nome,
             medicacao: medicamento.valor,
             medicacaoUnidade: medicamento.unidade.nome,
-            diluente: prescricao.valor,
-            diluenteUnidade: prescricao.unidade.nome,
+            diluente: diluente.valor,
+            diluenteUnidade: diluente.unidade.nome,
         });
     }
     catch (err) {
