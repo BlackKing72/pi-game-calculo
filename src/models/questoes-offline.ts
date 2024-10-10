@@ -42,4 +42,20 @@ export const questoesOffline: Questao[] = [
         new Grandeza(6, Horas),
         'gts/min'
     ),
+
+    new QuestaoRegraDeTres(5,
+        'J.C.S. foi internado na clínica médica para tratamento de uma infecção, sendo prescrito amoxicilina 500mg suspensão oral de 8/8 horas. Quantos ml serão administrados, considerando que a apresentação farmacêutica disponível é de 250mg / 5ml?',
+        new Grandeza(500, Miligramas),
+        new Grandeza(250, Miligramas),
+        new Grandeza(5, Mililitros)
+    ),
+
+    new QuestaoGotejamento(6,
+        'Foram prescritos 1800 ml de Soro Fisiológico a 0,9% em 12 horas. Calcule quantas gotas por minuto deverão ser administradas no paciente.',
+        new Grandeza(1800, Mililitros),
+        new Grandeza(12, Horas),
+        'gts/min'
+    ),
+
+    
 ];
