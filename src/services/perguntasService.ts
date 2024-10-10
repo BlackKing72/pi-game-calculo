@@ -16,7 +16,9 @@ export type Questao = QuestaoRegraDeTres | QuestaoGotejamento;
 
 // const api = `http://localhost:3000/calculo`;
 // const api = `http://10.23.49.20:3000/calculo`;
-const urlAPI = `http://192.168.15.201:3000/calculo`;
+// const urlAPI = `http://192.168.15.201:3000/calculo`;
+const api = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const urlAPI = `${api}/calculo`;
 
 /** Retorna todas as questões disponíveis, se algum erro ocorrer ao conectar com 
  * a api retorna uma lista de questões padrão.
