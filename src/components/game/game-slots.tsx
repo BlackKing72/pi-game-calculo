@@ -4,6 +4,8 @@ import SwapySlot from "../swapy/SwapySlot";
 
 import { cn } from "@/lib/utils"
 
+import './game-slots.css';
+
 // import pickSound from '@assets/sounds/512138__beezlefm__item-sound.wav'
 // import dropSound from '@assets/sounds/720217__baggonotes__item_hover.wav';
 
@@ -36,7 +38,7 @@ function PickSlot({ className, content, slotID, itemID, ...props }: PickSlotProp
 type DropSlotProps = { className?: string, slotID: any }
 function DropSlot({ className, slotID, children }: PropsWithChildren<DropSlotProps>) {
     return (
-        <SwapySlot className={`drop-slot ${className || ''}`} slotID={slotID}>
+        <SwapySlot className={`p-1 bg-slate-200 border-2 border-dashed border-blue-500 ${className || ''}`} slotID={slotID}>
             {children}
         </SwapySlot>
     )
