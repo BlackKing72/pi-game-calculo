@@ -14,11 +14,11 @@ const Resultados = () => {
         navigate('/');
     }
 
-    const minutos = resultados.minutos;
-    const segundos = resultados.segundos;
+    const minutos = resultados.minutos % 60;
+    const segundos = resultados.segundos % 60;
 
     const tempoGasto = resultados.horas <= 0 
-        ?  `${minutos > 0 ? `${minutos} minitos e ` : ''}${segundos} segundos`
+        ?  `${minutos > 0 ? `${minutos} minutos e ` : ''}${segundos} segundos`
         : '+ de 60 minutos';
 
     const handleClickMenuPrincipal = () => {
@@ -37,7 +37,7 @@ const Resultados = () => {
                 <div className="bg-slate-50 rounded-lg p-10 flex flex-col gap-4 items-center">
                     <p>Você completou a equação em<br/>{tempoGasto}</p>
                     <hr className="w-full my-4"/>
-                    <p>Acertou {resultados.acertos} de {resultados.totalTentativas} tentativas</p>
+                    <p>Acertou {resultados.acertos} de {resultados.totalTentativas} tentativas!</p>
 
                     <FontAwesomeIcon className="w-24 h-24 text-red-600" icon={faHeartPulse} flip/>
                     <p>Precisão {Math.round(resultados.precisao)}%</p>
