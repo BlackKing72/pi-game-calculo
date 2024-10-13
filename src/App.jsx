@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     element: <Resultados />
   },
   {
-    path: '/listaregistro',
+    path: '/registro',
     element: <ListaRegistro />
   },
   {

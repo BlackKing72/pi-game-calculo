@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar";
 import * as perguntasService from '../services/perguntasService'
 import { Horas, Minutos } from "../models/unidade";
 import { useNavigate } from "react-router-dom";
+import { Textarea } from "@/components/ui/textarea";
 
 const RegistrarGotejamento = () => {
     const navigate = useNavigate();
@@ -20,31 +21,36 @@ const RegistrarGotejamento = () => {
     const [infusaoUnidade, setInfusaoUnidade] = useState();
 
     const infusaoUnidades = [
-        { value: 'gts/min', display: 'Gotas por Minuto' }, 
-        { value: 'gts/hora', display: 'Gotas por Hora' }, 
-        { value: 'mgts/min', display: 'Microgotas por Minuto' }, 
+        { value: 'gts/min', display: 'Gotas por Minuto' },
+        { value: 'gts/hora', display: 'Gotas por Hora' },
+        { value: 'mgts/min', display: 'Microgotas por Minuto' },
         { value: 'mgts/hora', display: 'Microgotas por Hora' }]
 
     const handleEnviar = async () => {
-        await perguntasService.criarQuestaoGotejamento(
-            enunciado,
-            new grandeza.Grandeza(volume, volumeUnidade),
-            new grandeza.Grandeza(tempo, tempoUnidade),
-            infusaoUnidade);
+        try {
+            await perguntasService.criarQuestaoGotejamento(
+                enunciado,
+                new grandeza.Grandeza(volume, volumeUnidade),
+                new grandeza.Grandeza(tempo, tempoUnidade),
+                infusaoUnidade);
 
-        navigate('/listaregistro');
+            navigate('/registro');
+        }
+        catch (err) {
+            alert('Ops! Algo não ocorreu como planejado. Tente novamente mais tarde.');
+        }
     }
 
     return (
-        <>
-            <div className="absolute top-0 left-0 right-0">
+        <div className="w-screen min-h-dvh max-h-dvh flex flex-col items-center">
+            <div className="w-full h-20">
                 <Navbar />
             </div>
             <div className="mb-10 mt-10">
                 <h1>Criar Pergunta de Gotejamento</h1>
             </div>
-            <div className="flex flex-col gap-5">
-                <Input placeholder="Enunciado" value={enunciado} on onChange={e => setEnunciado(e.target.value)} />
+            <div className="flex flex-col w-full gap-5 max-w-[95%] xl:max-w-[1024px]">
+                <Textarea className="resize-none" placeholder="Enunciado" value={enunciado} on onChange={e => setEnunciado(e.target.value)} />
                 <h3 className="text-left pl-5">Volume</h3>
                 <div className="flex flex-row gap-5">
                     <Input type="number" value={volume} placeholder="Valor Volume" onChange={(e) => setVolume(e.target.valueAsNumber)} />
@@ -85,13 +91,11 @@ const RegistrarGotejamento = () => {
                                 <SelectItem key={index} value={unidade.value}>{unidade.display}</SelectItem>
                             )
                         }
-                        {/* <SelectItem value={Gotas.nome}>{Gotas.nome}</SelectItem>
-                        <SelectItem value={Microgotas.nome}>{Microgotas.nome}</SelectItem> */}
                     </SelectContent>
                 </Select>
                 <Button onClick={handleEnviar}>Enviar</Button>
             </div>
-        </>
+        </div>
     )
 }
 
