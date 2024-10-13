@@ -1,12 +1,6 @@
 import Logo from '../assets/images/Group.svg';
-import './Navbar.css';
 import NomeLogo from '../assets/images/NameLogo.svg';
-
-import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
-import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
-
-import { Link } from 'react-router-dom';
-
+import './Navbar.css';
 
 import {
   DropdownMenu,
@@ -21,16 +15,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
-
-  const NavGotejamento = async () => {
-    setLoading(true);
-    navigate("/registrarGotejamento/")
-}
-
-const NavRegraTres = async () => {
-    setLoading(true);
-    navigate("/registrarRegraTres/")
-}
 
   return (
     <nav className="navbar">

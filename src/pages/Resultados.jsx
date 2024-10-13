@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress"
-import { Button } from "@/components/ui/button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeartPulse } from "@fortawesome/free-solid-svg-icons";
 

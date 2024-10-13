@@ -1,10 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './MinigamePage.css';
-import { Dialog, DialogClose, DialogDescription, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import MinigameSelecionarValor from '@/components/minigames/MinigameSelecionarValor';
-import { gerarGrandeza } from '@/models/grandeza.ts';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Dialog, DialogDescription, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 import { buscarConteudoParaRegraDeTres } from '@/components/GameRegraDeTres'
 import { buscarConteudoParaGotejamento } from '@/components/GameGotejamento'
@@ -14,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingScreen } from '@/components/ui/loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
-import { faCircleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const MinigamePage = () => {
     const navigate = useNavigate();
@@ -42,7 +39,7 @@ const MinigamePage = () => {
 
         buscarQuestoes();
         setTempoInicio(performance.now());
-    }, [])
+    }, [idQuestao])
 
 
     const handleQuandoMudarEtapa = (pageIndex) => {
@@ -87,11 +84,10 @@ const MinigamePage = () => {
         }
     }
 
-    useEffect(() => {
-        if (!abrirDialogoSucesso) {
-            handleQuandoMudarEtapa(indexEtapaAtual + 1);
-        }
-    }, [abrirDialogoSucesso])
+    const handleFecharDialogoSucesso = () => {
+        setAbrirDialogoSucesso(false);
+        handleQuandoMudarEtapa(indexEtapaAtual + 1);
+    };
 
     
     return !questao
@@ -130,7 +126,7 @@ const MinigamePage = () => {
                     </div>
                 </div>
 
-                <FeedbackPopup open={abrirDialogoSucesso} title='Você acertou!' onClose={() => setAbrirDialogoSucesso(false)}>
+                <FeedbackPopup open={abrirDialogoSucesso} title='Você acertou!' onClose={handleFecharDialogoSucesso}>
                     <FontAwesomeIcon className='w-24 h-24 text-lime-500' icon={faCircleCheck} bounce />
                 </FeedbackPopup>
 
@@ -159,68 +155,10 @@ function FeedbackPopup({ open, title, children, onClose }) {
     )
 }
 
-
 function buscarConteudoMinigame(questao) {
     return perguntasService.isQuestaoRegraDeTres(questao)
         ? buscarConteudoParaRegraDeTres(questao)
         : buscarConteudoParaGotejamento(questao);
 }
-
-const gerarIndex = (len) => {
-    return Math.floor(Math.random() * len);
-}
-
-const gerarRespostas = (valor, variacao, quantidade) => {
-    const valores = [];
-
-    for (let i = 0; i < quantidade - 1; i++) {
-        const index = gerarIndex(valores.length);
-        const valorGerado = gerarGrandeza(valor, variacao, true, true);
-        valores.splice(index, 0, ...[valorGerado]);
-    }
-
-    const index = gerarIndex(valores.length);
-    valores.splice(index, 0, ...[valor]);
-
-    return {
-        valores: valores,
-        resposta: index,
-    };
-}
-
-/** 
- * @param {perguntasService.QuestaoGotejamento} questao 
- */
-// function buscarConteudoParaGotejamento(questao) {
-//     const valoresVolume = gerarRespostas(questao.volume, questao.volume.valor * 2, 3);
-//     const valoresTempo = gerarRespostas(questao.tempo, questao.tempo.valor * 2, 3);
-
-//     return [
-//         (onAnswer) =>
-//             <MinigameSelecionarValor
-//                 key={0}
-//                 titulo='Que diluente tem disponível?'
-//                 valores={valoresVolume.valores.map(valor => valor.toString())}
-//                 quandoResponder={e => {
-//                     console.log(`onAnswer prescrição => ${e} ${valoresVolume.resposta}`);
-//                     onAnswer(e == valoresVolume.resposta);
-//                 }} />,
-//         (onAnswer) =>
-//             <MinigameSelecionarValor
-//                 key={1}
-//                 titulo='Que diluente tem disponível?'
-//                 valores={valoresTempo.valores.map(valor => valor.toString())}
-//                 quandoResponder={e => {
-//                     console.log(`onAnswer prescrição => ${e} ${valoresTempo.resposta}`);
-//                     onAnswer(e == valoresTempo.resposta);
-//                 }} />,
-//         (onAnswer) => {
-//             return (<p>Etapa 04</p>)
-//         },
-//         (onAnswer) => {
-//             return (<p>Etapa 04</p>)
-//         },
-//     ];
-// };
 
 export default MinigamePage;

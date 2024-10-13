@@ -3,12 +3,8 @@ import { LoadingScreen } from '@/components/ui/loading';
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/ui/dropdown-menu"
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
-import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-import { Link } from "react-router-dom";
 import * as perguntasService from '../services/perguntasService'
 
 const ListaRegistro = () => {
@@ -50,11 +46,11 @@ const ListaRegistro = () => {
     return loading
         ? <LoadingScreen />
         : (
-            <div className="w-screen">
-                <div className="absolute top-0 left-0 right-0">
+            <div className="w-screen max-h-dvh flex flex-col">
+                <div className="w-full h-20">
                     <Navbar />
                 </div>
-                <Table className="rounded-lg overflow-hidden">
+                <Table className="w-full rounded-lg overflow-y-auto overflow-x-hidden p-0 m-0">
                     <TableHeader>
                         <TableRow className="w-screen">
                             <TableHead className="bg-slate-300 font-bold text-slate-900 text-center w-20">ID</TableHead>

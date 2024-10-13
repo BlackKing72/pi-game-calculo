@@ -1,4 +1,4 @@
-import { QuestaoGotejamento } from "@/services/perguntasService";
+import { QuestaoGotejamento } from "@/models/quetoes-gotejamento";
 import {
     ArredondarValor,
     EquacaoParte1,

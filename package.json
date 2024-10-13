@@ -7,6 +7,7 @@
     "dev": "vite",
     "host": "vite --host",
     "build": "tsc && vite build",
+    "vercel": "vite --mode vercel",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -39,7 +40,8 @@
     "swapy": "^0.4.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "use-sound": "^4.0.3"
+    "use-sound": "^4.0.3",
+    "vite-plugin-vercel": "^9.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.5.5",
@@ -55,5 +57,8 @@
     "tailwindcss": "^3.4.12",
     "typescript": "^5.6.2",
     "vite": "^5.2.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.9.5"
   }
 }

@@ -6,11 +6,11 @@ import * as grandeza from '../models/grandeza'
 import * as unidade from '../models/unidade'
 import Navbar from "../components/Navbar";
 import * as perguntasService from '../services/perguntasService'
-import { Gotas, Microgotas, Horas, Minutos, Miligramas, Mililitros, Gramas, Litros } from "../models/unidade";
-import { QuestaoGotejamento } from '@/models/quetoes-gotejamento';
-import { QuestaoRegraDeTres } from '@/models/questoes-regradetres';
+import { Horas, Minutos } from "../models/unidade";
+import { useNavigate } from "react-router-dom";
 
 const RegistrarGotejamento = () => {
+    const navigate = useNavigate();
 
     const [enunciado, setEnunciado] = useState();
     const [tempo, setTempo] = useState(new grandeza.Grandeza(0, unidade.UnidadeVolume));
@@ -26,13 +26,13 @@ const RegistrarGotejamento = () => {
         { value: 'mgts/hora', display: 'Microgotas por Hora' }]
 
     const handleEnviar = async () => {
-
-        console.log(tempoUnidade, volumeUnidade, infusaoUnidade);
         await perguntasService.criarQuestaoGotejamento(
             enunciado,
-            new grandeza.Grandeza(tempo, tempoUnidade),
             new grandeza.Grandeza(volume, volumeUnidade),
+            new grandeza.Grandeza(tempo, tempoUnidade),
             infusaoUnidade);
+
+        navigate('/listaregistro');
     }
 
     return (

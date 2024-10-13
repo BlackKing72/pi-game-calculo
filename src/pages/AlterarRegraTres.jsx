@@ -1,3 +1,13 @@
+import { useState } from "react";
+import * as grandeza from '@/models/grandeza';
+import * as unidade from '@/models/unidade';
+import * as perguntasService from '@/services/perguntasService';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Navbar from "@/components/Navbar";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+
+
 const AlterarRegraTres = () => {
     
     const [enunciado, setEnunciado] = useState();
