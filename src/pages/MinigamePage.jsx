@@ -16,6 +16,9 @@ import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 const MinigamePage = () => {
     const navigate = useNavigate();
 
+    const enableDebugMode = localStorage.getItem('enable-debug-mode');
+    const [isDebugMode, setIsDebugMode] = useState(enableDebugMode !== null && enableDebugMode == true);
+
     const idQuestao = parseInt(useParams().idQuestao);
 
     const [indexEtapaAtual, setIndexEtapaAtual] = useState(0);
@@ -23,12 +26,16 @@ const MinigamePage = () => {
     const [etapas, setEtapas] = useState([]);
     const [tempoInicio, setTempoInicio] = useState();
     const [erros, setErros] = useState(0);
-    const [acertos, setAcertos] = useState(0)
+    const [acertos, setAcertos] = useState(0);
+    const [ultimaEtapa, setUltimaEtapa] = useState(0);
 
     const [abrirDialogoSucesso, setAbrirDialogoSucesso] = useState(false);
     const [abrirDialogoErro, setAbrirDialogoErro] = useState(false);
 
     useEffect(() => {
+        window.addEventListener('debug-changed', (e) => {
+            setIsDebugMode(e.enabled);
+        })
         const buscarQuestoes = async () => {
             const questao =
                 await perguntasService.buscarQuestoesPorID(idQuestao);
@@ -43,7 +50,8 @@ const MinigamePage = () => {
 
 
     const handleQuandoMudarEtapa = (pageIndex) => {
-        pageIndex = Math.max(0, Math.min(pageIndex, etapas.length - 1));
+        const length = isDebugMode ? etapas.length - 1 : ultimaEtapa;
+        pageIndex = Math.max(0, Math.min(pageIndex, length));
         setIndexEtapaAtual(pageIndex);
     }
 
@@ -77,6 +85,7 @@ const MinigamePage = () => {
                 return;
             }
             setAbrirDialogoSucesso(true);
+            setUltimaEtapa(value => value + 1);
             setAcertos(value => value + 1);
         } else {
             setAbrirDialogoErro(true);
@@ -89,7 +98,7 @@ const MinigamePage = () => {
         handleQuandoMudarEtapa(indexEtapaAtual + 1);
     };
 
-    
+
     return !questao
         ? <LoadingScreen />
         : (
@@ -119,10 +128,16 @@ const MinigamePage = () => {
                                 )
                             }
                         </div>
-                        <div className='flex gap-2'>
-                            <Button className='flex-grow' onClick={() => handleQuandoMudarEtapa(indexEtapaAtual - 1)}>Anterior</Button>
-                            <Button className='flex-grow' onClick={() => handleQuandoMudarEtapa(indexEtapaAtual + 1)}>Próximo</Button>
-                        </div>
+                        {
+                            !isDebugMode
+                                ? null
+                                : (
+                                    <div className='flex gap-2'>
+                                        <Button className='flex-grow' onClick={() => handleQuandoMudarEtapa(indexEtapaAtual - 1)}>Anterior</Button>
+                                        <Button className='flex-grow' onClick={() => handleQuandoMudarEtapa(indexEtapaAtual + 1)}>Próximo</Button>
+                                    </div>
+                                )
+                        }
                     </div>
                 </div>
 

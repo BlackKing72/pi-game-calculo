@@ -11,6 +11,7 @@ import RegistrarGotejamento from './pages/RegistrarGotejamento';
 import RegistrarRegraTres from './pages/RegistrarRegraTres';
 import AlterarGotejamento from './pages/AlterarGotejamento';
 import AlterarRegraTres from './pages/AlterarRegraTres';
+import { useEffect } from 'react';
 
 const router = createBrowserRouter([
   {
@@ -31,27 +32,57 @@ const router = createBrowserRouter([
   },
   {
     path: '/listaregistro',
-    element: <ListaRegistro/>
+    element: <ListaRegistro />
   },
   {
     path: '/gotejamento',
-    element: <RegistrarGotejamento/>
+    element: <RegistrarGotejamento />
   },
   {
     path: '/regraTres',
-    element: <RegistrarRegraTres/>
+    element: <RegistrarRegraTres />
   },
   {
     path: '/gotejamento/:id',
-    element: <AlterarGotejamento/>
+    element: <AlterarGotejamento />
   },
   {
     path: '/regraTres/:id',
-    element: <AlterarRegraTres/>
+    element: <AlterarRegraTres />
   }
 ])
 
+class DebugEvent extends Event {
+  constructor(enabled) {
+    super('debug-changed');
+    this.enabled = enabled;
+  }
+}
+
 function App() {
+
+  const handleKeyDown = (e) => {
+    if (!e.repeat && e.ctrlKey && e.shiftKey && e.key === '"') {
+      if (localStorage.getItem('enableDebugMode')) {
+        alert('Desativando modo de desenvolverdor');
+        localStorage.removeItem('enableDebugMode');
+        window.dispatchEvent(new DebugEvent(false));
+      }
+      else {
+        alert('Ativando modo de desenvolvedor');
+        localStorage.setItem('enableDebugMode', true);
+        window.dispatchEvent(new DebugEvent(true));
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, []);
 
   return (
     <RouterProvider router={router} />
