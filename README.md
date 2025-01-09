@@ -11,9 +11,9 @@
 
 O Objetivo do app é ajudar os estudantes de enfermagem a resolver cálculos de medicamentos e gotejamento de soro, tudo de forma interativa e prática.
 
-Foi criado usando React + Vite e algumas bibliotecas para facilitar o desenvolvimento.
+Foi criado usando [React][react-url] + [Vite][vite-url] e algumas bibliotecas para facilitar o desenvolvimento.
 
-Este projeto foi criado como parte de um trabalho escolar, Projeto Integrador (P.I), com o objetivo de demonstrar habilidades adquiridas no decorrer das unidades curriculares.
+Este projeto foi criado como parte de um trabalho escolar, [Projeto Integrador (P.I)](#sobre-o-projeto-integrador), com o objetivo de demonstrar habilidades adquiridas no decorrer das unidades curriculares.
 
 <br/>
 
@@ -38,6 +38,8 @@ Os cálculos são divididos em etapas. Em cada etapa você precisa organizar os 
 [![Axios][axios-shield]][axios-url]
 
 [![Swapy][swapy-shield]][swapy-url]
+
+<br/>
 
 ## Melhorias futuras
 
@@ -64,12 +66,12 @@ Os cálculos são divididos em etapas. Em cada etapa você precisa organizar os 
 
 1. Clone o repositório:
 ```sh
-git  clone  https://github.com/BlackKing72/owlcalc/
+git clone https://github.com/BlackKing72/owlcalc/
 ```
 
 2. Acesse a pasta do projeto:
 ```sh
-cd  owlcalc
+cd owlcalc
 ```
 
 3. Instale as dependências:
@@ -81,6 +83,8 @@ npm install
 ```sh
 npm run dev
 ```
+
+<br/>
 
 ## Sobre o Projeto Integrador
 
@@ -97,6 +101,8 @@ Como as turmas de enfermagem já tinham o costume de compartilharem conteúdos e
 ### Owlcalc
 
 Uma das maiores demandas das turmas de enfermagem. Um minigame educativo para ajudar os estudantes de enfermagem à resolverem os cálculos de medicamento e gotejamento de soro de forma prática e interativa.
+
+
 
 [react-shield]: https://img.shields.io/badge/React-404040?style=for-the-badge&logo=react
 [react-url]: https://react.dev/
