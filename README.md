@@ -1,12 +1,25 @@
 <div align="center">
 	<a href="https://github.com/BlackKing72/api-owlpost"  style="filter: drop-shadow(0 0 1px #fafaff80)">
-		<img src="images/owlpost_logo.png" alt="Logo" width="100" height="100">
-</a>
+		<img src="https://github.com/user-attachments/assets/01d26aab-c892-4874-8807-ee0ba04e5b1e" alt="Logo" width="100" height="100">
+    </a>
 	<h3 align="center">Owlcalc</h3>
 	<p align="center">
 		Um minigame educativo desenvolvido para estudantes de enfermagem.
 	</p>
 </div>
+<br/>
+
+<div align="center">
+	<img src="https://github.com/user-attachments/assets/0ded3d58-74d3-4d52-a25e-c3c9c1c909f7" width="150" alt="O menu principal do jogo."/>
+    &nbsp
+    <img src="https://github.com/user-attachments/assets/fddfbbe6-3e03-47ad-98a6-d636a95854fc" width="150" alt="Um minigame de organizar as respostas na ordem correta"/>
+    &nbsp
+    <img src="https://github.com/user-attachments/assets/abd4343e-9f5a-43d6-895b-de999d15c239" width="150" alt="Um minigame em formato de quiz"/>
+    &nbsp
+    <img src="https://github.com/user-attachments/assets/6bd7cd1f-3865-4603-9b7a-05ec4707559b" width="150" alt="A tela de resultados após o final do jogo"/>
+</div>
+
+<br/>
 <br/>
 
 O Objetivo do app é ajudar os estudantes de enfermagem a resolver cálculos de medicamentos e gotejamento de soro, tudo de forma interativa e prática.
@@ -28,15 +41,10 @@ Os cálculos são divididos em etapas. Em cada etapa você precisa organizar os 
 ## Tecnologias utilizadas
 
 [![React][react-shield]][react-url]
-
 [![Vite][vite-shield]][vite-url]
-  
-[![TypeScript][ts-shield]][ts-url]
-
+[![TypeScript][ts-shield]][ts-url]  
 [![Shadcn/ui][shadcn-shield]][shadcn-url]
-
 [![Axios][axios-shield]][axios-url]
-
 [![Swapy][swapy-shield]][swapy-url]
 
 <br/>
@@ -54,11 +62,9 @@ Os cálculos são divididos em etapas. Em cada etapa você precisa organizar os 
 
 ## Autores
 
-[![Matheus Senna][matheus-shield]][matheus-url]  
-
-[![Michaell Senna][michaell-shield]][michaell-url]  
-
-[![Jonatas Tavares][jonatas-shield]][jonatas-url]  
+[![Matheus Senna][matheus-shield]][matheus-url]
+[![Michaell Senna][michaell-shield]][michaell-url]
+[![Jonatas Tavares][jonatas-shield]][jonatas-url]
 
 <br/>
 
