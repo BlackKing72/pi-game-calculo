@@ -1,5 +1,4 @@
 import ValueConverter from "../components/ValueConverter";
-import { Button } from "react-bootstrap";
 
 import './GamePage.css';
 

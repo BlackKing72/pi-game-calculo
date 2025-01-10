@@ -1,5 +1,5 @@
 import './SwapyComponents.css';
-import { Children } from 'react';
+import { cn } from "@/lib/utils"
 /* 
 Um item padrão para usar com o swapy. Ele vem vazio por padrão, precisa passar
 um item para ele
@@ -10,12 +10,23 @@ do SwapyItem, ele funciona automáticamente não precisa passar um valor para el
     ex: <SwapyItem> <p>Isso é um children</p> </SwapyItem>. 
 */
 
-/**
- * @param {import('react').PropsWithChildren<{className?, itemID}} param0 
- */
-const SwapyItem = ({ className, itemID, children }) => {
+/** @param {React.BaseHTMLAttributes<HTMLDivElement> & { itemID: any }} param0 */
+const SwapyItem = ({ className, itemID, children, ...props }) => {
+
+    const handleOnPointerEnter = (event) => {
+        event.target.setAttribute('data-swapy-hover', '');
+        if (props.onPointerEnter) props.onPointerEnter(event);
+    }
+
+    const handleOnPointerLeave = (event) => {
+        event.target.removeAttribute('data-swapy-hover', '');
+        if (props.onPointerLeave) props.onPointerLeave(event);
+    }
+
     return (
-        <div className={`swapy-item ${className || ''}`} data-swapy-item={itemID}>
+        <div className={cn('swapy-item', className)} data-swapy-item={itemID} {...props}
+            onPointerEnter={handleOnPointerEnter}
+            onPointerLeave={handleOnPointerLeave}>
             {children}
         </div>
     );

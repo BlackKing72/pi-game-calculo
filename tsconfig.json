@@ -23,13 +23,16 @@
             "@/*": [
                 "./src/*"
             ]
-        }
+        },
+        "types": [
+            "vite/client",
+        ]
     },
     "exclude": [
         "node_modules",
         "**/node_modules/*"
     ],
     "include": [
-        "**/*.tsx",
+        "**/*.tsx", "**/*.jsx", "**/*.mp3", "**/*.ogg", "**/*.wav",
     ]
 }

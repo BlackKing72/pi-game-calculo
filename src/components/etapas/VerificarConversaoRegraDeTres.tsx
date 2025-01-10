@@ -40,7 +40,7 @@ const VerificarConversaoUnidades = ({ questao, quandoResponder }: EtapaProps) =>
 
             <MinigameEscolherOpcao
                 opcoes={['Sim', 'Não']}
-                titulo='Eles precisam ser converidos?'
+                titulo='Eles precisam ser convertidos?'
                 quandoResponder={handleQuandoResponder} />
         </div>
     );

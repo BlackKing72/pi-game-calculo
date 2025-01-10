@@ -13,7 +13,11 @@ do SwapyContainer, ele funciona automáticamente não precisa passar um valor pa
     ex: <SwapyContainer> <p>Isso é um children</p> </SwapyContainer>. 
 */
 /**
- * @param {import('react').PropsWithChildren<{className?, animation?:'dynamic'|'spring'|'none', onSwap?, setSwapy?}} param0 
+ * @param {import('react').PropsWithChildren<{
+ *  className?, 
+ *  animation?:'dynamic'|'spring'|'none', 
+ *  onSwap?:
+ * , setSwapy?}} param0 
  */
 const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) => {
     const swapy = useRef();
@@ -22,6 +26,13 @@ const SwapyContainer = ({ className, animation, onSwap, setSwapy, children }) =>
         const container = document.querySelector('.swapy-container');
         swapy.current = createSwapy(container, { 
             animation: animation || 'dynamic', 
+            swapMode: 'drop',
+        });
+
+        const items = [...container.querySelectorAll('.swapy-item')];
+        items.forEach(item => {
+            item.addEventListener('pointerdown', () => item.setAttribute('data-swapy-current', ''));
+            item.addEventListener('pointerup', () => item.removeAttribute('data-swapy-current'));
         });
 
         swapy.current.onSwap(event => {
