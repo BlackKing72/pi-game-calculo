@@ -18,6 +18,10 @@
     &nbsp
     <img src="https://github.com/user-attachments/assets/6bd7cd1f-3865-4603-9b7a-05ec4707559b" width="150" alt="A tela de resultados após o final do jogo"/>
 </div>
+		
+
+<!-- [OwlCalc 2x.webm](https://github.com/user-attachments/assets/f0aba7e3-e1ff-4a18-8829-a314ed20ee57) -->
+
 
 <br/>
 <br/>
@@ -27,6 +31,12 @@ O Objetivo do app é ajudar os estudantes de enfermagem a resolver cálculos de 
 Foi criado usando [React][react-url] + [Vite][vite-url] e algumas bibliotecas para facilitar o desenvolvimento.
 
 Este projeto foi criado como parte de um trabalho escolar, [Projeto Integrador (P.I)](#sobre-o-projeto-integrador), com o objetivo de demonstrar habilidades adquiridas no decorrer das unidades curriculares.
+
+<br/>
+<div align="center">
+	<video src="https://github.com/user-attachments/assets/f0aba7e3-e1ff-4a18-8829-a314ed20ee57" controls="controls" style="max-width: 200px;" alt="A tela de resultados após o final do jogo">
+</div>
+<br/>
 
 <br/>
 
